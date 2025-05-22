@@ -99,6 +99,7 @@ Leveraging the AI Automation Suggester provides several key benefits:
 * **Customizable Prompts and Filters:** Tailor suggestions using system prompts, domain filters, and entity limits.
 * **Randomized Entity Selection:** Prevent repetitive suggestions and discover new opportunities.
 * **Context-Rich Insights:** Incorporates device and area information for smarter, more relevant ideas.
+* **Analyzes Existing Automations:** Reads your `automations.yaml` file to provide more context-aware suggestions and avoid redundancy.
 * **Persistent Notifications:** Receive suggestions directly in your Home Assistant interface.
 * **Service Call Integration:** Manually trigger suggestions via the `ai_automation_suggester.generate_suggestions` service with full parameter control.
 * **Diagnostics Sensors:** Monitor suggestion status and provider connection health.
