@@ -95,14 +95,14 @@ Leveraging the AI Automation Suggester provides several key benefits:
 
 ## 📦 Features
 
-* **Multi-Provider Support:** Connect to OpenAI, Anthropic, Google, Groq, LocalAI, Ollama, Mistral, or Perplexity.
+* **Multi-Provider Support:** Connect to OpenAI, Anthropic, Google, Groq, OpenRouter, LocalAI, Ollama, Mistral, or Perplexity.
 * **Customizable Prompts and Filters:** Tailor suggestions using system prompts, domain filters, and entity limits.
 * **Randomized Entity Selection:** Prevent repetitive suggestions and discover new opportunities.
 * **Context-Rich Insights:** Incorporates device and area information for smarter, more relevant ideas.
 * **Analyzes Existing Automations:** Reads your `automations.yaml` file to provide more context-aware suggestions and avoid redundancy.
 * **Persistent Notifications:** Receive suggestions directly in your Home Assistant interface.
 * **Service Call Integration:** Manually trigger suggestions via the `ai_automation_suggester.generate_suggestions` service with full parameter control.
-* **Diagnostics Sensors:** Monitor suggestion status and provider connection health.
+* **Enhanced Diagnostic Sensors:** Includes sensors for monitoring token usage and the configured AI model, in addition to suggestion status and provider connection health.
 * **Example Automations:** Includes built-in examples for new entity detection and weekly reviews.
 * **Dashboard-Friendly Output:** Sensor attributes provide description and YAML blocks ready for Lovelace cards.
 
