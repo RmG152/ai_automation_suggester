@@ -273,6 +273,10 @@
         "automation_limit": {
           "name": "Límite de Automatizaciones",
           "description": "Número máximo de automatizaciones a analizar (por defecto: 100)."
+        },
+        "include_entity_details": {
+          "name": "Incluir Detalles de Entidades",
+          "description": "Incluir información detallada de las entidades (atributos e información del dispositivo) en el prompt. Desactivar esto reduce el uso de tokens pero proporciona menos contexto a la IA."
         }
       }
     }

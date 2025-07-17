@@ -69,6 +69,7 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
         self.entity_limit = 200
         self.automation_read_file = False  # Default automation reading mode
         self.automation_limit = 100
+        self.include_entity_details = True  # Default to include detailed entity info
 
         super().__init__(hass, _LOGGER, name=DOMAIN, update_interval=None)
         self.session = async_get_clientsession(hass)
@@ -222,54 +223,10 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
         for eid, meta in random.sample(
             list(entities.items()), min(len(entities), self.entity_limit)
         ):
-            domain = eid.split(".")[0]
-            attr_str = str(meta["attributes"])
-            if len(attr_str) > MAX_ATTR:
-                attr_str = f"{attr_str[:MAX_ATTR]}...(truncated)"
-
-            ent_entry = (
-                self.entity_registry.async_get(eid) if self.entity_registry else None
-            )
-            dev_entry = (
-                self.device_registry.async_get(ent_entry.device_id)
-                if ent_entry and ent_entry.device_id
-                else None
-            )
-
-            area_id = (
-                ent_entry.area_id
-                if ent_entry and ent_entry.area_id
-                else (dev_entry.area_id if dev_entry else None)
-            )
-            area_name = "Unknown Area"
-            if area_id and self.area_registry:
-                ar_entry = self.area_registry.async_get_area(area_id)
-                if ar_entry:
-                    area_name = ar_entry.name
-
-            block = (
-                f"Entity: {eid}\n"
-                f"Friendly Name: {meta['friendly_name']}\n"
-                f"Domain: {domain}\n"
-                f"State: {meta['state']}\n"
-                f"Attributes: {attr_str}\n"
-                f"Area: {area_name}\n"
-            )
-
-            if dev_entry:
-                block += (
-                    "Device Info:\n"
-                    f"  Manufacturer: {dev_entry.manufacturer}\n"
-                    f"  Model: {dev_entry.model}\n"
-                    f"  Device Name: {dev_entry.name_by_user or dev_entry.name}\n"
-                    f"  Device ID: {dev_entry.id}\n"
-                )
-
-            block += (
-                f"Last Changed: {meta['last_changed']}\n"
-                f"Last Updated: {meta['last_updated']}\n"
-                "---\n"
-            )
+            if self.include_entity_details:
+                block = self._format_entity_detailed(eid, meta, MAX_ATTR)
+            else:
+                block = self._format_entity_summarized(eid, meta)
             ent_sections.append(block)
 
         # Choose automation reading method
@@ -300,6 +257,94 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
             )
 
         return builded_prompt
+
+    def _format_entity_detailed(self, eid: str, meta: dict, max_attr: int) -> str:
+        """Format entity with detailed information including attributes and device info."""
+        domain = eid.split(".")[0]
+        attr_str = str(meta["attributes"])
+        if len(attr_str) > max_attr:
+            attr_str = f"{attr_str[:max_attr]}...(truncated)"
+
+        ent_entry = (
+            self.entity_registry.async_get(eid) if self.entity_registry else None
+        )
+        dev_entry = (
+            self.device_registry.async_get(ent_entry.device_id)
+            if ent_entry and ent_entry.device_id
+            else None
+        )
+
+        area_id = (
+            ent_entry.area_id
+            if ent_entry and ent_entry.area_id
+            else (dev_entry.area_id if dev_entry else None)
+        )
+        area_name = "Unknown Area"
+        if area_id and self.area_registry:
+            ar_entry = self.area_registry.async_get_area(area_id)
+            if ar_entry:
+                area_name = ar_entry.name
+
+        block = (
+            f"Entity: {eid}\n"
+            f"Friendly Name: {meta['friendly_name']}\n"
+            f"Domain: {domain}\n"
+            f"State: {meta['state']}\n"
+            f"Attributes: {attr_str}\n"
+            f"Area: {area_name}\n"
+        )
+
+        if dev_entry:
+            block += (
+                "Device Info:\n"
+                f"  Manufacturer: {dev_entry.manufacturer}\n"
+                f"  Model: {dev_entry.model}\n"
+                f"  Device Name: {dev_entry.name_by_user or dev_entry.name}\n"
+                f"  Device ID: {dev_entry.id}\n"
+            )
+
+        block += (
+            f"Last Changed: {meta['last_changed']}\n"
+            f"Last Updated: {meta['last_updated']}\n"
+            "---\n"
+        )
+        return block
+
+    def _format_entity_summarized(self, eid: str, meta: dict) -> str:
+        """Format entity with summarized information (no attributes or device info)."""
+        domain = eid.split(".")[0]
+        
+        ent_entry = (
+            self.entity_registry.async_get(eid) if self.entity_registry else None
+        )
+        dev_entry = (
+            self.device_registry.async_get(ent_entry.device_id)
+            if ent_entry and ent_entry.device_id
+            else None
+        )
+
+        area_id = (
+            ent_entry.area_id
+            if ent_entry and ent_entry.area_id
+            else (dev_entry.area_id if dev_entry else None)
+        )
+        area_name = "Unknown Area"
+        if area_id and self.area_registry:
+            ar_entry = self.area_registry.async_get_area(area_id)
+            if ar_entry:
+                area_name = ar_entry.name
+
+        block = (
+            f"Entity: {eid}\n"
+            f"Friendly Name: {meta['friendly_name']}\n"
+            f"Domain: {domain}\n"
+            f"State: {meta['state']}\n"
+            f"Area: {area_name}\n"
+            f"Last Changed: {meta['last_changed']}\n"
+            f"Last Updated: {meta['last_updated']}\n"
+            "---\n"
+        )
+        return block
 
     def _read_automations_default(self, max_autom: int, max_attr: int) -> list[str]:
         """Default method for reading automations."""

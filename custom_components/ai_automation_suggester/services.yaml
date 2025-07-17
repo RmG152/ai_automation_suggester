@@ -62,3 +62,11 @@ generate_suggestions:
           min: 10
           max: 500
           mode: slider
+    include_entity_details:
+      name: Include Entity Details
+      description: "If true, include detailed entity attributes and device information. If false, provide only basic entity information to reduce token usage."
+      required: false
+      default: true
+      example: true
+      selector:
+        boolean: {}

@@ -271,6 +271,10 @@
         "automation_limit": {
           "name": "Automation Limit",
           "description": "Maximum number of automations to analyze (default: 100)."
+        },
+        "include_entity_details": {
+          "name": "Include Entity Details",
+          "description": "Include detailed entity information (attributes and device info) in the prompt. Disabling this reduces token usage but provides less context to the AI."
         }
       }
     }
