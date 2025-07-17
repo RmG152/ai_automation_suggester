@@ -383,6 +383,8 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
                 "OpenRouter": self._openrouter,
                 "OpenAI Azure": self._openai_azure,
                 "Generic OpenAI": self._generic_openai,
+                "Codestral": self._codestral,
+                "Venice AI": self._veniceai,
             }[provider](prompt)
         except KeyError:
             self._last_error = f"Unknown provider '{provider}'"
@@ -1030,6 +1032,67 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
             _LOGGER.exception("Unexpected error in Mistral API call:")
             return None
 
+    # ---------------- Codestral ---------------------------------------------
+    async def _codestral(self, prompt: str) -> str | None:
+        try:
+            api_key = self._opt(CONF_CODESTRAL_API_KEY)
+            model = self._opt(CONF_CODESTRAL_MODEL, DEFAULT_MODELS["Codestral"])
+            temperature = self._opt(CONF_CODESTRAL_TEMPERATURE, DEFAULT_TEMPERATURE)
+            in_budget, out_budget = self._budgets()
+            if not api_key:
+                raise ValueError("Codestral API key not configured")
+
+            if len(prompt) // 4 > in_budget:
+                prompt = prompt[: in_budget * 4]
+
+            headers = {
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            }
+            body = {
+                "model": model,
+                "messages": [{"role": "user", "content": prompt}],
+                "max_tokens": out_budget,
+                "temperature": temperature,
+            }
+            timeout = aiohttp.ClientTimeout(total=900)
+
+            async with self.session.post(
+                ENDPOINT_CODESTRAL, headers=headers, json=body, timeout=timeout
+            ) as resp:
+                if resp.status != 200:
+                    self._last_error = (
+                        f"Codestral error {resp.status}: {await resp.text()}"
+                    )
+                    _LOGGER.error(self._last_error)
+                    return None
+
+                res = await resp.json()
+
+            if not isinstance(res, dict):
+                raise ValueError(f"Unexpected response format: {res}")
+
+            if "choices" not in res:
+                raise ValueError(f"Response missing 'choices' array: {res}")
+
+            if not res["choices"] or not isinstance(res["choices"], list):
+                raise ValueError(f"Empty or invalid 'choices' array: {res}")
+
+            if "message" not in res["choices"][0]:
+                raise ValueError(f"First choice missing 'message': {res['choices'][0]}")
+
+            if "content" not in res["choices"][0]["message"]:
+                raise ValueError(f"Message missing 'content': {res['choices'][0]['message']}")
+
+            return res["choices"][0]["message"]["content"]
+
+        except Exception as err:
+            self._last_error = f"Codestral processing error: {str(err)}"
+            _LOGGER.error(self._last_error)
+            # Log stack trace for unexpected errors
+            _LOGGER.exception("Unexpected error in Codestral API call:")
+            return None
+
     # ---------------- Perplexity -------------------------------------------
     async def _perplexity(self, prompt: str) -> str | None:
         try:
@@ -1162,3 +1225,65 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
             # Log stack trace for unexpected errors
             _LOGGER.exception("Unexpected error in OpenRouter API call:")
             return None
+
+    # ---------------- Venice AI -------------------------------------------
+    async def _veniceai(self, prompt: str) -> str | None:
+        try:
+            api_key = self._opt(CONF_VENICEAI_API_KEY)
+            model = self._opt(CONF_VENICEAI_MODEL, DEFAULT_MODELS["VeniceAI"])
+            temperature = self._opt(CONF_VENICEAI_TEMPERATURE, DEFAULT_TEMPERATURE)
+            in_budget, out_budget = self._budgets()
+            if not api_key:
+                raise ValueError("VeniceAI API key not configured")
+
+            if len(prompt) // 4 > in_budget:
+                prompt = prompt[: in_budget * 4]
+
+            body = {
+                "model": model,
+                "messages": [{"role": "user", "content": prompt}],
+                "max_tokens": out_budget,
+                "temperature": temperature,
+            }
+            headers = {
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            }
+
+            timeout = aiohttp.ClientTimeout(total=900)
+
+            async with self.session.post(
+                ENDPOINT_VENICEAI, headers=headers, json=body, timeout=timeout
+            ) as resp:
+                if resp.status != 200:
+                    self._last_error = (
+                        f"VeniceAI error {resp.status}: {await resp.text()}"
+                    )
+                    _LOGGER.error(self._last_error)
+                    return None
+
+                res = await resp.json()
+
+            if not isinstance(res, dict):
+                raise ValueError(f"Unexpected response format: {res}")
+                
+            if "choices" not in res:
+                raise ValueError(f"Response missing 'choices' array: {res}")
+                
+            if not res["choices"] or not isinstance(res["choices"], list):
+                raise ValueError(f"Empty or invalid 'choices' array: {res}")
+                
+            if "message" not in res["choices"][0]:
+                raise ValueError(f"First choice missing 'message': {res['choices'][0]}")
+                
+            if "content" not in res["choices"][0]["message"]:
+                raise ValueError(f"Message missing 'content': {res['choices'][0]['message']}")
+                
+            return res["choices"][0]["message"]["content"]
+        
+        except Exception as err:
+            self._last_error = f"VeniceAI processing error: {str(err)}"
+            _LOGGER.error(self._last_error)
+            # Log stack trace for unexpected errors
+            _LOGGER.exception("Unexpected error in VeniceAI API call:")
+            return None    

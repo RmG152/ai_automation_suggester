@@ -127,6 +127,18 @@
           "max_output_tokens": "Màxim de tokens de sortida"
         }
       },
+      "codestral": {
+        "title": "Configurar Codestral",
+        "data": {
+          "codestral_api_key": "Clau API de Codestral",
+          "codestral_model": "Model de Codestral",
+          "codestral_temperature": "Temperatura",
+          "codestral_completion_endpoint": "URL de l'Endpoint de Completat",
+          "codestral_chat_endpoint": "URL de l'Endpoint de Xat",
+          "max_input_tokens": "Màxim de tokens d'entrada",
+          "max_output_tokens": "Màxim de tokens de sortida"
+        }
+      },
       "generic_openai": {
         "title": "Configurar OpenAI Genèric",
         "data": {
@@ -136,6 +148,16 @@
           "generic_openai_temperature": "Temperatura",
           "generic_openai_validation_endpoint": "URL de validació (hauria d'acabar amb 'models')",
           "generic_openai_enable_validation": "Activar Validació",
+          "max_input_tokens": "Màxim de tokens d'entrada",
+          "max_output_tokens": "Màxim de tokens de sortida"
+        }
+      },
+      "veniceai": {
+        "title": "Configurar Venice AI",
+        "data": {
+          "veniceai_api_key": "Clau API de Venice AI",
+          "veniceai_model": "Model de Venice AI",
+          "veniceai_temperature": "Temperatura",
           "max_input_tokens": "Màxim de tokens d'entrada",
           "max_output_tokens": "Màxim de tokens de sortida"
         }
@@ -203,6 +225,12 @@
           "generic_openai_temperature": "Temperatura (OpenAI Genèric)",
           "generic_openai_validation_endpoint": "URL de validació (OpenAI Genèric, hauria d'acabar amb 'models')",
           "generic_openai_enable_validation": "Activar Validació (OpenAI Genèric)",
+          "codestral_api_key": "Clau API de Codestral",
+          "codestral_model": "Model de Codestral",
+          "codestral_temperature": "Temperatura (Codestral)",
+          "veniceai_api_key": "Clau API de Venice AI",
+          "veniceai_model": "Model de Venice AI",
+          "veniceai_temperature": "Temperatura (Venice AI)",
           "max_input_tokens": "Màxim de tokens d'entrada",
           "max_output_tokens": "Màxim de tokens de sortida"
         },

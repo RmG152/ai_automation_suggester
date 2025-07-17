@@ -160,6 +160,8 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     "OpenRouter": self.async_step_openrouter,
                     "OpenAI Azure": self.async_step_openai_azure,
                     "Generic OpenAI": self.async_step_generic_openai,
+                    "Codestral": self.async_step_codestral,
+                    "Venice AI": self.async_step_veniceai,
                 }[self.provider]()
 
         return self.async_show_form(
@@ -170,6 +172,7 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         [
                             "Anthropic",
                             "Custom OpenAI",
+                            "Codestral",
                             "Generic OpenAI",
                             "Google",
                             "Groq",
@@ -180,6 +183,8 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                             "OpenAI",
                             "OpenRouter",
                             "Perplexity AI",
+                            "Venice AI",
+                            
                         ]
                     )
                 }
@@ -391,6 +396,21 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self._add_token_fields(schema)
         return self.async_show_form(step_id="mistral", data_schema=vol.Schema(schema))
 
+    async def async_step_codestral(self, user_input=None):
+        if user_input:
+            self.data.update(user_input)
+            return self.async_create_entry(title="AI Automation Suggester (Codestral)", data=self.data)
+
+        schema = {
+            vol.Required(CONF_CODESTRAL_API_KEY): TextSelector(TextSelectorConfig(type="password")),
+            vol.Optional(CONF_CODESTRAL_MODEL, default=DEFAULT_MODELS["Codestral"]): str,
+            vol.Optional(CONF_CODESTRAL_TEMPERATURE, default=DEFAULT_TEMPERATURE): vol.All(
+                vol.Coerce(float), vol.Range(min=0.0, max=2.0)
+            ),
+        }
+        self._add_token_fields(schema)
+        return self.async_show_form(step_id="codestral", data_schema=vol.Schema(schema))
+
     async def async_step_perplexity(self, user_input=None):
         async def _v(ui):
             return await self.validator.validate_perplexity(
@@ -498,6 +518,22 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             user_input,
         )
 
+    async def async_step_veniceai(self, user_input=None):
+        schema = {
+            vol.Required(CONF_VENICEAI_API_KEY): TextSelector(TextSelectorConfig(type="password")),
+            vol.Optional(CONF_VENICEAI_MODEL, default=DEFAULT_MODELS["Venice AI"]): str,
+            vol.Optional(CONF_VENICEAI_TEMPERATURE, default=DEFAULT_TEMPERATURE): vol.All(vol.Coerce(float), vol.Range(min=0.0, max=2.0)),
+        }
+        self._add_token_fields(schema)
+        return await self._provider_form(
+            "veniceai",
+            vol.Schema(schema),
+            _v,
+            "AI Automation Suggester (Venice AI)",
+            {},
+            {},
+            user_input,
+        )
     # ───────── Options flow (edit after setup) ─────────
     @staticmethod
     @callback
@@ -605,5 +641,15 @@ class AIAutomationOptionsFlowHandler(config_entries.OptionsFlow):
             schema[vol.Optional(CONF_GENERIC_OPENAI_TEMPERATURE, default=self._get_option(CONF_GENERIC_OPENAI_TEMPERATURE, DEFAULT_TEMPERATURE))] = vol.All(vol.Coerce(float), vol.Range(min=0.0, max=2.0))
             schema[vol.Optional(CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT, default=self._get_option(CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT, ""))] = str
             schema[vol.Optional(CONF_GENERIC_OPENAI_ENABLE_VALIDATION, default=self._get_option(CONF_GENERIC_OPENAI_ENABLE_VALIDATION, False))] = bool
-
+        elif provider == "Codestral":
+            schema[vol.Optional(CONF_CODESTRAL_API_KEY, default=self._get_option(CONF_CODESTRAL_API_KEY))] = TextSelector(TextSelectorConfig(type="password"))
+            schema[vol.Optional(CONF_CODESTRAL_MODEL, default=self._get_option(CONF_CODESTRAL_MODEL, DEFAULT_MODELS["Codestral"]))] = str
+            schema[vol.Optional(CONF_CODESTRAL_TEMPERATURE, default=self._get_option(CONF_CODESTRAL_TEMPERATURE, DEFAULT_TEMPERATURE))] = vol.All(vol.Coerce(float), vol.Range(min=0.0, max=2.0))
+        elif provider == "Venice AI"
+            schema[vol.Optional(CONF_VENICEAI_API_KEY, default=self._get_option(CONF_VENICEAI_API_KEY))] = TextSelector(TextSelectorConfig(type="password"))
+            schema[vol.Optional(CONF_VENICEAI_MODEL, default=self._get_option(CONF_VENICEAI_MODEL, DEFAULT_MODELS["Venice AI"]))] = str
+            schema[vol.Optional(CONF_VENICEAI_TEMPERATURE, default=self._get_option(CONF_VENICEAI_TEMPERATURE, DEFAULT_TEMPERATURE))] = vol.All(
+                vol.Coerce(float), vol.Range(min=0.0, max=2.0)
+            )
+      
         return self.async_show_form(step_id="init", data_schema=vol.Schema(schema))

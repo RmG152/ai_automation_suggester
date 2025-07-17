@@ -139,6 +139,26 @@
           "max_input_tokens": "Max Input Tokens",
           "max_output_tokens": "Max Output Tokens"
         }
+      },
+      "codestral": {
+        "title": "Configure Codestral",
+        "data": {
+          "codestral_api_key": "Codestral API Key",
+          "codestral_model": "Codestral Model",
+          "codestral_temperature": "Temperature",
+          "max_input_tokens": "Max Input Tokens",
+          "max_output_tokens": "Max Output Tokens"
+        }
+      },
+      "veniceai": {
+        "title": "Configure Venice AI",
+        "data": {
+          "veniceai_api_key": "Venice AI API Key",
+          "veniceai_model": "Venice AI Model",
+          "veniceai_temperature": "Temperature",
+          "max_input_tokens": "Max Input Tokens",
+          "max_output_tokens": "Max Output Tokens"
+        }
       }
     },
     "error": {
@@ -203,6 +223,12 @@
           "generic_openai_temperature": "Temperature (Generic OpenAI)",
           "generic_openai_validation_endpoint": "Validation URL (Generic OpenAI, should end with 'models')",
           "generic_openai_enable_validation": "Enable Validation (Generic OpenAI)",
+          "codestral_api_key": "Codestral API Key",
+          "codestral_model": "Codestral Model",
+          "codestral_temperature": "Temperature (Codestral)",
+          "veniceai_api_key": "Venice AI API Key",
+          "veniceai_model": "Venice AI Model",
+          "veniceai_temperature": "Temperature (Venice AI)",
           "max_input_tokens": "Max Input Tokens",
           "max_output_tokens": "Max Output Tokens"
         },

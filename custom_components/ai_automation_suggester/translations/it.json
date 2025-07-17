@@ -127,6 +127,18 @@
           "max_output_tokens": "Numero massimo di token di output"
         }
       },
+      "codestral": {
+        "title": "Configura Codestral",
+        "data": {
+          "codestral_api_key": "Chiave API Codestral",
+          "codestral_model": "Modello Codestral",
+          "codestral_temperature": "Temperatura",
+          "codestral_completion_endpoint": "URL Endpoint Completamento",
+          "codestral_chat_endpoint": "URL Endpoint Chat",
+          "max_input_tokens": "Numero massimo di token di input",
+          "max_output_tokens": "Numero massimo di token di output"
+        }
+      },
       "generic_openai": {
         "title": "Configura OpenAI Generico",
         "data": {
@@ -204,7 +216,13 @@
           "generic_openai_validation_endpoint": "URL di validazione (OpenAI Generico, deve terminare con 'models')",
           "generic_openai_enable_validation": "Abilita Validazione (OpenAI Generico)",
           "max_input_tokens": "Numero massimo di token di input",
-          "max_output_tokens": "Numero massimo di token di output"
+          "max_output_tokens": "Numero massimo di token di output",
+          "codestral_api_key": "Chiave API Codestral",
+          "codestral_model": "Modello Codestral",
+          "codestral_temperature": "Temperatura (Codestral)",
+          "veniceai_api_key": "Chiave API VeniceAI",
+          "veniceai_model": "Modello VeniceAI",
+          "veniceai_temperature": "Temperatura (VeniceAI)"
         },
         "description": "Regola le impostazioni per i tuoi provider di IA. Verranno utilizzati i campi pertinenti al provider configurato. Le impostazioni comuni, come i limiti dei token, sono configurate per ciascun provider."
       }

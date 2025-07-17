@@ -111,6 +111,17 @@ CONF_GENERIC_OPENAI_TEMPERATURE = "generic_openai_temperature"
 CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT = "generic_openai_validation_endpoint"
 CONF_GENERIC_OPENAI_ENABLE_VALIDATION = "generic_openai_enable_validation"
 
+# Codestral
+CONF_CODESTRAL_API_KEY = "codestral_api_key"
+CONF_CODESTRAL_MODEL = "codestral_model"
+CONF_CODESTRAL_TEMPERATURE = "codestral_temperature"
+
+# Venice AI
+CONF_VENICEAI_API_KEY = "veniceai_api_key"
+CONF_VENICEAI_MODEL = "veniceai_model"
+CONF_VENICEAI_TEMPERATURE = "veniceai_temperature"
+
+
 # ─────────────────────────────────────────────────────────────
 # Model defaults per provider
 # ─────────────────────────────────────────────────────────────
@@ -127,6 +138,7 @@ DEFAULT_MODELS = {
     "Perplexity AI": "sonar",
     "OpenRouter": "meta-llama/llama-4-maverick:free",
     "Generic OpenAI": "gpt-3.5-turbo",
+    "Codestral": "codestral-medium",
 }
 
 # ─────────────────────────────────────────────────────────────
@@ -157,6 +169,8 @@ ENDPOINT_OLLAMA = "{protocol}://{ip_address}:{port}/api/chat"
 ENDPOINT_MISTRAL = "https://api.mistral.ai/v1/chat/completions"
 ENDPOINT_PERPLEXITY = "https://api.perplexity.ai/chat/completions"
 ENDPOINT_OPENROUTER = "https://openrouter.ai/api/v1/chat/completions"
+ENDPOINT_CODESTRAL = "https://codestral.mistral.ai/v1/chat/completions"
+ENDPOINT_VENICEAI = "https://api.venice.ai/api/v1/chat/completions"
 
 
 # ─────────────────────────────────────────────────────────────

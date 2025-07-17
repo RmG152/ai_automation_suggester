@@ -127,7 +127,19 @@
           "max_output_tokens": "Maximale Ausgabe-Tokens"
         }
       },
-      "generic_openai": {
+      "codestral": {
+        "title": "Codestral konfigurieren",
+        "data": {
+          "codestral_api_key": "Codestral API-Schlüssel",
+          "codestral_model": "Codestral-Modell",
+          "codestral_temperature": "Temperatur",
+          "codestral_completion_endpoint": "Abschluss-Endpunkt-URL",
+          "codestral_chat_endpoint": "Chat-Endpunkt-URL",
+          "max_input_tokens": "Maximale Eingabe-Tokens",
+          "max_output_tokens": "Maximale Ausgabe-Tokens"
+        }
+      },
+      "generic_openai": {      
         "title": "Generisches OpenAI konfigurieren",
         "data": {
           "generic_openai_api_endpoint": "Vollständige API-URL für generisches OpenAI (sollte auf 'completions' enden)",
@@ -136,6 +148,16 @@
           "generic_openai_temperature": "Temperatur",
           "generic_openai_validation_endpoint": "Validierungs-URL (sollte auf 'models' enden)",
           "generic_openai_enable_validation": "Validierung aktivieren",
+          "max_input_tokens": "Maximale Eingabe-Tokens",
+          "max_output_tokens": "Maximale Ausgabe-Tokens"
+        }
+      },
+      "veniceai": {
+        "title": "Venice AI konfigurieren",
+        "data": {
+          "venice_api_key": "Venice API-Schlüssel",
+          "venice_model": "Venice-Modell",
+          "venice_temperature": "Temperatur",
           "max_input_tokens": "Maximale Eingabe-Tokens",
           "max_output_tokens": "Maximale Ausgabe-Tokens"
         }
@@ -204,7 +226,13 @@
           "generic_openai_validation_endpoint": "Validierungs-URL (Generisches OpenAI, sollte auf 'models' enden)",
           "generic_openai_enable_validation": "Validierung aktivieren (Generisches OpenAI)",
           "max_input_tokens": "Maximale Eingabe-Tokens",
-          "max_output_tokens": "Maximale Ausgabe-Tokens"
+          "max_output_tokens": "Maximale Ausgabe-Tokens",
+          "codestral_api_key": "Codestral API-Schlüssel",
+          "codestral_model": "Codestral-Modell",
+          "codestral_temperature": "Temperatur (Codestral)",
+          "venice_api_key": "Venice API-Schlüssel",
+          "venice_model": "Venice-Modell",
+          "venice_temperature": "Temperatur (Venice AI)"
         },
         "description": "Passen Sie die Einstellungen für Ihre KI-Anbieter an. Es werden nur die für den konfigurierten Anbieter relevanten Felder verwendet. Allgemeine Einstellungen wie Token-Limits werden pro Anbieter festgelegt."
       }

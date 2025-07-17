@@ -71,6 +71,8 @@ PROVIDER_TO_MODEL_KEY_MAP: dict[str, str] = {
     "OpenRouter": CONF_OPENROUTER_MODEL,
     "OpenAI Azure": CONF_OPENAI_AZURE_DEPLOYMENT_ID,
     "Generic OpenAI": CONF_GENERIC_OPENAI_MODEL,
+    "Codestral": CONF_CODESTRAL_MODEL,
+    "Venice AI": CONF_VENICEAI_MODEL,
 }
 
 SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
