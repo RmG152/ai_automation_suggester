@@ -33,19 +33,8 @@ from .const import (
     DEFAULT_MAX_INPUT_TOKENS,
     CONF_MAX_OUTPUT_TOKENS,
     DEFAULT_MAX_OUTPUT_TOKENS,
-    # Model configuration keys (used to display current model)
-    CONF_OPENAI_MODEL,
-    CONF_ANTHROPIC_MODEL,
-    CONF_GOOGLE_MODEL,
-    CONF_GROQ_MODEL,
-    CONF_LOCALAI_MODEL,
-    CONF_OLLAMA_MODEL,
-    CONF_CUSTOM_OPENAI_MODEL,
-    CONF_MISTRAL_MODEL,
-    CONF_PERPLEXITY_MODEL,
-    CONF_OPENROUTER_MODEL,
+    CONF_MODEL,
     CONF_OPENAI_AZURE_DEPLOYMENT_ID,
-    CONF_GENERIC_OPENAI_MODEL,
     DEFAULT_MODELS,
     # Sensor Keys from const.py
     SENSOR_KEY_SUGGESTIONS,
@@ -57,21 +46,6 @@ from .const import (
 )
 
 _LOGGER = logging.getLogger(__name__)
-
-PROVIDER_TO_MODEL_KEY_MAP: dict[str, str] = {
-    "OpenAI": CONF_OPENAI_MODEL,
-    "Anthropic": CONF_ANTHROPIC_MODEL,
-    "Google": CONF_GOOGLE_MODEL,
-    "Groq": CONF_GROQ_MODEL,
-    "LocalAI": CONF_LOCALAI_MODEL,
-    "Ollama": CONF_OLLAMA_MODEL,
-    "Custom OpenAI": CONF_CUSTOM_OPENAI_MODEL,
-    "Mistral AI": CONF_MISTRAL_MODEL,
-    "Perplexity AI": CONF_PERPLEXITY_MODEL,
-    "OpenRouter": CONF_OPENROUTER_MODEL,
-    "OpenAI Azure": CONF_OPENAI_AZURE_DEPLOYMENT_ID,
-    "Generic OpenAI": CONF_GENERIC_OPENAI_MODEL,
-}
 
 SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
     SensorEntityDescription(
@@ -375,16 +349,15 @@ class AIModelSensor(AIBaseSensor):
             self._attr_native_value = STATE_UNKNOWN
             return
 
-        model_key = PROVIDER_TO_MODEL_KEY_MAP.get(provider)
-        if not model_key:
-            self._attr_native_value = "Unknown Model Key"
-            _LOGGER.warning("No model key found for provider: %s", provider)
-            return
+        if provider == "OpenAI Azure":
+            model_key = CONF_OPENAI_AZURE_DEPLOYMENT_ID
+        else:
+            model_key = CONF_MODEL
 
         self._attr_native_value = self._entry.options.get(
             model_key,
             self._entry.data.get(model_key, DEFAULT_MODELS.get(provider, "unknown"))
-        ) if model_key else "unknown"
+        )
 
 # ─────────────────────────────────────────────────────────────
 # Last Error sensor

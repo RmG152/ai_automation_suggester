@@ -9,45 +9,23 @@
         }
       },
       "openai": {
-        "title": "Configure OpenAI",
-        "data": {
-          "openai_api_key": "OpenAI API Key",
-          "openai_model": "OpenAI Model",
-          "openai_temperature": "Temperature"
-        }
+        "title": "Configure OpenAI"
       },
       "anthropic": {
-        "title": "Configure Anthropic",
-        "data": {
-          "anthropic_api_key": "Anthropic API Key",
-          "anthropic_model": "Anthropic Model",
-          "anthropic_temperature": "Temperature"
-        }
+        "title": "Configure Anthropic"
       },
       "google": {
-        "title": "Configure Google",
-        "data": {
-          "google_api_key": "Google API Key",
-          "google_model": "Google Model",
-          "google_temperature": "Temperature"
-        }
+        "title": "Configure Google"
       },
       "groq": {
-        "title": "Configure Groq",
-        "data": {
-          "groq_api_key": "Groq API Key",
-          "groq_model": "Groq Model",
-          "groq_temperature": "Temperature"
-        }
+        "title": "Configure Groq"
       },
       "localai": {
         "title": "Configure LocalAI",
         "data": {
           "localai_ip": "LocalAI IP Address",
           "localai_port": "LocalAI Port",
-          "localai_https": "Use HTTPS for LocalAI",
-          "localai_model": "LocalAI Model",
-          "localai_temperature": "Temperature"
+          "localai_https": "Use HTTPS for LocalAI"
         }
       },
       "ollama": {
@@ -56,8 +34,6 @@
           "ollama_ip": "Ollama IP Address",
           "ollama_port": "Ollama Port",
           "ollama_https": "Use HTTPS for Ollama",
-          "ollama_model": "Ollama Model",
-          "ollama_temperature": "Temperature",
           "ollama_disable_think": "Disable Think Mode (Ollama)"
         }
       },
@@ -65,44 +41,27 @@
         "title": "Configure Custom OpenAI",
         "data": {
           "custom_openai_endpoint": "Custom OpenAI Endpoint",
-          "custom_openai_api_key": "Custom OpenAI API Key (Optional)",
-          "custom_openai_model": "Custom OpenAI Model",
-          "custom_openai_temperature": "Temperature"
+          "custom_openai_api_key": "Custom OpenAI API Key (Optional)"
         }
       },
       "mistral": {
-        "title": "Configure Mistral AI",
-        "data": {
-          "mistral_api_key": "Mistral API Key",
-          "mistral_model": "Mistral Model",
-          "mistral_temperature": "Temperature"
-        }
+        "title": "Configure Mistral AI"
       },
       "perplexity": {
-        "title": "Configure Perplexity AI",
-        "data": {
-          "perplexity_api_key": "Perplexity API Key",
-          "perplexity_model": "Perplexity Model",
-          "perplexity_temperature": "Temperature"
-        }
+        "title": "Configure Perplexity AI"
       },
       "openrouter": {
         "title": "Configure OpenRouter",
         "data": {
-          "openrouter_api_key": "OpenRouter API Key",
-          "openrouter_model": "OpenRouter Model",
-          "openrouter_reasoning_max_tokens": "OpenRouter Reasoning Max Tokens",
-          "openrouter_temperature": "Temperature"
+          "openrouter_reasoning_max_tokens": "OpenRouter Reasoning Max Tokens"
         }
       },
       "openai_azure": {
         "title": "Configure OpenAI Azure",
         "data": {
-          "openai_azure_api_key": "Azure OpenAI API Key",
           "openai_azure_deployment_id": "Azure Deployment ID",
           "openai_azure_endpoint": "Azure Endpoint",
-          "openai_azure_api_version": "Azure API Version",
-          "openai_azure_temperature": "Temperature"
+          "openai_azure_api_version": "Azure API Version"
         }
       },
       "generic_openai": {
@@ -110,8 +69,6 @@
         "data": {
           "generic_openai_api_endpoint": "Generic OpenAI API Full URL (should end with 'completions')",
           "generic_openai_api_key": "Generic OpenAI API Key (Optional)",
-          "generic_openai_model": "Generic OpenAI Model",
-          "generic_openai_temperature": "Temperature",
           "generic_openai_validation_endpoint": "Validation URL (should end with 'models')",
           "generic_openai_enable_validation": "Enable Validation"
         }
@@ -119,6 +76,9 @@
       "common": {
         "title": "Configure Common Settings",
         "data": {
+          "api_key": "API Key",
+          "model": "Model",
+          "temperature": "Temperature",
           "max_input_tokens": "Max Input Tokens",
           "max_output_tokens": "Max Output Tokens"
         }
