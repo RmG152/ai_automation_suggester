@@ -13,9 +13,7 @@
         "data": {
           "openai_api_key": "Clave API de OpenAI",
           "openai_model": "Modelo de OpenAI",
-          "openai_temperature": "Temperatura",
-          "max_input_tokens": "Máximo de tokens de entrada",
-          "max_output_tokens": "Máximo de tokens de salida"
+          "openai_temperature": "Temperatura"
         }
       },
       "anthropic": {
@@ -23,9 +21,7 @@
         "data": {
           "anthropic_api_key": "Clave API de Anthropic",
           "anthropic_model": "Modelo de Anthropic",
-          "anthropic_temperature": "Temperatura",
-          "max_input_tokens": "Máximo de tokens de entrada",
-          "max_output_tokens": "Máximo de tokens de salida"
+          "anthropic_temperature": "Temperatura"
         }
       },
       "google": {
@@ -33,9 +29,7 @@
         "data": {
           "google_api_key": "Clave API de Google",
           "google_model": "Modelo de Google",
-          "google_temperature": "Temperatura",
-          "max_input_tokens": "Máximo de tokens de entrada",
-          "max_output_tokens": "Máximo de tokens de salida"
+          "google_temperature": "Temperatura"
         }
       },
       "groq": {
@@ -43,9 +37,7 @@
         "data": {
           "groq_api_key": "Clave API de Groq",
           "groq_model": "Modelo de Groq",
-          "groq_temperature": "Temperatura",
-          "max_input_tokens": "Máximo de tokens de entrada",
-          "max_output_tokens": "Máximo de tokens de salida"
+          "groq_temperature": "Temperatura"
         }
       },
       "localai": {
@@ -55,9 +47,7 @@
           "localai_port": "Puerto de LocalAI",
           "localai_https": "Usar HTTPS para LocalAI",
           "localai_model": "Modelo de LocalAI",
-          "localai_temperature": "Temperatura",
-          "max_input_tokens": "Máximo de tokens de entrada",
-          "max_output_tokens": "Máximo de tokens de salida"
+          "localai_temperature": "Temperatura"
         }
       },
       "ollama": {
@@ -68,9 +58,7 @@
           "ollama_https": "Usar HTTPS para Ollama",
           "ollama_model": "Modelo de Ollama",
           "ollama_temperature": "Temperatura",
-          "ollama_disable_think": "Desactivar Modo de Pensamiento (Ollama)",
-          "max_input_tokens": "Máximo de tokens de entrada",
-          "max_output_tokens": "Máximo de tokens de salida"
+          "ollama_disable_think": "Desactivar Modo de Pensamiento (Ollama)"
         }
       },
       "custom_openai": {
@@ -79,9 +67,7 @@
           "custom_openai_endpoint": "URL de la API de OpenAI Personalizada",
           "custom_openai_api_key": "Clave API de OpenAI Personalizada (Opcional)",
           "custom_openai_model": "Modelo de OpenAI Personalizado",
-          "custom_openai_temperature": "Temperatura",
-          "max_input_tokens": "Máximo de tokens de entrada",
-          "max_output_tokens": "Máximo de tokens de salida"
+          "custom_openai_temperature": "Temperatura"
         }
       },
       "mistral": {
@@ -89,9 +75,7 @@
         "data": {
           "mistral_api_key": "Clave API de Mistral",
           "mistral_model": "Modelo de Mistral",
-          "mistral_temperature": "Temperatura",
-          "max_input_tokens": "Máximo de tokens de entrada",
-          "max_output_tokens": "Máximo de tokens de salida"
+          "mistral_temperature": "Temperatura"
         }
       },
       "perplexity": {
@@ -99,9 +83,7 @@
         "data": {
           "perplexity_api_key": "Clave API de Perplexity",
           "perplexity_model": "Modelo de Perplexity",
-          "perplexity_temperature": "Temperatura",
-          "max_input_tokens": "Máximo de tokens de entrada",
-          "max_output_tokens": "Máximo de tokens de salida"
+          "perplexity_temperature": "Temperatura"
         }
       },
       "openrouter": {
@@ -110,9 +92,7 @@
           "openrouter_api_key": "Clave API de OpenRouter",
           "openrouter_model": "Modelo de OpenRouter",
           "openrouter_reasoning_max_tokens": "Máximo de tokens de razonamiento de OpenRouter",
-          "openrouter_temperature": "Temperatura",
-          "max_input_tokens": "Máximo de tokens de entrada",
-          "max_output_tokens": "Máximo de tokens de salida"
+          "openrouter_temperature": "Temperatura"
         }
       },
       "openai_azure": {
@@ -122,9 +102,7 @@
           "openai_azure_deployment_id": "ID de Despliegue de Azure",
           "openai_azure_endpoint": "URL de la API de Azure",
           "openai_azure_api_version": "Versión de la API de Azure",
-          "openai_azure_temperature": "Temperatura",
-          "max_input_tokens": "Máximo de tokens de entrada",
-          "max_output_tokens": "Máximo de tokens de salida"
+          "openai_azure_temperature": "Temperatura"
         }
       },
       "generic_openai": {
@@ -135,7 +113,12 @@
           "generic_openai_model": "Modelo de OpenAI Genérico",
           "generic_openai_temperature": "Temperatura",
           "generic_openai_validation_endpoint": "URL de validación (debe terminar en 'models')",
-          "generic_openai_enable_validation": "Habilitar Validación",
+          "generic_openai_enable_validation": "Habilitar Validación"
+        }
+      },
+      "common": {
+        "title": "Configurar ajustes comunes",
+        "data": {
           "max_input_tokens": "Máximo de tokens de entrada",
           "max_output_tokens": "Máximo de tokens de salida"
         }
