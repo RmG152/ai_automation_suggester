@@ -96,32 +96,32 @@
   "options": {
     "step": {
       "init": {
-        "title": "AI Automation Suggester Options",
+        "title": "Optionen für den KI-Automatisierungsvorschlag",
         "data": {
-          "api_key": "API Key",
-          "model": "Model",
-          "temperature": "Temperature",
-          "max_input_tokens": "Max Input Tokens",
-          "max_output_tokens": "Max Output Tokens",
-          "localai_ip": "LocalAI IP Address",
-          "localai_port": "LocalAI Port",
-          "localai_https": "Use HTTPS for LocalAI",
-          "ollama_ip": "Ollama IP Address",
-          "ollama_port": "Ollama Port",
-          "ollama_https": "Use HTTPS for Ollama",
-          "ollama_disable_think": "Disable Think Mode (Ollama)",
-          "custom_openai_endpoint": "Custom OpenAI Endpoint",
-          "custom_openai_api_key": "Custom OpenAI API Key",
+          "api_key": "API-Schlüssel",
+          "model": "Modell",
+          "temperature": "Temperatur",
+          "max_input_tokens": "Maximale Eingabe-Tokens",
+          "max_output_tokens": "Maximale Ausgabe-Tokens",
+          "localai_ip": "LocalAI IP-Adresse",
+          "localai_port": "LocalAI-Port",
+          "localai_https": "HTTPS für LocalAI verwenden",
+          "ollama_ip": "Ollama IP-Adresse",
+          "ollama_port": "Ollama-Port",
+          "ollama_https": "HTTPS für Ollama verwenden",
+          "ollama_disable_think": "Denkmodus deaktivieren (Ollama)",
+          "custom_openai_endpoint": "Benutzerdefinierter OpenAI-Endpunkt",
+          "custom_openai_api_key": "Benutzerdefinierter OpenAI-API-Schlüssel",
           "openrouter_reasoning_max_tokens": "OpenRouter Reasoning Max Tokens",
-          "openai_azure_deployment_id": "Azure Deployment ID",
-          "openai_azure_endpoint": "Azure Endpoint",
-          "openai_azure_api_version": "Azure API Version",
-          "generic_openai_api_endpoint": "Generic OpenAI API Full URL (should end with 'completions')",
-          "generic_openai_api_key": "Generic OpenAI API Key",
-          "generic_openai_validation_endpoint": "Validation URL (Generic OpenAI, should end with 'models')",
-          "generic_openai_enable_validation": "Enable Validation (Generic OpenAI)"
+          "openai_azure_deployment_id": "Azure-Bereitstellungs-ID",
+          "openai_azure_endpoint": "Azure-Endpunkt",
+          "openai_azure_api_version": "Azure-API-Version",
+          "generic_openai_api_endpoint": "Generische OpenAI-API-Voll-URL (sollte mit 'completions' enden)",
+          "generic_openai_api_key": "Generischer OpenAI-API-Schlüssel",
+          "generic_openai_validation_endpoint": "Validierungs-URL (Generisches OpenAI, sollte mit 'models' enden)",
+          "generic_openai_enable_validation": "Validierung aktivieren (Generisches OpenAI)"
         },
-        "description": "Adjust settings for your AI providers. Fields relevant to your configured provider will be used. Common settings like token limits are configured per provider."
+        "description": "Passen Sie die Einstellungen für Ihre KI-Anbieter an. Es werden die für Ihren konfigurierten Anbieter relevanten Felder verwendet. Allgemeine Einstellungen wie Token-Limits werden pro Anbieter konfiguriert."
       }
     },
     "error": {

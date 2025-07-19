@@ -96,32 +96,32 @@
   "options": {
     "step": {
       "init": {
-        "title": "AI Automation Suggester Options",
+        "title": "Opcions del Suggeridor d'Automatitzacions amb IA",
         "data": {
-          "api_key": "API Key",
+          "api_key": "Clau API",
           "model": "Model",
-          "temperature": "Temperature",
-          "max_input_tokens": "Max Input Tokens",
-          "max_output_tokens": "Max Output Tokens",
-          "localai_ip": "LocalAI IP Address",
-          "localai_port": "LocalAI Port",
-          "localai_https": "Use HTTPS for LocalAI",
-          "ollama_ip": "Ollama IP Address",
-          "ollama_port": "Ollama Port",
-          "ollama_https": "Use HTTPS for Ollama",
-          "ollama_disable_think": "Disable Think Mode (Ollama)",
-          "custom_openai_endpoint": "Custom OpenAI Endpoint",
-          "custom_openai_api_key": "Custom OpenAI API Key",
-          "openrouter_reasoning_max_tokens": "OpenRouter Reasoning Max Tokens",
-          "openai_azure_deployment_id": "Azure Deployment ID",
-          "openai_azure_endpoint": "Azure Endpoint",
-          "openai_azure_api_version": "Azure API Version",
-          "generic_openai_api_endpoint": "Generic OpenAI API Full URL (should end with 'completions')",
-          "generic_openai_api_key": "Generic OpenAI API Key",
-          "generic_openai_validation_endpoint": "Validation URL (Generic OpenAI, should end with 'models')",
-          "generic_openai_enable_validation": "Enable Validation (Generic OpenAI)"
+          "temperature": "Temperatura",
+          "max_input_tokens": "Màxim de fitxes d'entrada",
+          "max_output_tokens": "Màxim de fitxes de sortida",
+          "localai_ip": "Adreça IP de LocalAI",
+          "localai_port": "Port de LocalAI",
+          "localai_https": "Utilitzar HTTPS per a LocalAI",
+          "ollama_ip": "Adreça IP de Ollama",
+          "ollama_port": "Port de Ollama",
+          "ollama_https": "Utilitzar HTTPS per a Ollama",
+          "ollama_disable_think": "Desactivar el Mode de Pensament (Ollama)",
+          "custom_openai_endpoint": "URL de l'API d'OpenAI Personalitzada",
+          "custom_openai_api_key": "Clau API d'OpenAI Personalitzada",
+          "openrouter_reasoning_max_tokens": "Màxim de fitxes de raonament d'OpenRouter",
+          "openai_azure_deployment_id": "ID de Desplegament d'Azure",
+          "openai_azure_endpoint": "URL de l'API d'Azure",
+          "openai_azure_api_version": "Versió de l'API d'Azure",
+          "generic_openai_api_endpoint": "URL completa de l'API d'OpenAI genèrica (ha d'acabar en 'completions')",
+          "generic_openai_api_key": "Clau API d'OpenAI Genèric",
+          "generic_openai_validation_endpoint": "URL de validació (OpenAI Genèric, ha d'acabar en 'models')",
+          "generic_openai_enable_validation": "Habilitar Validació (OpenAI Genèric)"
         },
-        "description": "Adjust settings for your AI providers. Fields relevant to your configured provider will be used. Common settings like token limits are configured per provider."
+        "description": "Ajusta la configuració dels teus proveïdors d'IA. S'utilitzaran els camps rellevants per al proveïdor que hagis configurat. Els ajustos comuns, com els límits de fitxes, es configuren per a cada proveïdor."
       }
     },
     "error": {

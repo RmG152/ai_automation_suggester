@@ -96,32 +96,32 @@
   "options": {
     "step": {
       "init": {
-        "title": "AI Automation Suggester Options",
+        "title": "Opzioni del Suggeritore di Automazioni AI",
         "data": {
-          "api_key": "API Key",
-          "model": "Model",
-          "temperature": "Temperature",
-          "max_input_tokens": "Max Input Tokens",
-          "max_output_tokens": "Max Output Tokens",
-          "localai_ip": "LocalAI IP Address",
-          "localai_port": "LocalAI Port",
-          "localai_https": "Use HTTPS for LocalAI",
-          "ollama_ip": "Ollama IP Address",
-          "ollama_port": "Ollama Port",
-          "ollama_https": "Use HTTPS for Ollama",
-          "ollama_disable_think": "Disable Think Mode (Ollama)",
-          "custom_openai_endpoint": "Custom OpenAI Endpoint",
-          "custom_openai_api_key": "Custom OpenAI API Key",
-          "openrouter_reasoning_max_tokens": "OpenRouter Reasoning Max Tokens",
-          "openai_azure_deployment_id": "Azure Deployment ID",
-          "openai_azure_endpoint": "Azure Endpoint",
-          "openai_azure_api_version": "Azure API Version",
-          "generic_openai_api_endpoint": "Generic OpenAI API Full URL (should end with 'completions')",
-          "generic_openai_api_key": "Generic OpenAI API Key",
-          "generic_openai_validation_endpoint": "Validation URL (Generic OpenAI, should end with 'models')",
-          "generic_openai_enable_validation": "Enable Validation (Generic OpenAI)"
+          "api_key": "Chiave API",
+          "model": "Modello",
+          "temperature": "Temperatura",
+          "max_input_tokens": "Token di input massimi",
+          "max_output_tokens": "Token di output massimi",
+          "localai_ip": "Indirizzo IP di LocalAI",
+          "localai_port": "Porta di LocalAI",
+          "localai_https": "Usa HTTPS per LocalAI",
+          "ollama_ip": "Indirizzo IP di Ollama",
+          "ollama_port": "Porta di Ollama",
+          "ollama_https": "Usa HTTPS per Ollama",
+          "ollama_disable_think": "Disabilita la modalità di pensiero (Ollama)",
+          "custom_openai_endpoint": "Endpoint OpenAI personalizzato",
+          "custom_openai_api_key": "Chiave API OpenAI personalizzata",
+          "openrouter_reasoning_max_tokens": "Token massimi di ragionamento di OpenRouter",
+          "openai_azure_deployment_id": "ID di distribuzione di Azure",
+          "openai_azure_endpoint": "Endpoint di Azure",
+          "openai_azure_api_version": "Versione API di Azure",
+          "generic_openai_api_endpoint": "URL completo dell'API OpenAI generica (deve terminare con 'completions')",
+          "generic_openai_api_key": "Chiave API OpenAI generica",
+          "generic_openai_validation_endpoint": "URL di convalida (OpenAI generico, deve terminare con 'models')",
+          "generic_openai_enable_validation": "Abilita convalida (OpenAI generico)"
         },
-        "description": "Adjust settings for your AI providers. Fields relevant to your configured provider will be used. Common settings like token limits are configured per provider."
+        "description": "Regola le impostazioni per i tuoi provider di intelligenza artificiale. Verranno utilizzati i campi pertinenti al provider configurato. Le impostazioni comuni come i limiti dei token sono configurate per provider."
       }
     },
     "error": {
