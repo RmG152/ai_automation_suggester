@@ -40,8 +40,7 @@
       "custom_openai": {
         "title": "Configure Custom OpenAI",
         "data": {
-          "custom_openai_endpoint": "Custom OpenAI Endpoint",
-          "custom_openai_api_key": "Custom OpenAI API Key (Optional)"
+          "custom_openai_endpoint": "Custom OpenAI Endpoint"
         }
       },
       "mistral": {
@@ -68,7 +67,6 @@
         "title": "Configure Generic OpenAI",
         "data": {
           "generic_openai_api_endpoint": "Generic OpenAI API Full URL (should end with 'completions')",
-          "generic_openai_api_key": "Generic OpenAI API Key (Optional)",
           "generic_openai_validation_endpoint": "Validation URL (should end with 'models')",
           "generic_openai_enable_validation": "Enable Validation"
         }
@@ -84,24 +82,10 @@
         }
       },
       "codestral": {
-        "title": "Configure Codestral",
-        "data": {
-          "codestral_api_key": "Codestral API Key",
-          "codestral_model": "Codestral Model",
-          "codestral_temperature": "Temperature",
-          "max_input_tokens": "Max Input Tokens",
-          "max_output_tokens": "Max Output Tokens"
-        }
+        "title": "Configure Codestral"
       },
       "veniceai": {
-        "title": "Configure Venice AI",
-        "data": {
-          "veniceai_api_key": "Venice AI API Key",
-          "veniceai_model": "Venice AI Model",
-          "veniceai_temperature": "Temperature",
-          "max_input_tokens": "Max Input Tokens",
-          "max_output_tokens": "Max Output Tokens"
-        }
+        "title": "Configure Venice AI"
       }
     },
     "error": {
@@ -131,23 +115,13 @@
           "ollama_https": "Use HTTPS for Ollama",
           "ollama_disable_think": "Disable Think Mode (Ollama)",
           "custom_openai_endpoint": "Custom OpenAI Endpoint",
-          "custom_openai_api_key": "Custom OpenAI API Key",
           "openrouter_reasoning_max_tokens": "OpenRouter Reasoning Max Tokens",
           "openai_azure_deployment_id": "Azure Deployment ID",
           "openai_azure_endpoint": "Azure Endpoint",
           "openai_azure_api_version": "Azure API Version",
           "generic_openai_api_endpoint": "Generic OpenAI API Full URL (should end with 'completions')",
-          "generic_openai_api_key": "Generic OpenAI API Key",
           "generic_openai_validation_endpoint": "Validation URL (Generic OpenAI, should end with 'models')",
-          "generic_openai_enable_validation": "Enable Validation (Generic OpenAI)",
-          "codestral_api_key": "Codestral API Key",
-          "codestral_model": "Codestral Model",
-          "codestral_temperature": "Temperature (Codestral)",
-          "veniceai_api_key": "Venice AI API Key",
-          "veniceai_model": "Venice AI Model",
-          "veniceai_temperature": "Temperature (Venice AI)",
-          "max_input_tokens": "Max Input Tokens",
-          "max_output_tokens": "Max Output Tokens"
+          "generic_openai_enable_validation": "Enable Validation (Generic OpenAI)"
         },
         "description": "Adjust settings for your AI providers. Fields relevant to your configured provider will be used. Common settings like token limits are configured per provider."
       }
@@ -188,6 +162,10 @@
         "automation_limit": {
           "name": "Automation Limit",
           "description": "Maximum number of automations to analyze (default: 100)."
+                },
+        "include_entity_details": {
+          "name": "Include Entity Details",
+          "description": "Include detailed entity information (attributes and device info) in the prompt. Disabling this reduces token usage but provides less context to the AI."
         }
       }
     }
