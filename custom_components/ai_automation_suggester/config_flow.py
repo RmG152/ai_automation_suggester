@@ -10,7 +10,7 @@ from homeassistant import config_entries
 from homeassistant.core import callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.selector import TextSelector, TextSelectorConfig
-
+from homeassistant.config_entries import ConfigSubentryFlow
 from .const import *
 
 _LOGGER = logging.getLogger(__name__)
@@ -130,118 +130,105 @@ class ProviderValidator:
 class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle integration setup via the UI."""
 
-    VERSION = 2
+    VERSION = 3
 
-    def __init__(self) -> None:
+    async def async_step_user(self, user_input: dict[str, Any] | None = None) -> config_entries.ConfigFlowResult:
+        """Handle the initial step."""
+        if self._async_current_entries():
+            return self.async_abort(reason="single_instance_allowed")
+
+        if user_input is not None:
+            return self.async_create_entry(title=INTEGRATION_NAME, data=user_input)
+
+        return self.async_show_form(step_id="user", data_schema=vol.Schema({}))
+
+    @staticmethod
+    @callback
+    def async_get_options_flow(config_entry: config_entries.ConfigEntry) -> config_entries.OptionsFlow:
+        """Get the options flow for this handler."""
+        return AIAutomationOptionsFlowHandler(config_entry)
+
+    @classmethod
+    @callback
+    def async_get_supported_subentry_types(cls) -> dict[str, type[ConfigSubentryFlow]]:
+        """Return subentries supported by this integration."""
+        return {"provider": ProviderSubentryFlow}
+
+class ProviderSubentryFlow(ConfigSubentryFlow):
+    """Handle the provider sub-entry flow for AI Automation Suggester."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.provider: str | None = None
         self.data: Dict[str, Any] = {}
         self.validator: ProviderValidator | None = None
 
-    # ───────── Initial provider choice ─────────
+
     async def async_step_user(self, user_input: Dict[str, Any] | None = None):
+        """First step in the sub-entry flow: select the provider."""
         errors: Dict[str, str] = {}
+
         if user_input:
             self.provider = user_input[CONF_PROVIDER]
             self.data.update(user_input)
 
-            if any(ent.data.get(CONF_PROVIDER) == self.provider for ent in self._async_current_entries()):
-                errors["base"] = "already_configured"
-            else:
-                return await self.async_step_provider_config()
+            # Check if this provider is already configured in another sub-entry.
+            # a new sub-entry is being added, so we need to check all existing sub-entries.
+            if any(
+                sub_entry.data.get(CONF_PROVIDER) == self.provider
+                for sub_entry in self.hass.config_entries.async_get_config_entry(self._parent_config_entry).config_subentries
+            ):
+                return self.async_abort(reason="already_configured")
+
+            return await self.async_step_provider_config()
 
         return self.async_show_form(
             step_id="user",
-            data_schema=vol.Schema(
-                {
-                    vol.Required(CONF_PROVIDER): vol.In(
-                        [
-                            "Anthropic",
-                            "Custom OpenAI",
-                            "Codestral",
-                            "Generic OpenAI",
-                            "Google",
-                            "Groq",
-                            "LocalAI",
-                            "Mistral AI",
-                            "Ollama",
-                            "OpenAI Azure",
-                            "OpenAI",
-                            "OpenRouter",
-                            "Perplexity AI",
-                            "Venice AI",
-                            
-                        ]
-                    )
-                }
-            ),
+            data_schema=vol.Schema({
+                vol.Required(CONF_PROVIDER): vol.In([
+                    "Anthropic", "Custom OpenAI", "Codestral", "Generic OpenAI", "Google",
+                    "Groq", "LocalAI", "Mistral AI", "Ollama", "OpenAI Azure", "OpenAI",
+                    "OpenRouter", "Perplexity AI", "Venice AI",
+                ])
+            }),
             errors=errors,
         )
 
-    # ───────── Common configuration step for all providers ─────────
     async def async_step_provider_config(self, user_input: Dict[str, Any] | None = None):
         """Handle the provider configuration options."""
         errors: Dict[str, str] = {}
         
         if user_input is not None:
-            # Basic validation
             if not user_input.get(CONF_API_KEY) and self.provider not in ["LocalAI", "Ollama"]:
                 errors["base"] = "api_key_required"
             
-            # Initialize validator if needed
             if not self.validator:
                 self.validator = ProviderValidator(self.hass)
                 
-            # Provider-specific validation
             if not errors:
                 error_msg = None
                 try:
                     if self.provider == "OpenAI":
                         error_msg = await self.validator.validate_openai(user_input[CONF_API_KEY])
                     elif self.provider == "Anthropic":
-                        error_msg = await self.validator.validate_anthropic(
-                            user_input[CONF_API_KEY], 
-                            user_input.get(CONF_MODEL, DEFAULT_MODELS["Anthropic"])
-                        )
+                        error_msg = await self.validator.validate_anthropic(user_input[CONF_API_KEY], user_input.get(CONF_MODEL, DEFAULT_MODELS["Anthropic"]))
                     elif self.provider == "Google":
-                        error_msg = await self.validator.validate_google(
-                            user_input[CONF_API_KEY],
-                            user_input.get(CONF_MODEL, DEFAULT_MODELS["Google"])
-                        )
+                        error_msg = await self.validator.validate_google(user_input[CONF_API_KEY], user_input.get(CONF_MODEL, DEFAULT_MODELS["Google"]))
                     elif self.provider == "Groq":
                         error_msg = await self.validator.validate_groq(user_input[CONF_API_KEY])
                     elif self.provider == "LocalAI":
-                        error_msg = await self.validator.validate_localai(
-                            user_input.get(CONF_LOCALAI_IP_ADDRESS, "localhost"),
-                            user_input.get(CONF_LOCALAI_PORT, 8080),
-                            user_input.get(CONF_LOCALAI_HTTPS, False)
-                        )
+                        error_msg = await self.validator.validate_localai(user_input.get(CONF_LOCALAI_IP_ADDRESS, "localhost"), user_input.get(CONF_LOCALAI_PORT, 8080), user_input.get(CONF_LOCALAI_HTTPS, False))
                     elif self.provider == "Ollama":
-                        error_msg = await self.validator.validate_ollama(
-                            user_input.get(CONF_OLLAMA_IP_ADDRESS, "localhost"),
-                            user_input.get(CONF_OLLAMA_PORT, 11434),
-                            user_input.get(CONF_OLLAMA_HTTPS, False)
-                        )
+                        error_msg = await self.validator.validate_ollama(user_input.get(CONF_OLLAMA_IP_ADDRESS, "localhost"), user_input.get(CONF_OLLAMA_PORT, 11434), user_input.get(CONF_OLLAMA_HTTPS, False))
                     elif self.provider == "Custom OpenAI":
-                        error_msg = await self.validator.validate_custom_openai(
-                            user_input.get(CONF_CUSTOM_OPENAI_ENDPOINT, ""),
-                            user_input.get(CONF_API_KEY)
-                        )
+                        error_msg = await self.validator.validate_custom_openai(user_input.get(CONF_CUSTOM_OPENAI_ENDPOINT, ""), user_input.get(CONF_API_KEY))
                     elif self.provider == "Perplexity AI":
-                        error_msg = await self.validator.validate_perplexity(
-                            user_input[CONF_API_KEY],
-                            user_input.get(CONF_MODEL, DEFAULT_MODELS["Perplexity AI"])
-                        )
+                        error_msg = await self.validator.validate_perplexity(user_input[CONF_API_KEY], user_input.get(CONF_MODEL, DEFAULT_MODELS["Perplexity AI"]))
                     elif self.provider == "OpenRouter":
-                        error_msg = await self.validator.validate_openrouter(
-                            user_input[CONF_API_KEY],
-                            user_input.get(CONF_MODEL, DEFAULT_MODELS["OpenRouter"])
-                        )
+                        error_msg = await self.validator.validate_openrouter(user_input[CONF_API_KEY], user_input.get(CONF_MODEL, DEFAULT_MODELS["OpenRouter"]))
                     elif self.provider == "Generic OpenAI":
                         if user_input.get(CONF_GENERIC_OPENAI_ENABLE_VALIDATION):
-                            error_msg = await self.validator.validate_generic_openai(
-                                user_input.get(CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT, ""),
-                                user_input[CONF_API_KEY]
-                            )
+                            error_msg = await self.validator.validate_generic_openai(user_input.get(CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT, ""), user_input[CONF_API_KEY])
 
                     if error_msg:
                         errors["base"] = "auth_error"
@@ -253,25 +240,17 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
             if not errors:
                 self.data.update(user_input)
-                title = f"AI Automation Suggester ({self.provider})"
-                return self.async_create_entry(title=title, data=self.data)
+                title = f"{self.provider}"
+                return self.async_create_subentry(title=title, data=self.data)
 
-        # Build dynamic schema based on provider capabilities
         schema_dict = {
             vol.Required(CONF_API_KEY): TextSelector(TextSelectorConfig(type="password")),
             vol.Optional(CONF_MODEL, default=DEFAULT_MODELS.get(self.provider, "")): str,
-            vol.Optional(CONF_TEMPERATURE, default=DEFAULT_TEMPERATURE): vol.All(
-                vol.Coerce(float), vol.Range(min=0.0, max=2.0)
-            ),
-            vol.Optional(CONF_MAX_INPUT_TOKENS, default=DEFAULT_MAX_INPUT_TOKENS): vol.All(
-                vol.Coerce(int), vol.Range(min=100)
-            ),
-            vol.Optional(CONF_MAX_OUTPUT_TOKENS, default=DEFAULT_MAX_OUTPUT_TOKENS): vol.All(
-                vol.Coerce(int), vol.Range(min=100)
-            ),
+            vol.Optional(CONF_TEMPERATURE, default=DEFAULT_TEMPERATURE): vol.All(vol.Coerce(float), vol.Range(min=0.0, max=2.0)),
+            vol.Optional(CONF_MAX_INPUT_TOKENS, default=DEFAULT_MAX_INPUT_TOKENS): vol.All(vol.Coerce(int), vol.Range(min=100)),
+            vol.Optional(CONF_MAX_OUTPUT_TOKENS, default=DEFAULT_MAX_OUTPUT_TOKENS): vol.All(vol.Coerce(int), vol.Range(min=100)),
         }
 
-        # Add provider-specific fields
         if self.provider == "LocalAI":
             schema_dict.update({
                 vol.Optional(CONF_LOCALAI_HTTPS, default=False): bool,
@@ -302,7 +281,6 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Optional(CONF_GENERIC_OPENAI_ENABLE_VALIDATION, default=False): bool,
             })
 
-
         return self.async_show_form(
             step_id="provider_config",
             data_schema=vol.Schema(schema_dict),
@@ -310,13 +288,9 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             description_placeholders={"provider": self.provider}
         )
 
-    # ───────── Options flow (edit after setup) ─────────
-    @staticmethod
-    @callback
-    def async_get_options_flow(config_entry):
-        return AIAutomationOptionsFlowHandler(config_entry)
-
-
+# ─────────────────────────────────────────────────────────────
+# Options flow (edit after setup)
+# ─────────────────────────────────────────────────────────────
 class AIAutomationOptionsFlowHandler(config_entries.OptionsFlow):
     """Allow post‑setup tweaking of models, keys, token budgets."""
 

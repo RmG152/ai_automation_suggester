@@ -91,44 +91,48 @@ SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
 
 async def async_setup_entry(
     hass: HomeAssistant,
-    entry: ConfigEntry,
+    main_entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up AI Automation Suggester sensors from a config entry."""
-    coordinator = cast(DataUpdateCoordinator, hass.data[DOMAIN][entry.entry_id])
-    provider_name = entry.data.get(CONF_PROVIDER, "Unknown Provider")
-
     entities: list[SensorEntity] = []
-    for description in SENSOR_DESCRIPTIONS:
-        formatted_name = f"{description.name} ({provider_name})"
-        specific_description = SensorEntityDescription(
-            key=description.key,
-            name=formatted_name,
-            icon=description.icon,
-            entity_category=description.entity_category,
-            native_unit_of_measurement=description.native_unit_of_measurement,
-            state_class=description.state_class,
-            device_class=description.device_class,
-        )
 
-        if description.key == SENSOR_KEY_SUGGESTIONS:
-            entities.append(AISuggestionsSensor(coordinator, entry, specific_description))
-        elif description.key == SENSOR_KEY_STATUS:
-            entities.append(AIProviderStatusSensor(coordinator, entry, specific_description))
-        elif description.key == SENSOR_KEY_INPUT_TOKENS:
-            entities.append(MaxInputTokensSensor(coordinator, entry, specific_description))
-        elif description.key == SENSOR_KEY_OUTPUT_TOKENS:
-            entities.append(MaxOutputTokensSensor(coordinator, entry, specific_description))
-        elif description.key == SENSOR_KEY_MODEL:
-            entities.append(AIModelSensor(coordinator, entry, specific_description))
-        elif description.key == SENSOR_KEY_LAST_ERROR:
-            entities.append(AILastErrorSensor(coordinator, entry, specific_description))
-        else:
-            entities.append(AIBaseSensor(coordinator, entry, specific_description))
+    # Get all sub-entries (providers)
+    sub_entries = hass.config_entries.async_get_config_entry(main_entry.entry_id).config_subentries
+    for sub_entry_id in sub_entries:
+        sub_entry = hass.config_entries.async_get_entry(sub_entry_id)
+        if not sub_entry:
+            continue
 
+        coordinator = cast(DataUpdateCoordinator, hass.data[DOMAIN][sub_entry.entry_id])
+        provider_name = sub_entry.data.get(CONF_PROVIDER, "Unknown Provider")
+
+        for description in SENSOR_DESCRIPTIONS:
+            formatted_name = f"{description.name} ({provider_name})"
+            specific_description = SensorEntityDescription(
+                key=description.key,
+                name=formatted_name,
+                icon=description.icon,
+                entity_category=description.entity_category,
+                native_unit_of_measurement=description.native_unit_of_measurement,
+                state_class=description.state_class,
+                device_class=description.device_class,
+            )
+
+            sensor_class_map = {
+                SENSOR_KEY_SUGGESTIONS: AISuggestionsSensor,
+                SENSOR_KEY_STATUS: AIProviderStatusSensor,
+                SENSOR_KEY_INPUT_TOKENS: MaxInputTokensSensor,
+                SENSOR_KEY_OUTPUT_TOKENS: MaxOutputTokensSensor,
+                SENSOR_KEY_MODEL: AIModelSensor,
+                SENSOR_KEY_LAST_ERROR: AILastErrorSensor,
+            }
+
+            sensor_class = sensor_class_map.get(description.key, AIBaseSensor)
+            entities.append(sensor_class(coordinator, sub_entry, specific_description))
 
     async_add_entities(entities, True)
-    _LOGGER.debug("Sensor platform setup complete for provider: %s", provider_name)
+    _LOGGER.debug("Sensor platform setup complete.")
 
 # ─────────────────────────────────────────────────────────────
 # Base sensor
