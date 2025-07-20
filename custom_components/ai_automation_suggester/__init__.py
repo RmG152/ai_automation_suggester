@@ -21,7 +21,7 @@ _LOGGER = logging.getLogger(__name__)
 async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
     """Migrate old config entry if necessary."""
     if config_entry.version == 1:
-        _LOGGER.info(f"async_migrate_entry from version 1 to 2")
+        _LOGGER.info("Migrating config entry from version 1 to 2")
         new_data = {**config_entry.data}
 
         # Mapping from old provider-specific keys to new common keys
@@ -70,8 +70,12 @@ async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry) ->
             if old_key in new_data:
                 new_data[new_key] = new_data.pop(old_key)
 
-        config_entry.version = 2
-        hass.config_entries.async_update_entry(config_entry, data=new_data)
+        # Update both data and version using async_update_entry
+        hass.config_entries.async_update_entry(
+            config_entry,
+            data=new_data,
+            version=2
+        )
         _LOGGER.info("Migration to version 2 successful")
 
     return True

@@ -8,248 +8,112 @@
           "provider": "Поставщик ИИ"
         }
       },
-      "openai": {
-        "title": "Настроить OpenAI"
-      },
-      "anthropic": {
-        "title": "Настроить Anthropic"
-      },
-      "google": {
-        "title": "Настроить Google"
-      },
-      "groq": {
-        "title": "Настроить Groq"
-      },
-      "localai": {
-        "title": "Настроить LocalAI",
-        "data": {
-          "localai_ip": "IP-адрес LocalAI",
-          "localai_port": "Порт LocalAI",
-          "localai_https": "Использовать HTTPS для LocalAI"
-        }
-      },
-      "ollama": {
-        "title": "Настроить Ollama",
-        "data": {
-          "ollama_ip": "IP-адрес Ollama",
-          "ollama_port": "Порт Ollama",
-          "ollama_https": "Использовать HTTPS для Ollama",
-          "ollama_disable_think": "Отключить режим мышления (Ollama)"
-        }
-      },
-      "custom_openai": {
-        "title": "Настроить пользовательский OpenAI",
-        "data": {
-          "custom_openai_endpoint": "Пользовательский Endpoint OpenAI"
-        }
-      },
-      "mistral": {
-        "title": "Настроить Mistral AI"
-      },
-      "perplexity": {
-        "title": "Настроить Perplexity AI"
-      },
-      "openrouter": {
-        "title": "Настроить OpenRouter",
-        "data": {
-          "openrouter_reasoning_max_tokens": "OpenRouter Максимальное количество токенов для рассуждений"
-        }
-      },
-      "openai_azure": {
-        "title": "Настроить OpenAI Azure",
-        "data": {
-          "openai_azure_deployment_id": "ID развертывания Azure",
-          "openai_azure_endpoint": "Endpoint Azure",
-          "openai_azure_api_version": "Версия API Azure"
-        }
-      },
-      "generic_openai": {
-        "title": "Настроить общий OpenAI",
-        "data": {
-          "generic_openai_api_endpoint": "Полный URL общего API OpenAI (должен заканчиваться на 'completions')",
-          "generic_openai_validation_endpoint": "URL валидации (должен заканчиваться на 'models')",
-          "generic_openai_enable_validation": "Включить валидацию"
-        }
-      },
-      "common": {
-        "title": "Настроить общие параметры",
+      "provider_config": {
+       "title": "Настроить поставщика ИИ (Текущий: {provider})",
+        "description": "Пожалуйста, введите данные для выбранного вами поставщика.",
         "data": {
           "api_key": "Ключ API",
           "model": "Модель",
           "temperature": "Температура",
           "max_input_tokens": "Максимальное количество входных токенов",
-          "max_output_tokens": "Максимальное количество выходных токенов"
+          "max_output_tokens": "Максимальное количество выходных токенов",
+          "generic_openai_api_endpoint": "Полный URL общего API OpenAI (должен заканчиваться на 'completions')",
+          "generic_openai_validation_endpoint": "URL валидации (должен заканчиваться на 'models')",
+          "generic_openai_enable_validation": "Включить валидацию",
+          "openai_azure_deployment_id": "ID развертывания Azure",
+          "openai_azure_endpoint": "Endpoint Azure",
+          "openai_azure_api_version": "Версия API Azure",
+          "openrouter_reasoning_max_tokens": "OpenRouter Максимальное количество токенов для рассуждений",
+          "ollama_ip": "IP-адрес Ollama",
+          "ollama_port": "Порт Ollama",
+          "ollama_https": "Использовать HTTPS для Ollama",
+          "ollama_disable_think": "Отключить режим мышления (Ollama)",
+          "custom_openai_endpoint": "Пользовательский Endpoint OpenAI",
+          "localai_ip": "IP-адрес LocalAI",
+          "localai_port": "Порт LocalAI",
+          "localai_https": "Использовать HTTPS для LocalAI"
         }
-      },
-      "codestral": {
-        "title": "Настроить Codestral"
-      },
-      "veniceai": {
-        "title": "Настроить Venice AI"
       }
     },
     "error": {
       "api_error": "Ошибка валидации API: {error_message}",
       "cannot_connect": "Не удалось подключиться. Проверьте настройки и сеть.",
+      "auth_error": "Ошибка аутентификации. Проверьте свои учетные данные.",
       "unknown": "Произошла неизвестная ошибка. Подробности см. в журналах."
     },
     "abort": {
-      "already_configured": "Этот поставщик ИИ уже настроен. Вы можете отредактировать его на странице интеграций.",
-      "missing_api_key": "Отсутствует ключ API. Пожалуйста, предоставьте ключ API для настройки.",
-      "missing_url": "Отсутствует URL. Пожалуйста, предоставьте URL для настройки.",
-      "missing_deployment_id": "Отсутствует ID развертывания. Пожалуйста, предоставьте ID развертывания для настройки.",
-      "missing_endpoint": "Отсутствует Endpoint. Пожалуйста, предоставьте Endpoint для настройки.",
-      "missing_api_version": "Отсутствует версия API. Пожалуйста, предоставьте версию API для настройки."
-    },
-    "confirmation": {
-      "delete": "Вы уверены, что хотите удалить эту конфигурацию?",
-      "delete_confirm": "Удалить",
-      "delete_cancel": "Отмена",
-      "reset": "Вы уверены, что хотите сбросить эту конфигурацию? Это удалит все настройки.",
-      "reset_confirm": "Сбросить",
-      "reset_cancel": "Отмена"
-    },
-    "general": {
-      "save": "Сохранить",
-      "cancel": "Отмена",
-      "reset": "Сбросить",
-      "delete": "Удалить",
-      "add": "Добавить",
-      "edit": "Редактировать",
-      "configure": "Настроить",
-      "enabled": "Включено",
-      "disabled": "Отключено",
-      "on": "Вкл",
-      "off": "Выкл"
-    },
-    "settings": {
-      "theme": {
-        "title": "Тема",
-        "data": {
-          "dark_mode": "Темный режим",
-          "light_mode": "Светлый режим",
-          "system_mode": "Системный режим"
-        }
-      },
-      "language": {
-        "title": "Язык"
-      },
-      "update": {
-        "title": "Обновление",
-        "data": {
-          "check_for_updates": "Проверить наличие обновлений",
-          "update_available": "Доступно обновление",
-          "no_update_available": "Обновлений нет",
-          "update_downloaded": "Обновление загружено",
-          "update_downloading": "Загрузка обновления...",
-          "update_failed": "Обновление не удалось",
-          "install_update": "Установить обновление",
-          "update_in_progress": "Обновление в процессе"
-        }
-      }
-    },
-    "provider": {
-      "ollama": {
-        "name": "Ollama"
-      },
-      "openai": {
-        "name": "OpenAI"
-      },
-      "anthropic": {
-        "name": "Anthropic"
-      },
-      "google": {
-        "name": "Google"
-      },
-      "groq": {
-        "name": "Groq"
-      },
-      "localai": {
-        "name": "LocalAI"
-      },
-      "custom_openai": {
-        "name": "Пользовательский OpenAI"
-      },
-      "mistral": {
-        "name": "Mistral AI"
-      },
-      "perplexity": {
-        "name": "Perplexity AI"
-      },
-      "openrouter": {
-        "name": "OpenRouter"
-      },
-      "openai_azure": {
-        "name": "OpenAI Azure"
-      },
-      "generic_openai": {
-        "name": "Общий OpenAI"
-      },
-      "codestral": {
-        "name": "Codestral"
-      },
-      "veniceai": {
-        "name": "Venice AI"
-      }
-    },
-    "help": {
-      "no_api_key": "Пожалуйста, предоставьте ключ API для настройки этого поставщика.",
-      "no_url": "Пожалуйста, предоставьте URL для настройки этого поставщика.",
-      "no_deployment_id": "Пожалуйста, предоставьте ID развертывания для настройки этого поставщика.",
-      "no_endpoint": "Пожалуйста, предоставьте Endpoint для настройки этого поставщика.",
-      "no_api_version": "Пожалуйста, предоставьте версию API для настройки этого поставщика.",
-      "enable_validation": "Включите валидацию для этого поставщика. Это попытается подключиться к API для проверки ваших настроек.",
-      "disable_think_mode": "Отключить «Режим мышления» для Ollama. Это предотвратит использование Ollama внутренних мыслительных процессов для генерации ответов.",
-      "rag_prompt": "Запрос для генерации с дополнениями извлечения (RAG).",
-      "rag_vector_database_source": "Источник для векторной базы данных.",
-      "rag_embedding_model": "Модель встраивания для RAG."
-    },
-    "common": {
-      "api_key_help": "Ключ API для этого поставщика. Вы можете найти его в настройках вашего поставщика.",
-      "model_help": "Модель для использования этим поставщиком. Список доступных моделей можно найти в документации вашего поставщика.",
-      "temperature_help": "Температура модели. Более высокие значения означают, что модель будет брать на себя больше рисков. Попробуйте 0,7 для более творческих приложений и 0,2 для приложений, требующих большей точности.",
-      "max_input_tokens_help": "Максимальное количество токенов для отправки модели в качестве входных данных.",
-      "max_output_tokens_help": "Максимальное количество токенов для генерации в ответе модели."
+      "already_configured": "Этот поставщик ИИ уже настроен. Вы можете отредактировать его на странице интеграций."
     }
   },
   "options": {
     "step": {
       "init": {
         "title": "Параметры средства предложения автоматизации ИИ",
-        "description": "Параметры для настройки работы средства предложения автоматизации ИИ.",
         "data": {
-          "provider_config": {
-            "name": "Конфигурация провайдера",
-            "description": "Какую конфигурацию провайдера использовать (если у вас их несколько)"
-          },
-          "custom_prompt": {
-            "name": "Пользовательский запрос",
-            "description": "Необязательный пользовательский запрос для переопределения системного запроса по умолчанию или для направления предложений к определенным темам"
-          },
-          "all_entities": {
-            "name": "Учитывать все сущности",
-            "description": "Если истина, учитывать все сущности вместо только новых сущностей."
-          },
-          "domains": {
-            "name": "Домены",
-            "description": "Список доменов для рассмотрения. Если пусто, рассматривать все домены."
-          },
-          "entity_limit": {
-            "name": "Ограничение сущностей",
-            "description": "Максимальное количество сущностей для рассмотрения (выбираются случайным образом)."
-          },
-          "automation_read_yaml": {
-            "name": "Читать файл 'automations.yaml'",
-            "description": "Считывает и добавляет YAML-код автоматизаций, найденных в файле 'automations.yaml'. Это действие будет использовать много входных токенов, используйте его с осторожностью и с моделями с большим окном контекста (например, Gemini)."
-          },
-          "automation_limit": {
-            "name": "Ограничение автоматизаций",
-            "description": "Максимальное количество автоматизаций для анализа (по умолчанию: 100)."
-          },
-          "include_entity_details": {
-            "name": "Включить детали сущности",
-            "description": "Включает подробную информацию о сущности (атрибуты и информацию об устройстве) в запрос. Отключение этого сокращает использование токенов, но предоставляет меньше контекста для ИИ."
-          }
+          "api_key": "Ключ API",
+          "model": "Модель",
+          "temperature": "Температура",
+          "max_input_tokens": "Максимальное количество входных токенов",
+          "max_output_tokens": "Максимальное количество выходных токенов",
+          "localai_ip": "IP-адрес LocalAI",
+          "localai_port": "Порт LocalAI",
+          "localai_https": "Использовать HTTPS для LocalAI",
+          "ollama_ip": "IP-адрес Ollama",
+          "ollama_port": "Порт Ollama",
+          "ollama_https": "Использовать HTTPS для Ollama",
+          "ollama_disable_think": "Отключить режим мышления (Ollama)",
+          "custom_openai_endpoint": "Пользовательский Endpoint OpenAI",
+          "openrouter_reasoning_max_tokens": "OpenRouter Максимальное количество токенов для рассуждений",
+          "openai_azure_deployment_id": "ID развертывания Azure",
+          "openai_azure_endpoint": "Endpoint Azure",
+          "openai_azure_api_version": "Версия API Azure",
+          "generic_openai_api_endpoint": "Полный URL общего API OpenAI (должен заканчиваться на 'completions')",
+          "generic_openai_validation_endpoint": "URL валидации (Общий OpenAI, должен заканчиваться на 'models')",
+          "generic_openai_enable_validation": "Включить валидацию (Общий OpenAI)"
+        },
+        "description": "Настройте параметры для ваших поставщиков ИИ. Будут использоваться поля, относящиеся к вашему настроенному поставщику. Общие настройки, такие как ограничения токенов, настраиваются для каждого поставщика."
+      }
+    },
+    "error": {
+      "invalid_input": "Одно или несколько значений недействительны."
+    }
+  },
+  "services": {
+    "generate_suggestions": {
+      "name": "Генерировать предложения",
+      "description": "Вручную запускать предложения по автоматизации ИИ.",
+      "fields": {
+        "provider_config": {
+          "name": "Конфигурация провайдера",
+          "description": "Какую конфигурацию провайдера использовать (если у вас их несколько)"
+        },
+        "custom_prompt": {
+          "name": "Пользовательский запрос",
+          "description": "Необязательный пользовательский запрос для переопределения системного запроса по умолчанию или для направления предложений к определенным темам"
+        },
+        "all_entities": {
+          "name": "Учитывать все сущности",
+          "description": "Если истина, учитывать все сущности вместо только новых сущностей."
+        },
+        "domains": {
+          "name": "Домены",
+          "description": "Список доменов для рассмотрения. Если пусто, рассматривать все домены."
+        },
+        "entity_limit": {
+          "name": "Ограничение сущностей",
+          "description": "Максимальное количество сущностей для рассмотрения (выбираются случайным образом)."
+        },
+        "automation_read_yaml": {
+          "name": "Читать файл 'automations.yaml'",
+          "description": "Считывает и добавляет YAML-код автоматизаций, найденных в файле 'automations.yaml'. Это действие будет использовать много входных токенов, используйте его с осторожностью и с моделями с большим окном контекста (например, Gemini)."
+        },
+        "automation_limit": {
+          "name": "Ограничение автоматизаций",
+          "description": "Максимальное количество автоматизаций для анализа (по умолчанию: 100)."
+        },
+        "include_entity_details": {
+          "name": "Включить детали сущности",
+          "description": "Включает подробную информацию о сущности (атрибуты и информацию об устройстве) в запрос. Отключение этого сокращает использование токенов, но предоставляет меньше контекста для ИИ."
         }
       }
     }

@@ -130,7 +130,7 @@ class ProviderValidator:
 class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle integration setup via the UI."""
 
-    VERSION = 1
+    VERSION = 2
 
     def __init__(self) -> None:
         self.provider: str | None = None
@@ -147,22 +147,7 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             if any(ent.data.get(CONF_PROVIDER) == self.provider for ent in self._async_current_entries()):
                 errors["base"] = "already_configured"
             else:
-                return await {
-                    "OpenAI": self.async_step_openai,
-                    "Anthropic": self.async_step_anthropic,
-                    "Google": self.async_step_google,
-                    "Groq": self.async_step_groq,
-                    "LocalAI": self.async_step_localai,
-                    "Ollama": self.async_step_ollama,
-                    "Custom OpenAI": self.async_step_custom_openai,
-                    "Mistral AI": self.async_step_mistral,
-                    "Perplexity AI": self.async_step_perplexity,
-                    "OpenRouter": self.async_step_openrouter,
-                    "OpenAI Azure": self.async_step_openai_azure,
-                    "Generic OpenAI": self.async_step_generic_openai,
-                    "Codestral": self.async_step_codestral,
-                    "Venice AI": self.async_step_veniceai,
-                }[self.provider]()
+                return await self.async_step_provider_config()
 
         return self.async_show_form(
             step_id="user",
@@ -192,254 +177,139 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             errors=errors,
         )
 
-    # ───────── helper to reduce repetition ─────────
-    async def _provider_form(
-        self,
-        step_id: str,
-        schema: vol.Schema,
-        validate_fn,
-        user_input: Dict[str, Any] | None,
-    ):
+    # ───────── Common configuration step for all providers ─────────
+    async def async_step_provider_config(self, user_input: Dict[str, Any] | None = None):
+        """Handle the provider configuration options."""
         errors: Dict[str, str] = {}
-        placeholders: Dict[str, str] = {}
-
-        if user_input:
-            self.validator = ProviderValidator(self.hass)
-            err = await validate_fn(user_input)
-            if err is None:
-                self.data.update(user_input)
-                return await self.async_step_common()
-            errors["base"] = "api_error"
-            placeholders["error_message"] = err
-
-        return self.async_show_form(step_id=step_id, data_schema=schema, errors=errors, description_placeholders=placeholders)
-
-    # ───────── provider‑specific steps (OpenAI shown; others similar) ─────────
-    async def async_step_common(self, user_input=None):
-        """Handle the common configuration options."""
+        
         if user_input is not None:
-            self.data.update(user_input)
-            title = f"AI Automation Suggester ({self.provider})"
-            return self.async_create_entry(title=title, data=self.data)
+            # Basic validation
+            if not user_input.get(CONF_API_KEY) and self.provider not in ["LocalAI", "Ollama"]:
+                errors["base"] = "api_key_required"
+            
+            # Initialize validator if needed
+            if not self.validator:
+                self.validator = ProviderValidator(self.hass)
+                
+            # Provider-specific validation
+            if not errors:
+                error_msg = None
+                try:
+                    if self.provider == "OpenAI":
+                        error_msg = await self.validator.validate_openai(user_input[CONF_API_KEY])
+                    elif self.provider == "Anthropic":
+                        error_msg = await self.validator.validate_anthropic(
+                            user_input[CONF_API_KEY], 
+                            user_input.get(CONF_MODEL, DEFAULT_MODELS["Anthropic"])
+                        )
+                    elif self.provider == "Google":
+                        error_msg = await self.validator.validate_google(
+                            user_input[CONF_API_KEY],
+                            user_input.get(CONF_MODEL, DEFAULT_MODELS["Google"])
+                        )
+                    elif self.provider == "Groq":
+                        error_msg = await self.validator.validate_groq(user_input[CONF_API_KEY])
+                    elif self.provider == "LocalAI":
+                        error_msg = await self.validator.validate_localai(
+                            user_input.get(CONF_LOCALAI_IP_ADDRESS, "localhost"),
+                            user_input.get(CONF_LOCALAI_PORT, 8080),
+                            user_input.get(CONF_LOCALAI_HTTPS, False)
+                        )
+                    elif self.provider == "Ollama":
+                        error_msg = await self.validator.validate_ollama(
+                            user_input.get(CONF_OLLAMA_IP_ADDRESS, "localhost"),
+                            user_input.get(CONF_OLLAMA_PORT, 11434),
+                            user_input.get(CONF_OLLAMA_HTTPS, False)
+                        )
+                    elif self.provider == "Custom OpenAI":
+                        error_msg = await self.validator.validate_custom_openai(
+                            user_input.get(CONF_CUSTOM_OPENAI_ENDPOINT, ""),
+                            user_input.get(CONF_API_KEY)
+                        )
+                    elif self.provider == "Perplexity AI":
+                        error_msg = await self.validator.validate_perplexity(
+                            user_input[CONF_API_KEY],
+                            user_input.get(CONF_MODEL, DEFAULT_MODELS["Perplexity AI"])
+                        )
+                    elif self.provider == "OpenRouter":
+                        error_msg = await self.validator.validate_openrouter(
+                            user_input[CONF_API_KEY],
+                            user_input.get(CONF_MODEL, DEFAULT_MODELS["OpenRouter"])
+                        )
+                    elif self.provider == "Generic OpenAI":
+                        if user_input.get(CONF_GENERIC_OPENAI_ENABLE_VALIDATION):
+                            error_msg = await self.validator.validate_generic_openai(
+                                user_input.get(CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT, ""),
+                                user_input[CONF_API_KEY]
+                            )
 
-        schema = vol.Schema({
+                    if error_msg:
+                        errors["base"] = "auth_error"
+                        _LOGGER.error("Validation error for %s: %s", self.provider, error_msg)
+
+                except Exception as ex:
+                    errors["base"] = "unknown"
+                    _LOGGER.exception("Unexpected error validating %s: %s", self.provider, ex)
+
+            if not errors:
+                self.data.update(user_input)
+                title = f"AI Automation Suggester ({self.provider})"
+                return self.async_create_entry(title=title, data=self.data)
+
+        # Build dynamic schema based on provider capabilities
+        schema_dict = {
             vol.Required(CONF_API_KEY): TextSelector(TextSelectorConfig(type="password")),
-            vol.Optional(CONF_MODEL, default=DEFAULT_MODELS.get(self.provider)): str,
-            vol.Optional(CONF_TEMPERATURE, default=DEFAULT_TEMPERATURE): vol.All(vol.Coerce(float), vol.Range(min=0.0, max=2.0)),
+            vol.Optional(CONF_MODEL, default=DEFAULT_MODELS.get(self.provider, "")): str,
+            vol.Optional(CONF_TEMPERATURE, default=DEFAULT_TEMPERATURE): vol.All(
+                vol.Coerce(float), vol.Range(min=0.0, max=2.0)
+            ),
             vol.Optional(CONF_MAX_INPUT_TOKENS, default=DEFAULT_MAX_INPUT_TOKENS): vol.All(
                 vol.Coerce(int), vol.Range(min=100)
             ),
             vol.Optional(CONF_MAX_OUTPUT_TOKENS, default=DEFAULT_MAX_OUTPUT_TOKENS): vol.All(
                 vol.Coerce(int), vol.Range(min=100)
             ),
-        })
-
-        return self.async_show_form(step_id="common", data_schema=schema)
-
-
-    async def async_step_openai(self, user_input=None):
-        return await self._provider_form(
-            "openai",
-            vol.Schema({}),
-            lambda ui: self.validator.validate_openai(ui[CONF_API_KEY]),
-            user_input,
-        )
-
-    async def async_step_anthropic(self, user_input=None):
-        async def _v(ui):
-            return await self.validator.validate_anthropic(
-                ui[CONF_API_KEY], ui.get(CONF_MODEL, DEFAULT_MODELS["Anthropic"])
-            )
-
-        return await self._provider_form(
-            "anthropic",
-            vol.Schema({}),
-            _v,
-            user_input,
-        )
-
-    async def async_step_google(self, user_input=None):
-        async def _v(ui):
-            return await self.validator.validate_google(
-                ui[CONF_API_KEY], ui.get(CONF_MODEL, DEFAULT_MODELS["Google"])
-            )
-
-        return await self._provider_form(
-            "google",
-            vol.Schema({}),
-            _v,
-            user_input,
-        )
-
-    async def async_step_groq(self, user_input=None):
-        return await self._provider_form(
-            "groq",
-            vol.Schema({}),
-            lambda ui: self.validator.validate_groq(ui[CONF_API_KEY]),
-            user_input,
-        )
-
-    async def async_step_localai(self, user_input=None):
-        async def _v(ui):
-            return await self.validator.validate_localai(ui[CONF_LOCALAI_IP_ADDRESS], ui[CONF_LOCALAI_PORT], ui[CONF_LOCALAI_HTTPS])
-
-        schema = vol.Schema({
-            vol.Required(CONF_LOCALAI_IP_ADDRESS): str,
-            vol.Required(CONF_LOCALAI_PORT, default=8080): int,
-            vol.Required(CONF_LOCALAI_HTTPS, default=False): bool,
-        })
-        return await self._provider_form(
-            "localai", 
-            schema,
-            _v,
-            user_input,
-        )
-
-    async def async_step_ollama(self, user_input=None):
-        async def _v(ui):
-            return await self.validator.validate_ollama(ui[CONF_OLLAMA_IP_ADDRESS], ui[CONF_OLLAMA_PORT], ui[CONF_OLLAMA_HTTPS])
-
-        schema = vol.Schema({
-            vol.Required(CONF_OLLAMA_IP_ADDRESS): str,
-            vol.Required(CONF_OLLAMA_PORT, default=11434): int,
-            vol.Required(CONF_OLLAMA_HTTPS, default=False): bool,
-            vol.Optional(CONF_OLLAMA_DISABLE_THINK, default=False): bool,
-   
-        })
-        return await self._provider_form(
-            "ollama",
-            schema,
-            _v,
-            user_input,
-        )
-
-    async def async_step_custom_openai(self, user_input=None):
-        async def _v(ui):
-            return await self.validator.validate_custom_openai(ui[CONF_CUSTOM_OPENAI_ENDPOINT], ui.get(CONF_API_KEY))
-
-        schema = vol.Schema({
-            vol.Required(CONF_CUSTOM_OPENAI_ENDPOINT): str,
-            vol.Optional(CONF_API_KEY): TextSelector(TextSelectorConfig(type="password")),
-        })
-        return await self._provider_form(
-            "custom_openai",
-            schema,
-            _v,
-            user_input,
-        )
-
-    # Mistral: no live validation needed
-    async def async_step_mistral(self, user_input=None):
-        if user_input:
-            self.data.update(user_input)
-            return await self._provider_form(user_input=None)
-
-        return self.async_show_form(step_id="mistral", data_schema=vol.Schema({}))
-
-    async def async_step_codestral(self, user_input=None):
-        if user_input:
-            self.data.update(user_input)
-            return self.async_create_entry(title="AI Automation Suggester (Codestral)", data=self.data)
-
-        schema = {
-            vol.Required(CONF_API_KEY): TextSelector(TextSelectorConfig(type="password")),
-            vol.Optional(CONF_CODESTRAL_MODEL, default=DEFAULT_MODELS["Codestral"]): str,
-            vol.Optional(CONF_TEMPERATURE, default=DEFAULT_TEMPERATURE): vol.All(
-                vol.Coerce(float), vol.Range(min=0.0, max=2.0)
-            ),
         }
-        self._add_token_fields(schema)
-        return self.async_show_form(step_id="codestral", data_schema=vol.Schema(schema))
 
-    async def async_step_perplexity(self, user_input=None):
-        async def _v(ui):
-            return await self.validator.validate_perplexity(
-                ui[CONF_API_KEY], ui.get(CONF_MODEL, DEFAULT_MODELS["Perplexity AI"])
-            )
+        # Add provider-specific fields
+        if self.provider == "LocalAI":
+            schema_dict.update({
+                vol.Optional(CONF_LOCALAI_HTTPS, default=False): bool,
+                vol.Optional(CONF_LOCALAI_IP_ADDRESS, default="localhost"): str,
+                vol.Optional(CONF_LOCALAI_PORT, default=8080): int,
+            })
+        elif self.provider == "Ollama":
+            schema_dict.update({
+                vol.Optional(CONF_OLLAMA_IP_ADDRESS, default="localhost"): str,
+                vol.Optional(CONF_OLLAMA_PORT, default=11434): int,
+                vol.Optional(CONF_OLLAMA_HTTPS, default=False): bool,
+                vol.Optional(CONF_OLLAMA_DISABLE_THINK, default=False): bool,
+            })
+        elif self.provider == "Custom OpenAI":
+            schema_dict[vol.Optional(CONF_CUSTOM_OPENAI_ENDPOINT)] = str
+        elif self.provider == "OpenRouter":
+            schema_dict[vol.Optional(CONF_OPENROUTER_REASONING_MAX_TOKENS, default=0)] = vol.All(vol.Coerce(int), vol.Range(min=0))
+        elif self.provider == "OpenAI Azure":
+            schema_dict.update({
+                vol.Optional(CONF_OPENAI_AZURE_ENDPOINT): str,
+                vol.Optional(CONF_OPENAI_AZURE_DEPLOYMENT_ID, default=DEFAULT_MODELS["OpenAI Azure"]): str,
+                vol.Optional(CONF_OPENAI_AZURE_API_VERSION, default="2025-01-01-preview"): str,
+            })
+        elif self.provider == "Generic OpenAI":
+            schema_dict.update({
+                vol.Optional(CONF_GENERIC_OPENAI_ENDPOINT): str,
+                vol.Optional(CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT, default=""): str,
+                vol.Optional(CONF_GENERIC_OPENAI_ENABLE_VALIDATION, default=False): bool,
+            })
 
-        return await self._provider_form(
-            "perplexity",
-            vol.Schema({}),
-            _v,
-            user_input,
+
+        return self.async_show_form(
+            step_id="provider_config",
+            data_schema=vol.Schema(schema_dict),
+            errors=errors,
+            description_placeholders={"provider": self.provider}
         )
 
-    async def async_step_openrouter(self, user_input=None):
-        async def _v(ui):
-            return await self.validator.validate_openrouter(
-                ui[CONF_API_KEY],
-                ui.get(CONF_MODEL, DEFAULT_MODELS["OpenRouter"]),
-            )
-
-        schema = vol.Schema({
-            vol.Optional(CONF_OPENROUTER_REASONING_MAX_TOKENS, default=0): vol.All(
-                vol.Coerce(int), vol.Range(min=0)
-            ),
-        })
-        return await self._provider_form(
-            "openrouter",
-            schema,
-            _v,
-            user_input,
-        )
-
-    async def async_step_openai_azure(self, user_input=None):
-        async def _v(ui):
-            if not ui.get(CONF_API_KEY) or not ui.get(CONF_OPENAI_AZURE_DEPLOYMENT_ID) or not ui.get(CONF_OPENAI_AZURE_API_VERSION):
-                return "All fields are required"
-            return None
-
-        schema = vol.Schema({
-            vol.Required(CONF_OPENAI_AZURE_DEPLOYMENT_ID, default=DEFAULT_MODELS["OpenAI Azure"]): str,
-            vol.Required(CONF_OPENAI_AZURE_ENDPOINT, default="{your-resource-name}.openai.azure.com"): str,
-            vol.Required(CONF_OPENAI_AZURE_API_VERSION, default="2025-01-01-preview"): str,
-        })
-        return await self._provider_form(
-            "openai_azure",
-            schema,
-            _v,
-            user_input,
-        )
-
-    async def async_step_generic_openai(self, user_input=None):
-        """Handle the Generic OpenAI API configuration."""
-        async def _v(ui):
-            if not ui.get(CONF_GENERIC_OPENAI_ENDPOINT):
-                return "API URL is required"
-            if ui.get(CONF_GENERIC_OPENAI_ENABLE_VALIDATION, False):
-                if not ui.get(CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT):
-                    return "Validation endpoint is required when validation is enabled"
-                return await self.validator.validate_generic_openai(ui[CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT], ui.get(CONF_API_KEY))
-
-        schema = vol.Schema({
-            vol.Required(CONF_GENERIC_OPENAI_ENDPOINT): str,
-            vol.Optional(CONF_API_KEY): TextSelector(TextSelectorConfig(type="password")),
-            vol.Optional(CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT, default=""): str,
-            vol.Optional(CONF_GENERIC_OPENAI_ENABLE_VALIDATION, default=False): bool,
-        })
-        return await self._provider_form(
-            "generic_openai",
-            schema,
-            _v,
-            user_input,
-        )
-
-    async def async_step_veniceai(self, user_input=None):
-        schema = {
-            vol.Required(CONF_API_KEY): TextSelector(TextSelectorConfig(type="password")),
-            vol.Optional(CONF_VENICEAI_MODEL, default=DEFAULT_MODELS["Venice AI"]): str,
-            vol.Optional(CONF_TEMPERATURE, default=DEFAULT_TEMPERATURE): vol.All(vol.Coerce(float), vol.Range(min=0.0, max=2.0)),
-        }
-        self._add_token_fields(schema)
-        return await self._provider_form(
-            "veniceai",
-            vol.Schema(schema),
-            _v,
-            "AI Automation Suggester (Venice AI)",
-            {},
-            {},
-            user_input,
-        )
     # ───────── Options flow (edit after setup) ─────────
     @staticmethod
     @callback

@@ -8,89 +8,43 @@
           "provider": "AI Provider"
         }
       },
-      "openai": {
-        "title": "Configure OpenAI"
-      },
-      "anthropic": {
-        "title": "Configure Anthropic"
-      },
-      "google": {
-        "title": "Configure Google"
-      },
-      "groq": {
-        "title": "Configure Groq"
-      },
-      "localai": {
-        "title": "Configure LocalAI",
-        "data": {
-          "localai_ip": "LocalAI IP Address",
-          "localai_port": "LocalAI Port",
-          "localai_https": "Use HTTPS for LocalAI"
-        }
-      },
-      "ollama": {
-        "title": "Configure Ollama",
-        "data": {
-          "ollama_ip": "Ollama IP Address",
-          "ollama_port": "Ollama Port",
-          "ollama_https": "Use HTTPS for Ollama",
-          "ollama_disable_think": "Disable Think Mode (Ollama)"
-        }
-      },
-      "custom_openai": {
-        "title": "Configure Custom OpenAI",
-        "data": {
-          "custom_openai_endpoint": "Custom OpenAI Endpoint"
-        }
-      },
-      "mistral": {
-        "title": "Configure Mistral AI"
-      },
-      "perplexity": {
-        "title": "Configure Perplexity AI"
-      },
-      "openrouter": {
-        "title": "Configure OpenRouter",
-        "data": {
-          "openrouter_reasoning_max_tokens": "OpenRouter Reasoning Max Tokens"
-        }
-      },
-      "openai_azure": {
-        "title": "Configure OpenAI Azure",
-        "data": {
-          "openai_azure_deployment_id": "Azure Deployment ID",
-          "openai_azure_endpoint": "Azure Endpoint",
-          "openai_azure_api_version": "Azure API Version"
-        }
-      },
-      "generic_openai": {
-        "title": "Configure Generic OpenAI",
-        "data": {
-          "generic_openai_api_endpoint": "Generic OpenAI API Full URL (should end with 'completions')",
-          "generic_openai_validation_endpoint": "Validation URL (should end with 'models')",
-          "generic_openai_enable_validation": "Enable Validation"
-        }
-      },
-      "common": {
-        "title": "Configure Common Settings",
+      "provider_config": {
+       "title": "Configure AI Provider (Current: {provider})",
+        "description": "Please enter the details for your selected provider.",
         "data": {
           "api_key": "API Key",
           "model": "Model",
           "temperature": "Temperature",
           "max_input_tokens": "Max Input Tokens",
-          "max_output_tokens": "Max Output Tokens"
+          "max_output_tokens": "Max Output Tokens",
+
+          "generic_openai_api_endpoint": "Generic OpenAI API Full URL (should end with 'completions')",
+          "generic_openai_validation_endpoint": "Validation URL (should end with 'models')",
+          "generic_openai_enable_validation": "Enable Validation",
+
+          "openai_azure_deployment_id": "Azure Deployment ID",
+          "openai_azure_endpoint": "Azure Endpoint",
+          "openai_azure_api_version": "Azure API Version",
+          
+          "openrouter_reasoning_max_tokens": "OpenRouter Reasoning Max Tokens",
+
+          "ollama_ip": "Ollama IP Address",
+          "ollama_port": "Ollama Port",
+          "ollama_https": "Use HTTPS for Ollama",
+          "ollama_disable_think": "Disable Think Mode (Ollama)",
+
+          "custom_openai_endpoint": "Custom OpenAI Endpoint",
+
+          "localai_ip": "LocalAI IP Address",
+          "localai_port": "LocalAI Port",
+          "localai_https": "Use HTTPS for LocalAI"
         }
-      },
-      "codestral": {
-        "title": "Configure Codestral"
-      },
-      "veniceai": {
-        "title": "Configure Venice AI"
       }
     },
     "error": {
       "api_error": "API validation failed: {error_message}",
       "cannot_connect": "Failed to connect. Please check your settings and network.",
+      "auth_error": "Authentication failed. Please check your credentials.",
       "unknown": "An unknown error occurred. Please check logs for details."
     },
     "abort": {
