@@ -58,7 +58,6 @@ CONF_OLLAMA_DISABLE_THINK = "ollama_disable_think"
 
 # Custom OpenAI
 CONF_CUSTOM_OPENAI_ENDPOINT = "custom_openai_endpoint"
-CONF_CUSTOM_OPENAI_API_KEY = "custom_openai_api_key"
 
 # Mistral AI
 MISTRAL_MODELS = [
@@ -73,20 +72,8 @@ CONF_OPENROUTER_REASONING_MAX_TOKENS = "openrouter_reasoning_max_tokens"
 
 # Generic OpenAI
 CONF_GENERIC_OPENAI_ENDPOINT = "generic_openai_api_endpoint"
-CONF_GENERIC_OPENAI_API_KEY = "generic_openai_api_key"
 CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT = "generic_openai_validation_endpoint"
 CONF_GENERIC_OPENAI_ENABLE_VALIDATION = "generic_openai_enable_validation"
-
-# Codestral
-CONF_CODESTRAL_API_KEY = "codestral_api_key"
-CONF_CODESTRAL_MODEL = "codestral_model"
-CONF_CODESTRAL_TEMPERATURE = "codestral_temperature"
-
-# Venice AI
-CONF_VENICEAI_API_KEY = "veniceai_api_key"
-CONF_VENICEAI_MODEL = "veniceai_model"
-CONF_VENICEAI_TEMPERATURE = "veniceai_temperature"
-
 
 # ─────────────────────────────────────────────────────────────
 # Model defaults per provider

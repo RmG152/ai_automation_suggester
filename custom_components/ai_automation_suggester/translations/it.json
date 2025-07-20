@@ -3,204 +3,253 @@
   "config": {
     "step": {
       "user": {
-        "title": "Select AI Provider",
+        "title": "Seleziona Provider AI",
         "data": {
-          "provider": "AI Provider"
+          "provider": "Provider AI"
         }
       },
       "openai": {
-        "title": "Configure OpenAI"
+        "title": "Configura OpenAI"
       },
       "anthropic": {
-        "title": "Configure Anthropic"
+        "title": "Configura Anthropic"
       },
       "google": {
-        "title": "Configure Google"
+        "title": "Configura Google"
       },
       "groq": {
-        "title": "Configure Groq"
+        "title": "Configura Groq"
       },
       "localai": {
-        "title": "Configure LocalAI",
+        "title": "Configura LocalAI",
         "data": {
-          "localai_ip": "LocalAI IP Address",
-          "localai_port": "LocalAI Port",
-          "localai_https": "Use HTTPS for LocalAI"
+          "localai_ip": "Indirizzo IP LocalAI",
+          "localai_port": "Porta LocalAI",
+          "localai_https": "Usa HTTPS per LocalAI"
         }
       },
       "ollama": {
-        "title": "Configure Ollama",
+        "title": "Configura Ollama",
         "data": {
-          "ollama_ip": "Ollama IP Address",
-          "ollama_port": "Ollama Port",
-          "ollama_https": "Use HTTPS for Ollama",
-          "ollama_disable_think": "Disable Think Mode (Ollama)"
+          "ollama_ip": "Indirizzo IP Ollama",
+          "ollama_port": "Porta Ollama",
+          "ollama_https": "Usa HTTPS per Ollama",
+          "ollama_disable_think": "Disabilita modalità di pensiero (Ollama)"
         }
       },
       "custom_openai": {
-        "title": "Configure Custom OpenAI",
+        "title": "Configura OpenAI Personalizzato",
         "data": {
-          "custom_openai_endpoint": "Custom OpenAI Endpoint",
-          "custom_openai_api_key": "Custom OpenAI API Key (Optional)"
+          "custom_openai_endpoint": "Endpoint OpenAI Personalizzato"
         }
       },
       "mistral": {
-        "title": "Configure Mistral AI"
+        "title": "Configura Mistral AI"
       },
       "perplexity": {
-        "title": "Configure Perplexity AI"
+        "title": "Configura Perplexity AI"
       },
       "openrouter": {
-        "title": "Configure OpenRouter",
+        "title": "Configura OpenRouter",
         "data": {
-          "openrouter_reasoning_max_tokens": "OpenRouter Reasoning Max Tokens"
+          "openrouter_reasoning_max_tokens": "OpenRouter Max Token di Ragionamento"
         }
       },
       "openai_azure": {
-        "title": "Configure OpenAI Azure",
+        "title": "Configura OpenAI Azure",
         "data": {
-          "openai_azure_deployment_id": "Azure Deployment ID",
-          "openai_azure_endpoint": "Azure Endpoint",
-          "openai_azure_api_version": "Azure API Version"
-        }
-      },
-      "codestral": {
-        "title": "Configura Codestral",
-        "data": {
-          "codestral_api_key": "Chiave API Codestral",
-          "codestral_model": "Modello Codestral",
-          "codestral_temperature": "Temperatura",
-          "codestral_completion_endpoint": "URL Endpoint Completamento",
-          "codestral_chat_endpoint": "URL Endpoint Chat",
-          "max_input_tokens": "Numero massimo di token di input",
-          "max_output_tokens": "Numero massimo di token di output"
+          "openai_azure_deployment_id": "ID Deployment Azure",
+          "openai_azure_endpoint": "Endpoint Azure",
+          "openai_azure_api_version": "Versione API Azure"
         }
       },
       "generic_openai": {
-        "title": "Configure Generic OpenAI",
+        "title": "Configura OpenAI Generico",
         "data": {
-          "generic_openai_api_endpoint": "Generic OpenAI API Full URL (should end with 'completions')",
-          "generic_openai_api_key": "Generic OpenAI API Key (Optional)",
-          "generic_openai_validation_endpoint": "Validation URL (should end with 'models')",
-          "generic_openai_enable_validation": "Enable Validation"
+          "generic_openai_api_endpoint": "URL completo API OpenAI generica (deve terminare con 'completions')",
+          "generic_openai_validation_endpoint": "URL di validazione (deve terminare con 'models')",
+          "generic_openai_enable_validation": "Abilita Validazione"
         }
       },
       "common": {
-        "title": "Configure Common Settings",
+        "title": "Configura Impostazioni Comuni",
         "data": {
-          "api_key": "API Key",
-          "model": "Model",
-          "temperature": "Temperature",
+          "api_key": "Chiave API",
+          "model": "Modello",
+          "temperature": "Temperatura",
           "max_input_tokens": "Max Input Tokens",
           "max_output_tokens": "Max Output Tokens"
         }
+      },
+      "codestral": {
+        "title": "Configura Codestral"
+      },
+      "veniceai": {
+        "title": "Configura VeniceAI"
       }
     },
     "error": {
-      "api_error": "API validation failed: {error_message}",
-      "cannot_connect": "Failed to connect. Please check your settings and network.",
-      "unknown": "An unknown error occurred. Please check logs for details."
+      "api_error": "Validazione API fallita: {error_message}",
+      "cannot_connect": "Connessione fallita. Controlla le impostazioni e la rete.",
+      "unknown": "Si è verificato un errore sconosciuto. Controlla i log per i dettagli."
     },
     "abort": {
-      "already_configured": "This AI provider is already configured. You can edit it from the integrations page."
+      "already_configured": "Questo provider AI è già configurato. Puoi modificarlo dalla pagina delle integrazioni.",
+      "missing_api_key": "Chiave API mancante. Fornisci una Chiave API per la configurazione.",
+      "missing_url": "URL mancante. Fornisci un URL per la configurazione.",
+      "missing_deployment_id": "ID di deployment mancante. Fornisci un ID di deployment per la configurazione.",
+      "missing_endpoint": "Endpoint mancante. Fornisci un Endpoint per la configurazione.",
+      "missing_api_version": "Versione API mancante. Fornisci una Versione API per la configurazione."
+    },
+    "confirmation": {
+      "delete": "Sei sicuro di voler eliminare questa configurazione?",
+      "delete_confirm": "Elimina",
+      "delete_cancel": "Annulla",
+      "reset": "Sei sicuro di voler ripristinare questa configurazione? Tutte le impostazioni verranno eliminate.",
+      "reset_confirm": "Ripristina",
+      "reset_cancel": "Annulla"
+    },
+    "general": {
+      "save": "Salva",
+      "cancel": "Annulla",
+      "reset": "Ripristina",
+      "delete": "Elimina",
+      "add": "Aggiungi",
+      "edit": "Modifica",
+      "configure": "Configura",
+      "enabled": "Abilitato",
+      "disabled": "Disabilitato",
+      "on": "Attivo",
+      "off": "Disattivo"
+    },
+    "settings": {
+      "theme": {
+        "title": "Tema",
+        "data": {
+          "dark_mode": "Modalità Scura",
+          "light_mode": "Modalità Chiara",
+          "system_mode": "Modalità di Sistema"
+        }
+      },
+      "language": {
+        "title": "Lingua"
+      },
+      "update": {
+        "title": "Aggiorna",
+        "data": {
+          "check_for_updates": "Controlla aggiornamenti",
+          "update_available": "Aggiornamento Disponibile",
+          "no_update_available": "Nessun Aggiornamento Disponibile",
+          "update_downloaded": "Aggiornamento Scaricato",
+          "update_downloading": "Download Aggiornamento in Corso...",
+          "update_failed": "Aggiornamento Fallito",
+          "install_update": "Installa Aggiornamento",
+          "update_in_progress": "Aggiornamento in Corso"
+        }
+      }
+    },
+    "provider": {
+      "ollama": {
+        "name": "Ollama"
+      },
+      "openai": {
+        "name": "OpenAI"
+      },
+      "anthropic": {
+        "name": "Anthropic"
+      },
+      "google": {
+        "name": "Google"
+      },
+      "groq": {
+        "name": "Groq"
+      },
+      "localai": {
+        "name": "LocalAI"
+      },
+      "custom_openai": {
+        "name": "OpenAI Personalizzato"
+      },
+      "mistral": {
+        "name": "Mistral AI"
+      },
+      "perplexity": {
+        "name": "Perplexity AI"
+      },
+      "openrouter": {
+        "name": "OpenRouter"
+      },
+      "openai_azure": {
+        "name": "OpenAI Azure"
+      },
+      "generic_openai": {
+        "name": "OpenAI Generico"
+      },
+      "codestral": {
+        "name": "Codestral"
+      },
+      "veniceai": {
+        "name": "VeniceAI"
+      }
+    },
+    "help": {
+      "no_api_key": "Fornisci una Chiave API per configurare questo provider.",
+      "no_url": "Fornisci un URL per configurare questo provider.",
+      "no_deployment_id": "Fornisci un ID di Deployment per configurare questo provider.",
+      "no_endpoint": "Fornisci un Endpoint per configurare questo provider.",
+      "no_api_version": "Fornisci una Versione API per configurare questo provider.",
+      "enable_validation": "Abilita la validazione per questo provider. Questo tenterà di connettersi all'API per validare le tue impostazioni.",
+      "disable_think_mode": "Disabilita 'Modalità Pensiero' per Ollama. Questo impedirà a Ollama di usare processi di pensiero interni per generare risposte.",
+      "rag_prompt": "Prompt per la Generazione Aumentata tramite Recupero (RAG).",
+      "rag_vector_database_source": "Sorgente per il database vettoriale.",
+      "rag_embedding_model": "Modello di embedding per RAG."
+    },
+    "common": {
+      "api_key_help": "Chiave API per questo provider. Puoi trovarla nelle impostazioni del tuo provider.",
+      "model_help": "Il modello da usare per questo provider. Puoi trovare un elenco di modelli disponibili nella documentazione del tuo provider.",
+      "temperature_help": "La temperatura del modello. Valori più alti significano che il modello correrà più rischi. Prova 0.7 per applicazioni più creative e 0.2 per applicazioni che richiedono maggiore precisione.",
+      "max_input_tokens_help": "Il numero massimo di token da inviare al modello per l'input.",
+      "max_output_tokens_help": "Il numero massimo di token da generare nella risposta del modello."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Opzioni del Suggeritore di Automazioni AI",
+        "title": "Opzioni del Suggeritore di Automazione AI",
+        "description": "Opzioni per configurare il funzionamento del Suggeritore di Automazione AI.",
         "data": {
-          "api_key": "Chiave API",
-          "model": "Modello",
-          "temperature": "Temperatura",
-          "max_input_tokens": "Token di input massimi",
-          "max_output_tokens": "Token di output massimi",
-          "localai_ip": "Indirizzo IP di LocalAI",
-          "localai_port": "Porta di LocalAI",
-          "localai_https": "Usa HTTPS per LocalAI",
-          "ollama_ip": "Indirizzo IP di Ollama",
-          "ollama_port": "Porta di Ollama",
-          "ollama_https": "Usa HTTPS per Ollama",
-          "ollama_model": "Modello Ollama",
-          "ollama_temperature": "Temperatura (Ollama)",
-          "ollama_disable_think": "Disabilita Modalità Pensiero (Ollama)",
-          "custom_openai_endpoint": "Endpoint OpenAI Personalizzato",
-          "custom_openai_api_key": "Chiave API OpenAI Personalizzata",
-          "custom_openai_model": "Modello OpenAI Personalizzato",
-          "custom_openai_temperature": "Temperatura (OpenAI Personalizzato)",
-          "mistral_api_key": "Chiave API Mistral",
-          "mistral_model": "Modello Mistral",
-          "mistral_temperature": "Temperatura (Mistral AI)",
-          "perplexity_api_key": "Chiave API Perplexity",
-          "perplexity_model": "Modello Perplexity",
-          "perplexity_temperature": "Temperatura (Perplexity AI)",
-          "openrouter_api_key": "Chiave API OpenRouter",
-          "openrouter_model": "Modello OpenRouter",
-          "openrouter_reasoning_max_tokens": "Max Token di Ragionamento OpenRouter",
-          "openrouter_temperature": "Temperatura (OpenRouter)",
-          "openai_azure_api_key": "Chiave API Azure OpenAI",
-          "openai_azure_deployment_id": "ID Deployment Azure",
-          "openai_azure_endpoint": "Endpoint Azure",
-          "openai_azure_api_version": "Versione API Azure",
-          "openai_azure_temperature": "Temperatura (OpenAI Azure)",
-          "generic_openai_api_endpoint": "URL API completa di OpenAI generico (deve terminare con 'completions')",
-          "generic_openai_api_key": "Chiave API OpenAI Generico",
-          "generic_openai_model": "Modello OpenAI Generico",
-          "generic_openai_temperature": "Temperatura (OpenAI Generico)",
-          "generic_openai_validation_endpoint": "URL di validazione (OpenAI Generico, deve terminare con 'models')",
-          "generic_openai_enable_validation": "Abilita Validazione (OpenAI Generico)",
-          "max_input_tokens": "Numero massimo di token di input",
-          "max_output_tokens": "Numero massimo di token di output",
-          "codestral_api_key": "Chiave API Codestral",
-          "codestral_model": "Modello Codestral",
-          "codestral_temperature": "Temperatura (Codestral)",
-          "veniceai_api_key": "Chiave API VeniceAI",
-          "veniceai_model": "Modello VeniceAI",
-          "veniceai_temperature": "Temperatura (VeniceAI)"
-        },
-        "description": "Regola le impostazioni per i tuoi provider di intelligenza artificiale. Verranno utilizzati i campi pertinenti al provider configurato. Le impostazioni comuni come i limiti dei token sono configurate per provider."
-      }
-    },
-    "error": {
-      "invalid_input": "One or more values are invalid."
-    }
-  },
-  "services": {
-    "generate_suggestions": {
-      "name": "Generate Suggestions",
-      "description": "Manually trigger AI automation suggestions.",
-      "fields": {
-        "provider_config": {
-          "name": "Provider Configuration",
-          "description": "Which provider configuration to use (if you have multiple)"
-        },
-        "custom_prompt": {
-          "name": "Custom Prompt",
-          "description": "Optional custom prompt to override the default system prompt or guide the suggestions towards specific themes"
-        },
-        "all_entities": {
-          "name": "Consider All Entities",
-          "description": "If true, consider all entities instead of just new entities."
-        },
-        "domains": {
-          "name": "Domains",
-          "description": "List of domains to consider. If empty, consider all domains."
-        },
-        "entity_limit": {
-          "name": "Entity Limit",
-          "description": "Maximum number of entities to consider (randomly selected)."
-        },
-        "automation_read_yaml": {
-          "name": "Read 'automations.yaml' file",
-          "description": "Reads and appends the YAML code of the automations found in the 'automations.yaml' file. This action will use a lot of input tokens, use it with care and with models with a large context window (e.g. Gemini)."
-        },
-        "automation_limit": {
-          "name": "Limite Automazioni",
-          "description": "Numero massimo di automazioni da analizzare (predefinito: 100)."
-        },
-        "include_entity_details": {
-          "name": "Includi Dettagli Entità",
-          "description": "Includere informazioni dettagliate sulle entità (attributi e informazioni sul dispositivo) nel prompt. Disabilitare questa opzione riduce l'utilizzo dei token ma fornisce meno contesto all'IA."
+          "provider_config": {
+            "name": "Configurazione del provider",
+            "description": "Quale configurazione del provider utilizzare (se ne hai più di una)"
+          },
+          "custom_prompt": {
+            "name": "Prompt personalizzato",
+            "description": "Prompt personalizzato opzionale per sovrascrivere il prompt di sistema predefinito o guidare i suggerimenti verso temi specifici"
+          },
+          "all_entities": {
+            "name": "Considera Tutte le Entità",
+            "description": "Se vero, considera tutte le entità invece delle sole nuove entità."
+          },
+          "domains": {
+            "name": "Domini",
+            "description": "Elenco di domini da considerare. Se vuoto, considera tutti i domini."
+          },
+          "entity_limit": {
+            "name": "Limite Entità",
+            "description": "Numero massimo di entità da considerare (selezionate casualmente)."
+          },
+          "automation_read_yaml": {
+            "name": "Leggi il file 'automations.yaml'",
+            "description": "Legge e aggiunge il codice YAML delle automazioni trovate nel file 'automations.yaml'. Questa azione utilizzerà molti token di input, usala con cautela e con modelli con una grande finestra di contesto (es. Gemini)."
+          },
+          "automation_limit": {
+            "name": "Limite Automazioni",
+            "description": "Numero massimo di automazioni da analizzare (predefinito: 100)."
+          },
+          "include_entity_details": {
+            "name": "Includi Dettagli Entità",
+            "description": "Includere informazioni dettagliate sulle entità (attributi e informazioni sul dispositivo) nel prompt. Disabilitare questa opzione riduce l'utilizzo dei token ma fornisce meno contesto all'IA."
+          }
         }
       }
     }

@@ -586,7 +586,7 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
             if not re.match(r"^https?://", endpoint):
                 raise ValueError("Generic OpenAI endpoint must start with http:// or https://")
 
-            api_key = self._opt(CONF_GENERIC_OPENAI_API_KEY)
+            api_key = self._opt(CONF_API_KEY)
             model = self._opt(CONF_GENERIC_OPENAI_MODEL, DEFAULT_MODELS["Generic OpenAI"])
             temperature = self._opt(CONF_GENERIC_OPENAI_TEMPERATURE, DEFAULT_TEMPERATURE)
             in_budget, out_budget = self._budgets()
@@ -965,7 +965,7 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
             if not endpoint.endswith("/v1/chat/completions"):
                 endpoint = endpoint.rstrip("/") + "/v1/chat/completions"
 
-            api_key  = self._opt(CONF_CUSTOM_OPENAI_API_KEY)
+            api_key  = self._opt(CONF_API_KEY)
             model    = self._opt(CONF_CUSTOM_OPENAI_MODEL, DEFAULT_MODELS["Custom OpenAI"])
             temperature = self._opt(CONF_CUSTOM_OPENAI_TEMPERATURE, DEFAULT_TEMPERATURE)
             in_budget, out_budget = self._budgets()
@@ -1083,9 +1083,9 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
     # ---------------- Codestral ---------------------------------------------
     async def _codestral(self, prompt: str) -> str | None:
         try:
-            api_key = self._opt(CONF_CODESTRAL_API_KEY)
+            api_key = self._opt(CONF_API_KEY)
             model = self._opt(CONF_CODESTRAL_MODEL, DEFAULT_MODELS["Codestral"])
-            temperature = self._opt(CONF_CODESTRAL_TEMPERATURE, DEFAULT_TEMPERATURE)
+            temperature = self._opt(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
             in_budget, out_budget = self._budgets()
             if not api_key:
                 raise ValueError("Codestral API key not configured")
@@ -1277,9 +1277,9 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
     # ---------------- Venice AI -------------------------------------------
     async def _veniceai(self, prompt: str) -> str | None:
         try:
-            api_key = self._opt(CONF_VENICEAI_API_KEY)
+            api_key = self._opt(CONF_API_KEY)
             model = self._opt(CONF_VENICEAI_MODEL, DEFAULT_MODELS["VeniceAI"])
-            temperature = self._opt(CONF_VENICEAI_TEMPERATURE, DEFAULT_TEMPERATURE)
+            temperature = self._opt(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
             in_budget, out_budget = self._budgets()
             if not api_key:
                 raise ValueError("VeniceAI API key not configured")

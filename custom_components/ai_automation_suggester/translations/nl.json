@@ -3,167 +3,253 @@
   "config": {
     "step": {
       "user": {
-        "title": "Select AI Provider",
+        "title": "Selecteer AI-provider",
         "data": {
-          "provider": "AI Provider"
+          "provider": "AI-provider"
         }
       },
       "openai": {
-        "title": "Configure OpenAI"
+        "title": "OpenAI configureren"
       },
       "anthropic": {
-        "title": "Configure Anthropic"
+        "title": "Anthropic configureren"
       },
       "google": {
-        "title": "Configure Google"
+        "title": "Google configureren"
       },
       "groq": {
-        "title": "Configure Groq"
+        "title": "Groq configureren"
       },
       "localai": {
-        "title": "Configure LocalAI",
+        "title": "LocalAI configureren",
         "data": {
-          "localai_ip": "LocalAI IP Address",
-          "localai_port": "LocalAI Port",
-          "localai_https": "Use HTTPS for LocalAI"
+          "localai_ip": "LocalAI IP-adres",
+          "localai_port": "LocalAI-poort",
+          "localai_https": "HTTPS gebruiken voor LocalAI"
         }
       },
       "ollama": {
-        "title": "Configure Ollama",
+        "title": "Ollama configureren",
         "data": {
-          "ollama_ip": "Ollama IP Address",
-          "ollama_port": "Ollama Port",
-          "ollama_https": "Use HTTPS for Ollama",
-          "ollama_disable_think": "Disable Think Mode (Ollama)"
+          "ollama_ip": "Ollama IP-adres",
+          "ollama_port": "Ollama-poort",
+          "ollama_https": "HTTPS gebruiken voor Ollama",
+          "ollama_disable_think": "Denkmodus uitschakelen (Ollama)"
         }
       },
       "custom_openai": {
-        "title": "Configure Custom OpenAI",
+        "title": "Aangepaste OpenAI configureren",
         "data": {
-          "custom_openai_endpoint": "Custom OpenAI Endpoint",
-          "custom_openai_api_key": "Custom OpenAI API Key (Optional)"
+          "custom_openai_endpoint": "Aangepast OpenAI-eindpunt"
         }
       },
       "mistral": {
-        "title": "Configure Mistral AI"
+        "title": "Mistral AI configureren"
       },
       "perplexity": {
-        "title": "Configure Perplexity AI"
+        "title": "Perplexity AI configureren"
       },
       "openrouter": {
-        "title": "Configure OpenRouter",
+        "title": "OpenRouter configureren",
         "data": {
-          "openrouter_reasoning_max_tokens": "OpenRouter Reasoning Max Tokens"
+          "openrouter_reasoning_max_tokens": "OpenRouter Redenering Maximale Tokens"
         }
       },
       "openai_azure": {
-        "title": "Configure OpenAI Azure",
+        "title": "OpenAI Azure configureren",
         "data": {
-          "openai_azure_deployment_id": "Azure Deployment ID",
-          "openai_azure_endpoint": "Azure Endpoint",
-          "openai_azure_api_version": "Azure API Version"
+          "openai_azure_deployment_id": "Azure Implementatie ID",
+          "openai_azure_endpoint": "Azure Eindpunt",
+          "openai_azure_api_version": "Azure API-versie"
         }
       },
       "generic_openai": {
-        "title": "Configure Generic OpenAI",
+        "title": "Generieke OpenAI configureren",
         "data": {
-          "generic_openai_api_endpoint": "Generic OpenAI API Full URL (should end with 'completions')",
-          "generic_openai_api_key": "Generic OpenAI API Key (Optional)",
-          "generic_openai_validation_endpoint": "Validation URL (should end with 'models')",
-          "generic_openai_enable_validation": "Enable Validation"
+          "generic_openai_api_endpoint": "Volledige URL generieke OpenAI API (moet eindigen op 'completions')",
+          "generic_openai_validation_endpoint": "Validatie-URL (moet eindigen op 'models')",
+          "generic_openai_enable_validation": "Validatie inschakelen"
         }
       },
       "common": {
-        "title": "Configure Common Settings",
-        "data": {
-          "api_key": "API Key",
-          "model": "Model",
-          "temperature": "Temperature",
-          "max_input_tokens": "Max Input Tokens",
-          "max_output_tokens": "Max Output Tokens"
-        }
-      }
-    },
-    "error": {
-      "api_error": "API validation failed: {error_message}",
-      "cannot_connect": "Failed to connect. Please check your settings and network.",
-      "unknown": "An unknown error occurred. Please check logs for details."
-    },
-    "abort": {
-      "already_configured": "This AI provider is already configured. You can edit it from the integrations page."
-    }
-  },
-  "options": {
-    "step": {
-      "init": {
-        "title": "Opties voor AI-automatiseringssuggesties",
+        "title": "Algemene instellingen configureren",
         "data": {
           "api_key": "API-sleutel",
           "model": "Model",
           "temperature": "Temperatuur",
           "max_input_tokens": "Maximale invoertokens",
-          "max_output_tokens": "Maximale uitvoertokens",
-          "localai_ip": "LocalAI IP-adres",
-          "localai_port": "LocalAI-poort",
-          "localai_https": "Gebruik HTTPS voor LocalAI",
-          "ollama_ip": "Ollama IP-adres",
-          "ollama_port": "Ollama-poort",
-          "ollama_https": "Gebruik HTTPS voor Ollama",
-          "ollama_disable_think": "Denkmodus uitschakelen (Ollama)",
-          "custom_openai_endpoint": "Aangepast OpenAI-eindpunt",
-          "custom_openai_api_key": "Aangepaste OpenAI API-sleutel",
-          "openrouter_reasoning_max_tokens": "OpenRouter Redenering Max Tokens",
-          "openai_azure_deployment_id": "Azure-implementatie-ID",
-          "openai_azure_endpoint": "Azure-eindpunt",
-          "openai_azure_api_version": "Azure API-versie",
-          "generic_openai_api_endpoint": "Generieke OpenAI API Volledige URL (moet eindigen op 'completions')",
-          "generic_openai_api_key": "Generieke OpenAI API-sleutel",
-          "generic_openai_validation_endpoint": "Validatie-URL (Generieke OpenAI, moet eindigen op 'models')",
-          "generic_openai_enable_validation": "Validatie inschakelen (Generieke OpenAI)"
-        },
-        "description": "Pas de instellingen voor uw AI-providers aan. Velden die relevant zijn voor uw geconfigureerde provider worden gebruikt. Algemene instellingen zoals tokenlimieten worden per provider geconfigureerd."
+          "max_output_tokens": "Maximale uitvoertokens"
+        }
+      },
+      "codestral": {
+        "title": "Codestral configureren"
+      },
+      "veniceai": {
+        "title": "Venice AI configureren"
       }
     },
     "error": {
-      "invalid_input": "One or more values are invalid."
+      "api_error": "API-validatie mislukt: {error_message}",
+      "cannot_connect": "Verbinding mislukt. Controleer uw instellingen en netwerk.",
+      "unknown": "Er is een onbekende fout opgetreden. Controleer de logboeken voor details."
+    },
+    "abort": {
+      "already_configured": "Deze AI-provider is al geconfigureerd. U kunt deze bewerken via de integratiepagina.",
+      "missing_api_key": "API-sleutel ontbreekt. Geef een API-sleutel op om te configureren.",
+      "missing_url": "URL ontbreekt. Geef een URL op om te configureren.",
+      "missing_deployment_id": "Implementatie-ID ontbreekt. Geef een implementatie-ID op om te configureren.",
+      "missing_endpoint": "Eindpunt ontbreekt. Geef een eindpunt op om te configureren.",
+      "missing_api_version": "API-versie ontbreekt. Geef een API-versie op om te configureren."
+    },
+    "confirmation": {
+      "delete": "Weet u zeker dat u deze configuratie wilt verwijderen?",
+      "delete_confirm": "Verwijderen",
+      "delete_cancel": "Annuleren",
+      "reset": "Weet u zeker dat u deze configuratie wilt resetten? Alle instellingen worden verwijderd.",
+      "reset_confirm": "Resetten",
+      "reset_cancel": "Annuleren"
+    },
+    "general": {
+      "save": "Opslaan",
+      "cancel": "Annuleren",
+      "reset": "Resetten",
+      "delete": "Verwijderen",
+      "add": "Toevoegen",
+      "edit": "Bewerken",
+      "configure": "Configureren",
+      "enabled": "Ingeschakeld",
+      "disabled": "Uitgeschakeld",
+      "on": "Aan",
+      "off": "Uit"
+    },
+    "settings": {
+      "theme": {
+        "title": "Thema",
+        "data": {
+          "dark_mode": "Donkere modus",
+          "light_mode": "Lichte modus",
+          "system_mode": "Systeemmodus"
+        }
+      },
+      "language": {
+        "title": "Taal"
+      },
+      "update": {
+        "title": "Update",
+        "data": {
+          "check_for_updates": "Controleren op updates",
+          "update_available": "Update beschikbaar",
+          "no_update_available": "Geen update beschikbaar",
+          "update_downloaded": "Update gedownload",
+          "update_downloading": "Update downloaden...",
+          "update_failed": "Update mislukt",
+          "install_update": "Update installeren",
+          "update_in_progress": "Update bezig"
+        }
+      }
+    },
+    "provider": {
+      "ollama": {
+        "name": "Ollama"
+      },
+      "openai": {
+        "name": "OpenAI"
+      },
+      "anthropic": {
+        "name": "Anthropic"
+      },
+      "google": {
+        "name": "Google"
+      },
+      "groq": {
+        "name": "Groq"
+      },
+      "localai": {
+        "name": "LocalAI"
+      },
+      "custom_openai": {
+        "name": "Aangepaste OpenAI"
+      },
+      "mistral": {
+        "name": "Mistral AI"
+      },
+      "perplexity": {
+        "name": "Perplexity AI"
+      },
+      "openrouter": {
+        "name": "OpenRouter"
+      },
+      "openai_azure": {
+        "name": "OpenAI Azure"
+      },
+      "generic_openai": {
+        "name": "Generieke OpenAI"
+      },
+      "codestral": {
+        "name": "Codestral"
+      },
+      "veniceai": {
+        "name": "Venice AI"
+      }
+    },
+    "help": {
+      "no_api_key": "Geef een API-sleutel op om deze provider te configureren.",
+      "no_url": "Geef een URL op om deze provider te configureren.",
+      "no_deployment_id": "Geef een implementatie-ID op om deze provider te configureren.",
+      "no_endpoint": "Geef een eindpunt op om deze provider te configureren.",
+      "no_api_version": "Geef een API-versie op om deze provider te configureren.",
+      "enable_validation": "Validatie inschakelen voor deze provider. Hiermee wordt geprobeerd verbinding te maken met de API om uw instellingen te valideren.",
+      "disable_think_mode": "Schakel 'Denkmodus' voor Ollama uit. Dit voorkomt dat Ollama interne denkprocessen gebruikt om antwoorden te genereren.",
+      "rag_prompt": "Prompt voor Retrieval Augmented Generation (RAG).",
+      "rag_vector_database_source": "Bron voor de vectordatabase.",
+      "rag_embedding_model": "Inbeddingsmodel voor RAG."
+    },
+    "common": {
+      "api_key_help": "API-sleutel voor deze provider. U kunt deze vinden in de instellingen van uw provider.",
+      "model_help": "Het model dat voor deze provider moet worden gebruikt. U vindt een lijst met beschikbare modellen in de documentatie van uw provider.",
+      "temperature_help": "De temperatuur van het model. Hogere waarden betekenen dat het model meer risico's neemt. Probeer 0,7 voor creatievere toepassingen en 0,2 voor toepassingen die meer nauwkeurigheid vereisen.",
+      "max_input_tokens_help": "Het maximale aantal tokens dat naar het model moet worden gestuurd als invoer.",
+      "max_output_tokens_help": "Het maximale aantal tokens dat in het antwoord van het model moet worden gegenereerd."
     }
   },
-  "services": {
-    "generate_suggestions": {
-      "name": "Generate Suggestions",
-      "description": "Manually trigger AI automation suggestions.",
-      "fields": {
-        "provider_config": {
-          "name": "Provider Configuration",
-          "description": "Which provider configuration to use (if you have multiple)"
-        },
-        "custom_prompt": {
-          "name": "Custom Prompt",
-          "description": "Optional custom prompt to override the default system prompt or guide the suggestions towards specific themes"
-        },
-        "all_entities": {
-          "name": "Consider All Entities",
-          "description": "If true, consider all entities instead of just new entities."
-        },
-        "domains": {
-          "name": "Domains",
-          "description": "List of domains to consider. If empty, consider all domains."
-        },
-        "entity_limit": {
-          "name": "Entity Limit",
-          "description": "Maximum number of entities to consider (randomly selected)."
-        },
-        "automation_read_yaml": {
-          "name": "Read 'automations.yaml' file",
-          "description": "Reads and appends the YAML code of the automations found in the 'automations.yaml' file. This action will use a lot of input tokens, use it with care and with models with a large context window (e.g. Gemini)."
-        },
-        "automation_limit": {
-          "name": "Automatiseringslimiet",
-          "description": "Maximum aantal te analyseren automatiseringen (standaard: 100)."
-        },
-        "include_entity_details": {
-          "name": "Entiteitsdetails Inclusief",
-          "description": "Gedetailleerde entiteitsinformatie (attributen en apparaatinformatie) opnemen in de prompt. Uitschakelen vermindert tokenverbruik maar biedt minder context aan de AI."
+  "options": {
+    "step": {
+      "init": {
+        "title": "AI Automation Suggester Opties",
+        "description": "Opties om te configureren hoe de AI Automation Suggester werkt.",
+        "data": {
+          "provider_config": {
+            "name": "Provider Configuratie",
+            "description": "Welke provider configuratie te gebruiken (als je er meerdere hebt)"
+          },
+          "custom_prompt": {
+            "name": "Aangepaste Prompt",
+            "description": "Optionele aangepaste prompt om de standaard systeemprompt te overschrijven of de suggesties te sturen naar specifieke thema's"
+          },
+          "all_entities": {
+            "name": "Overweeg Alle Entiteiten",
+            "description": "Indien waar, overweeg alle entiteiten in plaats van alleen nieuwe entiteiten."
+          },
+          "domains": {
+            "name": "Domeinen",
+            "description": "Lijst van domeinen om te overwegen. Indien leeg, overweeg alle domeinen."
+          },
+          "entity_limit": {
+            "name": "Entiteit Limiet",
+            "description": "Maximaal aantal entiteiten om te overwegen (willekeurig geselecteerd)."
+          },
+          "automation_read_yaml": {
+            "name": "'automations.yaml' bestand lezen",
+            "description": "Leest en voegt de YAML-code van de automatiseringen gevonden in het 'automations.yaml' bestand toe. Deze actie zal veel invoertokens gebruiken, gebruik het voorzichtig en met modellen met een groot contextvenster (bijv. Gemini)."
+          },
+          "automation_limit": {
+            "name": "Automatisering Limiet",
+            "description": "Maximaal aantal te analyseren automatiseringen (standaard: 100)."
+          },
+          "include_entity_details": {
+            "name": "Entiteitsdetails opnemen",
+            "description": "Neem gedetailleerde entiteitsinformatie (attributen en apparaatinformatie) op in de prompt. Uitschakelen vermindert het tokengebruik, maar biedt minder context aan de AI."
+          }
         }
       }
     }

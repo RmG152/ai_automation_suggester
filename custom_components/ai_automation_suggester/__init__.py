@@ -58,6 +58,12 @@ async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry) ->
             "openai_azure_temperature": "temperature",
             "generic_openai_model": "model",
             "generic_openai_temperature": "temperature",
+            "custom_openai_api_key": "api_key",
+            "generic_openai_api_key": "api_key",
+            "conf_codestral_api_key": "api_key",
+            "conf_veniceai_api_key": "api_key",
+            "conf_veniceai_temperature": "temperature",
+            "conf_codestral_temperature": "temperature"
         }
 
         # Perform the migration

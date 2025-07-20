@@ -315,11 +315,11 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_custom_openai(self, user_input=None):
         async def _v(ui):
-            return await self.validator.validate_custom_openai(ui[CONF_CUSTOM_OPENAI_ENDPOINT], ui.get(CONF_CUSTOM_OPENAI_API_KEY))
+            return await self.validator.validate_custom_openai(ui[CONF_CUSTOM_OPENAI_ENDPOINT], ui.get(CONF_API_KEY))
 
         schema = vol.Schema({
             vol.Required(CONF_CUSTOM_OPENAI_ENDPOINT): str,
-            vol.Optional(CONF_CUSTOM_OPENAI_API_KEY): TextSelector(TextSelectorConfig(type="password")),
+            vol.Optional(CONF_API_KEY): TextSelector(TextSelectorConfig(type="password")),
         })
         return await self._provider_form(
             "custom_openai",
@@ -342,9 +342,9 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             return self.async_create_entry(title="AI Automation Suggester (Codestral)", data=self.data)
 
         schema = {
-            vol.Required(CONF_CODESTRAL_API_KEY): TextSelector(TextSelectorConfig(type="password")),
+            vol.Required(CONF_API_KEY): TextSelector(TextSelectorConfig(type="password")),
             vol.Optional(CONF_CODESTRAL_MODEL, default=DEFAULT_MODELS["Codestral"]): str,
-            vol.Optional(CONF_CODESTRAL_TEMPERATURE, default=DEFAULT_TEMPERATURE): vol.All(
+            vol.Optional(CONF_TEMPERATURE, default=DEFAULT_TEMPERATURE): vol.All(
                 vol.Coerce(float), vol.Range(min=0.0, max=2.0)
             ),
         }
@@ -409,11 +409,11 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             if ui.get(CONF_GENERIC_OPENAI_ENABLE_VALIDATION, False):
                 if not ui.get(CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT):
                     return "Validation endpoint is required when validation is enabled"
-                return await self.validator.validate_generic_openai(ui[CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT], ui.get(CONF_GENERIC_OPENAI_API_KEY))
+                return await self.validator.validate_generic_openai(ui[CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT], ui.get(CONF_API_KEY))
 
         schema = vol.Schema({
             vol.Required(CONF_GENERIC_OPENAI_ENDPOINT): str,
-            vol.Optional(CONF_GENERIC_OPENAI_API_KEY): TextSelector(TextSelectorConfig(type="password")),
+            vol.Optional(CONF_API_KEY): TextSelector(TextSelectorConfig(type="password")),
             vol.Optional(CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT, default=""): str,
             vol.Optional(CONF_GENERIC_OPENAI_ENABLE_VALIDATION, default=False): bool,
         })
@@ -426,9 +426,9 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_veniceai(self, user_input=None):
         schema = {
-            vol.Required(CONF_VENICEAI_API_KEY): TextSelector(TextSelectorConfig(type="password")),
+            vol.Required(CONF_API_KEY): TextSelector(TextSelectorConfig(type="password")),
             vol.Optional(CONF_VENICEAI_MODEL, default=DEFAULT_MODELS["Venice AI"]): str,
-            vol.Optional(CONF_VENICEAI_TEMPERATURE, default=DEFAULT_TEMPERATURE): vol.All(vol.Coerce(float), vol.Range(min=0.0, max=2.0)),
+            vol.Optional(CONF_TEMPERATURE, default=DEFAULT_TEMPERATURE): vol.All(vol.Coerce(float), vol.Range(min=0.0, max=2.0)),
         }
         self._add_token_fields(schema)
         return await self._provider_form(
@@ -511,7 +511,7 @@ class AIAutomationOptionsFlowHandler(config_entries.OptionsFlow):
             schema[vol.Optional(CONF_OLLAMA_DISABLE_THINK, default=self._get_option(CONF_OLLAMA_DISABLE_THINK, False))] = bool    
         elif provider == "Custom OpenAI":
             schema[vol.Optional(CONF_CUSTOM_OPENAI_ENDPOINT, default=self._get_option(CONF_CUSTOM_OPENAI_ENDPOINT))] = str
-            schema[vol.Optional(CONF_CUSTOM_OPENAI_API_KEY, default=self._get_option(CONF_CUSTOM_OPENAI_API_KEY))] = TextSelector(TextSelectorConfig(type="password"))
+            schema[vol.Optional(CONF_API_KEY, default=self._get_option(CONF_API_KEY))] = TextSelector(TextSelectorConfig(type="password"))
             schema[vol.Optional(CONF_MODEL, default=self._get_option(CONF_MODEL, DEFAULT_MODELS["Custom OpenAI"]))] = str
             schema[vol.Optional(CONF_TEMPERATURE, default=self._get_option(CONF_TEMPERATURE, DEFAULT_TEMPERATURE))] = vol.All(vol.Coerce(float), vol.Range(min=0.0, max=2.0))
         elif provider == "Mistral AI":
@@ -534,20 +534,20 @@ class AIAutomationOptionsFlowHandler(config_entries.OptionsFlow):
             schema[vol.Optional(CONF_OPENAI_AZURE_API_VERSION, default=self._get_option(CONF_OPENAI_AZURE_API_VERSION, "2025-01-01-preview"))] = str
             schema[vol.Optional(CONF_TEMPERATURE, default=self._get_option(CONF_TEMPERATURE, DEFAULT_TEMPERATURE))] = vol.All(vol.Coerce(float), vol.Range(min=0.0, max=2.0))
         elif provider == "Generic OpenAI":
-            schema[vol.Optional(CONF_GENERIC_OPENAI_API_KEY, default=self._get_option(CONF_GENERIC_OPENAI_API_KEY))] = TextSelector(TextSelectorConfig(type="password"))
+            schema[vol.Optional(CONF_API_KEY, default=self._get_option(CONF_API_KEY))] = TextSelector(TextSelectorConfig(type="password"))
             schema[vol.Optional(CONF_GENERIC_OPENAI_ENDPOINT, default=self._get_option(CONF_GENERIC_OPENAI_ENDPOINT))] = str
             schema[vol.Optional(CONF_MODEL, default=self._get_option(CONF_MODEL, DEFAULT_MODELS["Generic OpenAI"]))] = str
             schema[vol.Optional(CONF_TEMPERATURE, default=self._get_option(CONF_TEMPERATURE, DEFAULT_TEMPERATURE))] = vol.All(vol.Coerce(float), vol.Range(min=0.0, max=2.0))
             schema[vol.Optional(CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT, default=self._get_option(CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT, ""))] = str
             schema[vol.Optional(CONF_GENERIC_OPENAI_ENABLE_VALIDATION, default=self._get_option(CONF_GENERIC_OPENAI_ENABLE_VALIDATION, False))] = bool
         elif provider == "Codestral":
-            schema[vol.Optional(CONF_CODESTRAL_API_KEY, default=self._get_option(CONF_CODESTRAL_API_KEY))] = TextSelector(TextSelectorConfig(type="password"))
+            schema[vol.Optional(CONF_API_KEY, default=self._get_option(CONF_API_KEY))] = TextSelector(TextSelectorConfig(type="password"))
             schema[vol.Optional(CONF_CODESTRAL_MODEL, default=self._get_option(CONF_CODESTRAL_MODEL, DEFAULT_MODELS["Codestral"]))] = str
-            schema[vol.Optional(CONF_CODESTRAL_TEMPERATURE, default=self._get_option(CONF_CODESTRAL_TEMPERATURE, DEFAULT_TEMPERATURE))] = vol.All(vol.Coerce(float), vol.Range(min=0.0, max=2.0))
+            schema[vol.Optional(CONF_TEMPERATURE, default=self._get_option(CONF_TEMPERATURE, DEFAULT_TEMPERATURE))] = vol.All(vol.Coerce(float), vol.Range(min=0.0, max=2.0))
         elif provider == "Venice AI":
-            schema[vol.Optional(CONF_VENICEAI_API_KEY, default=self._get_option(CONF_VENICEAI_API_KEY))] = TextSelector(TextSelectorConfig(type="password"))
+            schema[vol.Optional(CONF_API_KEY, default=self._get_option(CONF_API_KEY))] = TextSelector(TextSelectorConfig(type="password"))
             schema[vol.Optional(CONF_VENICEAI_MODEL, default=self._get_option(CONF_VENICEAI_MODEL, DEFAULT_MODELS["Venice AI"]))] = str
-            schema[vol.Optional(CONF_VENICEAI_TEMPERATURE, default=self._get_option(CONF_VENICEAI_TEMPERATURE, DEFAULT_TEMPERATURE))] = vol.All(
+            schema[vol.Optional(CONF_TEMPERATURE, default=self._get_option(CONF_TEMPERATURE, DEFAULT_TEMPERATURE))] = vol.All(
                 vol.Coerce(float), vol.Range(min=0.0, max=2.0)
             )
       
