@@ -167,8 +167,11 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
                 return self.data
 
             prompt = await self._build_prompt(picked)
-            response = await self._dispatch(prompt)
+            _LOGGER.debug("Built prompt with %d entities: %s", len(picked), prompt)
 
+            response = await self._dispatch(prompt)
+            _LOGGER.debug("Received response from provider: %s", response)
+            
             if response:
                 match = YAML_RE.search(response)
                 yaml_block = match.group(1).strip() if match else None

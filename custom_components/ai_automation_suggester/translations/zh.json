@@ -245,6 +245,10 @@
         "automation_limit": {
           "name": "自动化数量上限",
           "description": "要分析的自动化最大数量（默认：100）。"
+        },
+        "include_entity_details": {
+          "name": "包含实体详情",
+          "description": "在提示中包含详细的实体信息（属性和设备信息）。禁用可减少令牌使用，但为 AI 提供的上下文较少。"
         }
       }
     }

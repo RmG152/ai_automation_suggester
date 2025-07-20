@@ -245,6 +245,10 @@
         "automation_limit": {
           "name": "Automatiseringslimiet",
           "description": "Maximum aantal te analyseren automatiseringen (standaard: 100)."
+        },
+        "include_entity_details": {
+          "name": "Entiteitsdetails Inclusief",
+          "description": "Gedetailleerde entiteitsinformatie (attributen en apparaatinformatie) opnemen in de prompt. Uitschakelen vermindert tokenverbruik maar biedt minder context aan de AI."
         }
       }
     }

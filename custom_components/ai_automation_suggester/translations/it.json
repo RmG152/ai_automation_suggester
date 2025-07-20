@@ -263,6 +263,10 @@
         "automation_limit": {
           "name": "Limite Automazioni",
           "description": "Numero massimo di automazioni da analizzare (predefinito: 100)."
+        },
+        "include_entity_details": {
+          "name": "Includi Dettagli Entità",
+          "description": "Includere informazioni dettagliate sulle entità (attributi e informazioni sul dispositivo) nel prompt. Disabilitare questa opzione riduce l'utilizzo dei token ma fornisce meno contesto all'IA."
         }
       }
     }

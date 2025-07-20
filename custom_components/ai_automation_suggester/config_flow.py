@@ -645,7 +645,7 @@ class AIAutomationOptionsFlowHandler(config_entries.OptionsFlow):
             schema[vol.Optional(CONF_CODESTRAL_API_KEY, default=self._get_option(CONF_CODESTRAL_API_KEY))] = TextSelector(TextSelectorConfig(type="password"))
             schema[vol.Optional(CONF_CODESTRAL_MODEL, default=self._get_option(CONF_CODESTRAL_MODEL, DEFAULT_MODELS["Codestral"]))] = str
             schema[vol.Optional(CONF_CODESTRAL_TEMPERATURE, default=self._get_option(CONF_CODESTRAL_TEMPERATURE, DEFAULT_TEMPERATURE))] = vol.All(vol.Coerce(float), vol.Range(min=0.0, max=2.0))
-        elif provider == "Venice AI"
+        elif provider == "Venice AI":
             schema[vol.Optional(CONF_VENICEAI_API_KEY, default=self._get_option(CONF_VENICEAI_API_KEY))] = TextSelector(TextSelectorConfig(type="password"))
             schema[vol.Optional(CONF_VENICEAI_MODEL, default=self._get_option(CONF_VENICEAI_MODEL, DEFAULT_MODELS["Venice AI"]))] = str
             schema[vol.Optional(CONF_VENICEAI_TEMPERATURE, default=self._get_option(CONF_VENICEAI_TEMPERATURE, DEFAULT_TEMPERATURE))] = vol.All(

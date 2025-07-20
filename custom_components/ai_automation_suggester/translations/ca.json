@@ -273,6 +273,10 @@
         "automation_limit": {
           "name": "Límit d'Automatitzacions",
           "description": "Nombre màxim d'automatitzacions a analitzar (per defecte: 100)."
+        },
+        "include_entity_details": {
+          "name": "Incloure Detalls d'Entitats",
+          "description": "Incloure informació detallada de les entitats (atributs i informació del dispositiu) al prompt. Desactivar això redueix l'ús de tokens però proporciona menys context a la IA."
         }
       }
     }

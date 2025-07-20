@@ -273,6 +273,10 @@
         "automation_limit": {
           "name": "Limit für Automatisierungen",
           "description": "Maximale Anzahl der zu analysierenden Automatisierungen (Standard: 100)."
+        },
+        "include_entity_details": {
+          "name": "Entitätsdetails einschließen",
+          "description": "Detaillierte Entitätsinformationen (Attribute und Geräteinformationen) in den Prompt einbeziehen. Das Deaktivieren reduziert den Token-Verbrauch, bietet aber weniger Kontext für die KI."
         }
       }
     }
