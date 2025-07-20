@@ -986,6 +986,11 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
                 messages.append({"role": "system", "content": "/no_think"})
             messages.append({"role": "user", "content": prompt})
 
+            headers = {"Content-Type": "application/json"}
+
+            if api_key:
+                headers["Authorization"] = f"Bearer {api_key}"
+
             body = {
                 "model": model,
                 "messages": messages,
@@ -998,7 +1003,7 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
 
             timeout = aiohttp.ClientTimeout(total=900)
 
-            async with self.session.post(endpoint, json=body, timeout=timeout) as resp:
+            async with self.session.post(endpoint, headers=headers, json=body, timeout=timeout) as resp:
                 if resp.status != 200:
                     self._last_error = (
                         f"Open Web UI error {resp.status}: {await resp.text()}"
