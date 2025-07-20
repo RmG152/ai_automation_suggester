@@ -17,24 +17,22 @@
           "temperature": "Temperature",
           "max_input_tokens": "Max Input Tokens",
           "max_output_tokens": "Max Output Tokens",
-
           "generic_openai_api_endpoint": "Generic OpenAI API Full URL (should end with 'completions')",
           "generic_openai_validation_endpoint": "Validation URL (should end with 'models')",
           "generic_openai_enable_validation": "Enable Validation",
-
           "openai_azure_deployment_id": "Azure Deployment ID",
           "openai_azure_endpoint": "Azure Endpoint",
           "openai_azure_api_version": "Azure API Version",
-          
           "openrouter_reasoning_max_tokens": "OpenRouter Reasoning Max Tokens",
-
           "ollama_ip": "Ollama IP Address",
           "ollama_port": "Ollama Port",
           "ollama_https": "Use HTTPS for Ollama",
           "ollama_disable_think": "Disable Think Mode (Ollama)",
-
+          "openwebui_ip": "Open Web UI IP Address",
+          "openwebui_port": "Open Web UI Port",
+          "openwebui_https": "Use HTTPS for Open Web UI",
+          "openwebui_disable_think": "Disable Think Mode (Open Web UI)",
           "custom_openai_endpoint": "Custom OpenAI Endpoint",
-
           "localai_ip": "LocalAI IP Address",
           "localai_port": "LocalAI Port",
           "localai_https": "Use HTTPS for LocalAI"
@@ -68,6 +66,10 @@
           "ollama_port": "Ollama Port",
           "ollama_https": "Use HTTPS for Ollama",
           "ollama_disable_think": "Disable Think Mode (Ollama)",
+          "openwebui_ip": "Open Web UI IP Address",
+          "openwebui_port": "Open Web UI Port",
+          "openwebui_https": "Use HTTPS for Open Web UI",
+          "openwebui_disable_think": "Disable Think Mode (Open Web UI)",
           "custom_openai_endpoint": "Custom OpenAI Endpoint",
           "openrouter_reasoning_max_tokens": "OpenRouter Reasoning Max Tokens",
           "openai_azure_deployment_id": "Azure Deployment ID",

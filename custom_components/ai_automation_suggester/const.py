@@ -56,6 +56,12 @@ CONF_OLLAMA_PORT = "ollama_port"
 CONF_OLLAMA_HTTPS = "ollama_https"
 CONF_OLLAMA_DISABLE_THINK = "ollama_disable_think"
 
+# Open Web UI
+CONF_OPENWEBUI_IP_ADDRESS = "openwebui_ip"
+CONF_OPENWEBUI_PORT = "openwebui_port"
+CONF_OPENWEBUI_HTTPS = "openwebui_https"
+CONF_OPENWEBUI_DISABLE_THINK = "openwebui_disable_think"
+
 # Custom OpenAI
 CONF_CUSTOM_OPENAI_ENDPOINT = "custom_openai_endpoint"
 
@@ -92,6 +98,8 @@ DEFAULT_MODELS = {
     "OpenRouter": "meta-llama/llama-4-maverick:free",
     "Generic OpenAI": "gpt-3.5-turbo",
     "Codestral": "codestral-medium",
+    "Venice AI": "venice-uncensored",
+    "Open Web UI": "llama2",
 }
 
 # ─────────────────────────────────────────────────────────────
@@ -120,6 +128,7 @@ ENDPOINT_GOOGLE = "https://generativelanguage.googleapis.com/v1beta2/models/{mod
 ENDPOINT_GROQ = "https://api.groq.com/openai/v1/chat/completions"
 ENDPOINT_LOCALAI = "{protocol}://{ip_address}:{port}/v1/chat/completions"
 ENDPOINT_OLLAMA = "{protocol}://{ip_address}:{port}/api/chat"
+ENDPOINT_OPENWEBUI = "{protocol}://{ip_address}:{port}/api/chat"
 ENDPOINT_MISTRAL = "https://api.mistral.ai/v1/chat/completions"
 ENDPOINT_PERPLEXITY = "https://api.perplexity.ai/chat/completions"
 ENDPOINT_OPENROUTER = "https://openrouter.ai/api/v1/chat/completions"

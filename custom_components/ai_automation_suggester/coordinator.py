@@ -433,6 +433,7 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
                 "Generic OpenAI": self._generic_openai,
                 "Codestral": self._codestral,
                 "Venice AI": self._veniceai,
+                "Open Web UI": self._openwebui,
             }[provider](prompt)
         except KeyError:
             self._last_error = f"Unknown provider '{provider}'"
@@ -595,8 +596,14 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
                 prompt = prompt[: in_budget * 4]
 
             headers = {"Content-Type": "application/json"}
+
             if api_key:
                 headers["Authorization"] = f"Bearer {api_key}"
+
+            # OpenRouter specific headers
+            if "openrouter.com" in endpoint:
+                headers["HTTP-Referer"] = "https://home-assistant.io"
+                headers["X-Title"] = "Home Assistant AI Automation Suggester"
 
             body = {
                 "model": model,
@@ -955,6 +962,70 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
             _LOGGER.exception("Unexpected error in Ollama API call:")            
             return None
 
+    # ---------------- Open Web UI ---------------------------------------------------
+    async def _openwebui(self, prompt: str) -> str | None:
+        try:
+            ip = self._opt(CONF_OPENWEBUI_IP_ADDRESS)
+            port = self._opt(CONF_OPENWEBUI_PORT)
+            https = self._opt(CONF_OPENWEBUI_HTTPS, False)
+            model = self._opt(CONF_MODEL, DEFAULT_MODELS["Open Web UI"])
+            temperature = self._opt(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
+            disable_think = self._opt(CONF_OPENWEBUI_DISABLE_THINK, False)
+            in_budget, out_budget = self._budgets()
+            if not ip or not port:
+                raise ValueError("Open Web UI not fully configured")
+
+            if len(prompt) // 4 > in_budget:
+                prompt = prompt[: in_budget * 4]
+
+            proto = "https" if https else "http"
+            endpoint = ENDPOINT_OPENWEBUI.format(protocol=proto, ip_address=ip, port=port)
+
+            messages = []
+            if disable_think:
+                messages.append({"role": "system", "content": "/no_think"})
+            messages.append({"role": "user", "content": prompt})
+
+            body = {
+                "model": model,
+                "messages": messages,
+                "stream": False,
+                "options": {
+                    "temperature": temperature,
+                    "num_predict": out_budget,
+                },
+            }
+
+            timeout = aiohttp.ClientTimeout(total=900)
+
+            async with self.session.post(endpoint, json=body, timeout=timeout) as resp:
+                if resp.status != 200:
+                    self._last_error = (
+                        f"Open Web UI error {resp.status}: {await resp.text()}"
+                    )
+                    _LOGGER.error(self._last_error)
+                    return None
+
+                res = await resp.json()
+
+            if not isinstance(res, dict):
+                raise ValueError(f"Unexpected response format: {res}")
+                
+            if "message" not in res:
+                raise ValueError(f"Response missing 'message' array: {res}")
+                
+            if "content" not in res["message"]:
+                raise ValueError(f"Message missing 'content': {res['message']}")
+                
+            return res["message"]["content"]
+        
+        except Exception as err:
+            self._last_error = f"Open Web UI processing error: {str(err)}"
+            _LOGGER.error(self._last_error)
+            # Log stack trace for unexpected errors
+            _LOGGER.exception("Unexpected error in Open Web UI API call:")            
+            return None
+
     # ---------------- Custom‑endpoint OpenAI -------------------------------
     async def _custom_openai(self, prompt: str) -> str | None:
         try:
@@ -975,8 +1046,14 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
                 prompt = prompt[: in_budget * 4]
 
             headers = {"Content-Type": "application/json"}
+
             if api_key:
                 headers["Authorization"] = f"Bearer {api_key}"
+
+            # OpenRouter specific headers
+            if "openrouter.com" in endpoint:
+                headers["HTTP-Referer"] = "https://home-assistant.io"
+                headers["X-Title"] = "Home Assistant AI Automation Suggester"
 
             body = {
                 "model": model,
@@ -1221,6 +1298,8 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
             headers = {
                 "Authorization": f"Bearer {api_key}",
                 "Content-Type": "application/json",
+                "HTTP-Referer": "https://home-assistant.io", 
+                "X-Title": "Home Assistant AI Automation Suggester",
             }
             body = {
                 "model": model,

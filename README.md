@@ -46,7 +46,7 @@ The integration follows a simple, effective process:
 |------|---------------|---------|
 | **1&nbsp;· Snapshot** | Collects data about your home. | On manual trigger or schedule, the integration gathers information on your entities (including attributes), devices, areas, **and** existing automations. You can control the scope using filters and limits. |
 | **2&nbsp;· Prompt Building** | Structures the data for the AI. | This snapshot is embedded into a detailed system prompt describing your specific Home Assistant setup. You can enhance this with a *custom prompt* to steer suggestions towards specific goals (e.g., "focus on presence lighting"). |
-| **3&nbsp;· Provider Call** | Sends the prompt to the AI. | The crafted prompt is sent to your configured AI provider (OpenAI, Anthropic, Google, Groq, LocalAI, Ollama, Mistral, Perplexity). |
+| **3&nbsp;· Provider Call** | Sends the prompt to the AI. | The crafted prompt is sent to your configured AI provider (OpenAI, Anthropic, Google, Groq, LocalAI, Ollama, Mistral, Perplexity, Open Web UI, Codestral, Venice AI). |
 | **4&nbsp;· Parsing** | Processes the AI's response. | The raw response from the AI is parsed to extract key information: a human-readable `description` of the suggestion, the actual `yaml_block` code, and potentially other details. This information is stored on sensor attributes. |
 | **5&nbsp;· Surface** | Delivers the suggestions. | Suggestions appear as Home Assistant persistent notifications. You can also use sensor attributes to display suggestions on custom dashboards for easy review and implementation. |
 

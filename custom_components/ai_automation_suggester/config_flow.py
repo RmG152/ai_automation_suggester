@@ -82,6 +82,15 @@ class ProviderValidator:
         except Exception as err:
             return str(err)
 
+    async def validate_openwebui(self, ip: str, port: int, https: bool, api_key: str) -> Optional[str]:
+        hdr = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+        proto = "https" if https else "http"
+        try:
+            resp = await self.session.get(f"{proto}://{ip}:{port}/api/tags")
+            return None if resp.status == 200 else await resp.text()
+        except Exception as err:
+            return str(err)
+
     async def validate_custom_openai(self, endpoint: str, api_key: str | None) -> Optional[str]:
         hdr = {"Content-Type": "application/json"}
         if api_key:
@@ -167,9 +176,9 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                             "OpenAI Azure",
                             "OpenAI",
                             "OpenRouter",
+                            "Open Web UI",
                             "Perplexity AI",
                             "Venice AI",
-                            
                         ]
                     )
                 }
@@ -184,7 +193,7 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         
         if user_input is not None:
             # Basic validation
-            if not user_input.get(CONF_API_KEY) and self.provider not in ["LocalAI", "Ollama"]:
+            if not user_input.get(CONF_API_KEY) and self.provider not in ["LocalAI", "Ollama", "Open Web UI"]:
                 errors["base"] = "api_key_required"
             
             # Initialize validator if needed
@@ -221,6 +230,12 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                             user_input.get(CONF_OLLAMA_PORT, 11434),
                             user_input.get(CONF_OLLAMA_HTTPS, False)
                         )
+                    elif self.provider == "Open Web UI":
+                        error_msg = await self.validator.validate_openwebui(
+                            user_input.get(CONF_OPENWEBUI_IP_ADDRESS, "localhost"),
+                            user_input.get(CONF_OPENWEBUI_PORT, 11434),
+                            user_input.get(CONF_OPENWEBUI_HTTPS, False)
+                        )   
                     elif self.provider == "Custom OpenAI":
                         error_msg = await self.validator.validate_custom_openai(
                             user_input.get(CONF_CUSTOM_OPENAI_ENDPOINT, ""),
@@ -285,6 +300,13 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Optional(CONF_OLLAMA_HTTPS, default=False): bool,
                 vol.Optional(CONF_OLLAMA_DISABLE_THINK, default=False): bool,
             })
+        elif self.provider == "Open Web UI":
+            schema_dict.update({
+                vol.Optional(CONF_OPENWEBUI_IP_ADDRESS, default="localhost"): str,
+                vol.Optional(CONF_OPENWEBUI_PORT, default=11434): int,
+                vol.Optional(CONF_OPENWEBUI_HTTPS, default=False): bool,
+                vol.Optional(CONF_OPENWEBUI_DISABLE_THINK, default=False): bool,
+            })            
         elif self.provider == "Custom OpenAI":
             schema_dict[vol.Optional(CONF_CUSTOM_OPENAI_ENDPOINT)] = str
         elif self.provider == "OpenRouter":
@@ -361,7 +383,12 @@ class AIAutomationOptionsFlowHandler(config_entries.OptionsFlow):
             schema[vol.Optional(CONF_OLLAMA_IP_ADDRESS, default=self._get_option(CONF_OLLAMA_IP_ADDRESS, "localhost"))] = str
             schema[vol.Optional(CONF_OLLAMA_PORT, default=self._get_option(CONF_OLLAMA_PORT, 11434))] = int
             schema[vol.Optional(CONF_OLLAMA_HTTPS, default=self._get_option(CONF_OLLAMA_HTTPS, False))] = bool
-            schema[vol.Optional(CONF_OLLAMA_DISABLE_THINK, default=self._get_option(CONF_OLLAMA_DISABLE_THINK, False))] = bool    
+            schema[vol.Optional(CONF_OLLAMA_DISABLE_THINK, default=self._get_option(CONF_OLLAMA_DISABLE_THINK, False))] = bool
+        elif provider == "Open Web UI":
+            schema[vol.Optional(CONF_OPENWEBUI_IP_ADDRESS, default=self._get_option(CONF_OPENWEBUI_IP_ADDRESS, "localhost"))] = str
+            schema[vol.Optional(CONF_OPENWEBUI_PORT, default=self._get_option(CONF_OPENWEBUI_PORT, 11434))] = int
+            schema[vol.Optional(CONF_OPENWEBUI_HTTPS, default=self._get_option(CONF_OPENWEBUI_HTTPS, False))] = bool
+            schema[vol.Optional(CONF_OPENWEBUI_DISABLE_THINK, default=self._get_option(CONF_OPENWEBUI_DISABLE_THINK, False))] = bool
         elif provider == "Custom OpenAI":
             schema[vol.Optional(CONF_CUSTOM_OPENAI_ENDPOINT, default=self._get_option(CONF_CUSTOM_OPENAI_ENDPOINT))] = str
         elif provider == "OpenRouter":
