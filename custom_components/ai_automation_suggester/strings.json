@@ -43,7 +43,8 @@
       "api_error": "API validation failed: {error_message}",
       "cannot_connect": "Failed to connect. Please check your settings and network.",
       "auth_error": "Authentication failed. Please check your credentials.",
-      "unknown": "An unknown error occurred. Please check logs for details."
+      "unknown": "An unknown error occurred. Please check logs for details.",
+      "api_key_required": "API Key is required for this provider."
     },
     "abort": {
       "already_configured": "This AI provider is already configured. You can edit it from the integrations page."

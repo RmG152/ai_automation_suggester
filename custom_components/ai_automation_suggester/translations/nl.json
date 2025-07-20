@@ -43,7 +43,8 @@
       "api_error": "API-validatie mislukt: {error_message}",
       "cannot_connect": "Verbinding mislukt. Controleer uw instellingen en netwerk.",
       "auth_error": "Authenticatie mislukt. Controleer uw inloggegevens.",
-      "unknown": "Er is een onbekende fout opgetreden. Controleer de logboeken voor details."
+      "unknown": "Er is een onbekende fout opgetreden. Controleer de logboeken voor details.",
+      "api_key_required": "API-sleutel is vereist voor deze provider."
     },
     "abort": {
       "already_configured": "Deze AI-provider is al geconfigureerd. U kunt deze bewerken via de integratiepagina."

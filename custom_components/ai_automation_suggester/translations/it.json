@@ -43,7 +43,8 @@
       "api_error": "Validazione API fallita: {error_message}",
       "cannot_connect": "Connessione fallita. Controlla le impostazioni e la rete.",
       "auth_error": "Autenticazione fallita. Controlla le credenziali.",
-      "unknown": "Si è verificato un errore sconosciuto. Controlla i log per i dettagli."
+      "unknown": "Si è verificato un errore sconosciuto. Controlla i log per i dettagli.",
+      "api_key_required": "La chiave API è richiesta per questo provider."
     },
     "abort": {
       "already_configured": "Questo provider AI è già configurato. Puoi modificarlo dalla pagina delle integrazioni."

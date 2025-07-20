@@ -3,125 +3,118 @@
   "config": {
     "step": {
       "user": {
-        "title": "Select AI Provider",
+        "title": "Seleccionar Proveedor de IA",
         "data": {
-          "provider": "AI Provider"
+          "provider": "Proveedor de IA"
         }
       },
       "provider_config": {
-       "title": "Configure AI Provider (Current: {provider})",
-        "description": "Please enter the details for your selected provider.",
+       "title": "Configurar Proveedor de IA (Actual: {provider})",
+        "description": "Por favor, introduce los detalles de tu proveedor seleccionado.",
         "data": {
-          "api_key": "API Key",
-          "model": "Model",
-          "temperature": "Temperature",
-          "max_input_tokens": "Max Input Tokens",
-          "max_output_tokens": "Max Output Tokens",
-          "generic_openai_api_endpoint": "Generic OpenAI API Full URL (should end with 'completions')",
-          "generic_openai_validation_endpoint": "Validation URL (should end with 'models')",
-          "generic_openai_enable_validation": "Enable Validation",
-          "openai_azure_deployment_id": "Azure Deployment ID",
-          "openai_azure_endpoint": "Azure Endpoint",
-          "openai_azure_api_version": "Azure API Version",
-          "openrouter_reasoning_max_tokens": "OpenRouter Reasoning Max Tokens",
-          "ollama_ip": "Ollama IP Address",
-          "ollama_port": "Ollama Port",
-          "ollama_https": "Use HTTPS for Ollama",
-          "ollama_disable_think": "Disable Think Mode (Ollama)",
-          "openwebui_ip": "Open Web UI IP Address",
-          "openwebui_port": "Open Web UI Port",
-          "openwebui_https": "Use HTTPS for Open Web UI",
-          "openwebui_disable_think": "Disable Think Mode (Open Web UI)",
-          "custom_openai_endpoint": "Custom OpenAI Endpoint",
-          "localai_ip": "LocalAI IP Address",
-          "localai_port": "LocalAI Port",
-          "localai_https": "Use HTTPS for LocalAI"
+          "api_key": "Clave API",
+          "model": "Modelo",
+          "temperature": "Temperatura",
+          "max_input_tokens": "Máximo de tokens de entrada",
+          "max_output_tokens": "Máximo de tokens de salida",
+          "generic_openai_api_endpoint": "URL completa de la API de OpenAI genérica (debe terminar en 'completions')",
+          "generic_openai_validation_endpoint": "URL de validación (debe terminar en 'models')",
+          "generic_openai_enable_validation": "Habilitar Validación",
+          "openai_azure_deployment_id": "ID de Despliegue de Azure",
+          "openai_azure_endpoint": "Punto final de Azure",
+          "openai_azure_api_version": "Versión de la API de Azure",
+          "openrouter_reasoning_max_tokens": "Máximo de tokens de razonamiento de OpenRouter",
+          "ollama_ip": "Dirección IP de Ollama",
+          "ollama_port": "Puerto de Ollama",
+          "ollama_https": "Usar HTTPS para Ollama",
+          "ollama_disable_think": "Desactivar Modo de Pensamiento (Ollama)",
+          "custom_openai_endpoint": "Punto final de OpenAI Personalizado",
+          "localai_ip": "Dirección IP de LocalAI",
+          "localai_port": "Puerto de LocalAI",
+          "localai_https": "Usar HTTPS para LocalAI"
         }
       }
     },
     "error": {
-      "api_error": "API validation failed: {error_message}",
-      "cannot_connect": "Failed to connect. Please check your settings and network.",
-      "auth_error": "Authentication failed. Please check your credentials.",
-      "unknown": "An unknown error occurred. Please check logs for details."
+      "api_error": "Error de validación de la API: {error_message}",
+      "cannot_connect": "No se pudo conectar. Por favor, revisa tu configuración y red.",
+      "auth_error": "Autenticación fallida. Por favor, revisa tus credenciales.",
+      "unknown": "Ha ocurrido un error desconocido. Por favor, revisa los registros para más detalles.",
+      "api_key_required": "La clave API es necesaria para este proveedor."
     },
     "abort": {
-      "already_configured": "This AI provider is already configured. You can edit it from the integrations page."
+      "already_configured": "Este proveedor de IA ya está configurado. Puedes editarlo desde la página de integraciones."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "AI Automation Suggester Options",
+        "title": "Opciones del Sugeridor de Automatizaciones de IA",
         "data": {
-          "api_key": "API Key",
-          "model": "Model",
-          "temperature": "Temperature",
-          "max_input_tokens": "Max Input Tokens",
-          "max_output_tokens": "Max Output Tokens",
-          "localai_ip": "LocalAI IP Address",
-          "localai_port": "LocalAI Port",
-          "localai_https": "Use HTTPS for LocalAI",
-          "ollama_ip": "Ollama IP Address",
-          "ollama_port": "Ollama Port",
-          "ollama_https": "Use HTTPS for Ollama",
-          "ollama_disable_think": "Disable Think Mode (Ollama)",
-          "openwebui_ip": "Open Web UI IP Address",
-          "openwebui_port": "Open Web UI Port",
-          "openwebui_https": "Use HTTPS for Open Web UI",
-          "openwebui_disable_think": "Disable Think Mode (Open Web UI)",
-          "custom_openai_endpoint": "Custom OpenAI Endpoint",
-          "openrouter_reasoning_max_tokens": "OpenRouter Reasoning Max Tokens",
-          "openai_azure_deployment_id": "Azure Deployment ID",
-          "openai_azure_endpoint": "Azure Endpoint",
-          "openai_azure_api_version": "Azure API Version",
-          "generic_openai_api_endpoint": "Generic OpenAI API Full URL (should end with 'completions')",
-          "generic_openai_validation_endpoint": "Validation URL (Generic OpenAI, should end with 'models')",
-          "generic_openai_enable_validation": "Enable Validation (Generic OpenAI)"
+          "api_key": "Clave API",
+          "model": "Modelo",
+          "temperature": "Temperatura",
+          "max_input_tokens": "Máximo de tokens de entrada",
+          "max_output_tokens": "Máximo de tokens de salida",
+          "localai_ip": "Dirección IP de LocalAI",
+          "localai_port": "Puerto de LocalAI",
+          "localai_https": "Usar HTTPS para LocalAI",
+          "ollama_ip": "Dirección IP de Ollama",
+          "ollama_port": "Puerto de Ollama",
+          "ollama_https": "Usar HTTPS para Ollama",
+          "ollama_disable_think": "Desactivar Modo de Pensamiento (Ollama)",
+          "custom_openai_endpoint": "Punto final de OpenAI Personalizado",
+          "openrouter_reasoning_max_tokens": "Máximo de tokens de razonamiento de OpenRouter",
+          "openai_azure_deployment_id": "ID de Despliegue de Azure",
+          "openai_azure_endpoint": "Punto final de Azure",
+          "openai_azure_api_version": "Versión de la API de Azure",
+          "generic_openai_api_endpoint": "URL completa de la API de OpenAI genérica (debe terminar en 'completions')",
+          "generic_openai_validation_endpoint": "URL de validación (OpenAI Genérico, debe terminar en 'models')",
+          "generic_openai_enable_validation": "Habilitar Validación (OpenAI Genérico)"
         },
-        "description": "Adjust settings for your AI providers. Fields relevant to your configured provider will be used. Common settings like token limits are configured per provider."
+        "description": "Ajusta la configuración de tus proveedores de IA. Se utilizarán los campos relevantes para tu proveedor configurado. Las configuraciones comunes, como los límites de tokens, se configuran por proveedor."
       }
     },
     "error": {
-      "invalid_input": "One or more values are invalid."
+      "invalid_input": "Uno o más valores no son válidos."
     }
   },
   "services": {
     "generate_suggestions": {
-      "name": "Generate Suggestions",
-      "description": "Manually trigger AI automation suggestions.",
+      "name": "Generar Sugerencias",
+      "description": "Activar manualmente las sugerencias de automatización de IA.",
       "fields": {
         "provider_config": {
-          "name": "Provider Configuration",
-          "description": "Which provider configuration to use (if you have multiple)"
+          "name": "Configuración del proveedor",
+          "description": "Qué configuración de proveedor usar (si tienes varias)"
         },
         "custom_prompt": {
-          "name": "Custom Prompt",
-          "description": "Optional custom prompt to override the default system prompt or guide the suggestions towards specific themes"
+          "name": "Mensaje personalizado",
+          "description": "Mensaje personalizado opcional para anular el mensaje predeterminado del sistema o guiar las sugerencias hacia temas específicos"
         },
         "all_entities": {
-          "name": "Consider All Entities",
-          "description": "If true, consider all entities instead of just new entities."
+          "name": "Considerar Todas las Entidades",
+          "description": "Si es verdadero, considerar todas las entidades en lugar de solo las nuevas."
         },
         "domains": {
-          "name": "Domains",
-          "description": "List of domains to consider. If empty, consider all domains."
+          "name": "Dominios",
+          "description": "Lista de dominios a considerar. Si está vacío, se consideran todos los dominios."
         },
         "entity_limit": {
-          "name": "Entity Limit",
-          "description": "Maximum number of entities to consider (randomly selected)."
+          "name": "Límite de Entidades",
+          "description": "Número máximo de entidades a considerar (seleccionadas aleatoriamente)."
         },
         "automation_read_yaml": {
-          "name": "Read 'automations.yaml' file",
-          "description": "Reads and appends the YAML code of the automations found in the 'automations.yaml' file. This action will use a lot of input tokens, use it with care and with models with a large context window (e.g. Gemini)."
+          "name": "Leer archivo 'automations.yaml'",
+          "description": "Lee y adjunta el código YAML de las automatizaciones encontradas en el archivo 'automations.yaml'. Esta acción consumirá muchos tokens de entrada, úsala con precaución y con modelos que tengan una ventana de contexto grande (p. ej., Gemini)."
         },
         "automation_limit": {
-          "name": "Automation Limit",
-          "description": "Maximum number of automations to analyze (default: 100)."
-                },
+          "name": "Límite de Automatizaciones",
+          "description": "Número máximo de automatizaciones a analizar (por defecto: 100)."
+        },
         "include_entity_details": {
-          "name": "Include Entity Details",
-          "description": "Include detailed entity information (attributes and device info) in the prompt. Disabling this reduces token usage but provides less context to the AI."
+          "name": "Incluir Detalles de Entidades",
+          "description": "Incluir información detallada de las entidades (atributos e información del dispositivo) en el prompt. Desactivar esto reduce el uso de tokens pero proporciona menos contexto a la IA."
         }
       }
     }

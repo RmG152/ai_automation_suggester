@@ -62,7 +62,7 @@ async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry) ->
             "conf_codestral_api_key": "api_key",
             "conf_veniceai_api_key": "api_key",
             "conf_veniceai_temperature": "temperature",
-            "conf_codestral_temperature": "temperature".
+            "conf_codestral_temperature": "temperature",
             "openwebui_model": "model",
             "openwebui_temperature": "temperature",
         }

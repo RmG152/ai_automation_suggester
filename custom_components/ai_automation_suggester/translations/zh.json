@@ -43,7 +43,8 @@
       "api_error": "API 验证失败: {error_message}",
       "cannot_connect": "连接失败。请检查您的设置和网络。",
       "auth_error": "认证失败。请检查您的凭据。",
-      "unknown": "发生未知错误。请检查日志以获取详细信息。"
+      "unknown": "发生未知错误。请检查日志以获取详细信息。",
+      "api_key_required": "此提供商需要 API 密钥。"
     },
     "abort": {
       "already_configured": "此 AI 提供商已配置。您可以从集成页面编辑它。"

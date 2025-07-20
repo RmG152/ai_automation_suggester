@@ -43,7 +43,8 @@
       "api_error": "Error de validació de l'API: {error_message}",
       "cannot_connect": "No s'ha pogut connectar. Si us plau, revisa la configuració i la xarxa.",
       "auth_error": "Error d'autenticació. Si us plau, revisa les teves credencials.",
-      "unknown": "S'ha produït un error desconegut. Si us plau, revisa els registres per a més detalls."
+      "unknown": "S'ha produït un error desconegut. Si us plau, revisa els registres per a més detalls.",
+      "api_key_required": "La clau de l'API és necessària per a aquest proveïdor."
     },
     "abort": {
       "already_configured": "Aquest proveïdor d'IA ja està configurat. Pots editar-lo des de la pàgina d'integracions."

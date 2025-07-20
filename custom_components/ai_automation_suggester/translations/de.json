@@ -43,7 +43,8 @@
       "api_error": "API-Validierung fehlgeschlagen: {error_message}",
       "cannot_connect": "Verbindung fehlgeschlagen. Bitte überprüfen Sie Ihre Einstellungen und Ihr Netzwerk.",
       "auth_error": "Authentifizierung fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldeinformationen.",
-      "unknown": "Ein unbekannter Fehler ist aufgetreten. Bitte überprüfen Sie die Protokolle für Details."
+      "unknown": "Ein unbekannter Fehler ist aufgetreten. Bitte überprüfen Sie die Protokolle für Details.",
+      "api_key_required": "API-Schlüssel ist für diesen Anbieter erforderlich."
     },
     "abort": {
       "already_configured": "Dieser AI-Anbieter ist bereits konfiguriert. Sie können ihn auf der Integrationsseite bearbeiten."

@@ -273,7 +273,7 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         # Build dynamic schema based on provider capabilities
         schema_dict = {
-            vol.Required(CONF_API_KEY): TextSelector(TextSelectorConfig(type="password")),
+            vol.Optional(CONF_API_KEY): TextSelector(TextSelectorConfig(type="password")),
             vol.Optional(CONF_MODEL, default=DEFAULT_MODELS.get(self.provider, "")): str,
             vol.Optional(CONF_TEMPERATURE, default=DEFAULT_TEMPERATURE): vol.All(
                 vol.Coerce(float), vol.Range(min=0.0, max=2.0)
