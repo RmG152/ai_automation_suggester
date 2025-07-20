@@ -3,128 +3,65 @@
   "config": {
     "step": {
       "user": {
-        "title": "KI-Anbieter auswählen",
+        "title": "Select AI Provider",
         "data": {
-          "provider": "KI-Anbieter"
+          "provider": "AI Provider"
         }
       },
       "openai": {
-        "title": "OpenAI konfigurieren",
-        "data": {
-          "openai_api_key": "OpenAI API-Schlüssel",
-          "openai_model": "OpenAI-Modell",
-          "openai_temperature": "Temperatur",
-          "max_input_tokens": "Maximale Eingabe-Tokens",
-          "max_output_tokens": "Maximale Ausgabe-Tokens"
-        }
+        "title": "Configure OpenAI"
       },
       "anthropic": {
-        "title": "Anthropic konfigurieren",
-        "data": {
-          "anthropic_api_key": "Anthropic API-Schlüssel",
-          "anthropic_model": "Anthropic-Modell",
-          "anthropic_temperature": "Temperatur",
-          "max_input_tokens": "Maximale Eingabe-Tokens",
-          "max_output_tokens": "Maximale Ausgabe-Tokens"
-        }
+        "title": "Configure Anthropic"
       },
       "google": {
-        "title": "Google konfigurieren",
-        "data": {
-          "google_api_key": "Google API-Schlüssel",
-          "google_model": "Google-Modell",
-          "google_temperature": "Temperatur",
-          "max_input_tokens": "Maximale Eingabe-Tokens",
-          "max_output_tokens": "Maximale Ausgabe-Tokens"
-        }
+        "title": "Configure Google"
       },
       "groq": {
-        "title": "Groq konfigurieren",
-        "data": {
-          "groq_api_key": "Groq API-Schlüssel",
-          "groq_model": "Groq-Modell",
-          "groq_temperature": "Temperatur",
-          "max_input_tokens": "Maximale Eingabe-Tokens",
-          "max_output_tokens": "Maximale Ausgabe-Tokens"
-        }
+        "title": "Configure Groq"
       },
       "localai": {
-        "title": "LocalAI konfigurieren",
+        "title": "Configure LocalAI",
         "data": {
-          "localai_ip": "LocalAI IP-Adresse",
+          "localai_ip": "LocalAI IP Address",
           "localai_port": "LocalAI Port",
-          "localai_https": "HTTPS für LocalAI verwenden",
-          "localai_model": "LocalAI-Modell",
-          "localai_temperature": "Temperatur",
-          "max_input_tokens": "Maximale Eingabe-Tokens",
-          "max_output_tokens": "Maximale Ausgabe-Tokens"
+          "localai_https": "Use HTTPS for LocalAI"
         }
       },
       "ollama": {
-        "title": "Ollama konfigurieren",
+        "title": "Configure Ollama",
         "data": {
-          "ollama_ip": "Ollama IP-Adresse",
+          "ollama_ip": "Ollama IP Address",
           "ollama_port": "Ollama Port",
-          "ollama_https": "HTTPS für Ollama verwenden",
-          "ollama_model": "Ollama-Modell",
-          "ollama_temperature": "Temperatur",
-          "ollama_disable_think": "Denkmodus deaktivieren (Ollama)",
-          "max_input_tokens": "Maximale Eingabe-Tokens",
-          "max_output_tokens": "Maximale Ausgabe-Tokens"
+          "ollama_https": "Use HTTPS for Ollama",
+          "ollama_disable_think": "Disable Think Mode (Ollama)"
         }
       },
       "custom_openai": {
-        "title": "Benutzerdefiniertes OpenAI konfigurieren",
+        "title": "Configure Custom OpenAI",
         "data": {
-          "custom_openai_endpoint": "Benutzerdefinierter OpenAI-Endpunkt",
-          "custom_openai_api_key": "Benutzerdefinierter OpenAI API-Schlüssel (Optional)",
-          "custom_openai_model": "Benutzerdefiniertes OpenAI-Modell",
-          "custom_openai_temperature": "Temperatur",
-          "max_input_tokens": "Maximale Eingabe-Tokens",
-          "max_output_tokens": "Maximale Ausgabe-Tokens"
+          "custom_openai_endpoint": "Custom OpenAI Endpoint",
+          "custom_openai_api_key": "Custom OpenAI API Key (Optional)"
         }
       },
       "mistral": {
-        "title": "Mistral AI konfigurieren",
-        "data": {
-          "mistral_api_key": "Mistral API-Schlüssel",
-          "mistral_model": "Mistral-Modell",
-          "mistral_temperature": "Temperatur",
-          "max_input_tokens": "Maximale Eingabe-Tokens",
-          "max_output_tokens": "Maximale Ausgabe-Tokens"
-        }
+        "title": "Configure Mistral AI"
       },
       "perplexity": {
-        "title": "Perplexity AI konfigurieren",
-        "data": {
-          "perplexity_api_key": "Perplexity API-Schlüssel",
-          "perplexity_model": "Perplexity-Modell",
-          "perplexity_temperature": "Temperatur",
-          "max_input_tokens": "Maximale Eingabe-Tokens",
-          "max_output_tokens": "Maximale Ausgabe-Tokens"
-        }
+        "title": "Configure Perplexity AI"
       },
       "openrouter": {
-        "title": "OpenRouter konfigurieren",
+        "title": "Configure OpenRouter",
         "data": {
-          "openrouter_api_key": "OpenRouter API-Schlüssel",
-          "openrouter_model": "OpenRouter-Modell",
-          "openrouter_reasoning_max_tokens": "Maximale Tokens für Schlussfolgerungen (OpenRouter)",
-          "openrouter_temperature": "Temperatur",
-          "max_input_tokens": "Maximale Eingabe-Tokens",
-          "max_output_tokens": "Maximale Ausgabe-Tokens"
+          "openrouter_reasoning_max_tokens": "OpenRouter Reasoning Max Tokens"
         }
       },
       "openai_azure": {
-        "title": "OpenAI Azure konfigurieren",
+        "title": "Configure OpenAI Azure",
         "data": {
-          "openai_azure_api_key": "Azure OpenAI API-Schlüssel",
-          "openai_azure_deployment_id": "Azure Bereitstellungs-ID",
-          "openai_azure_endpoint": "Azure-Endpunkt",
-          "openai_azure_api_version": "Azure API-Version",
-          "openai_azure_temperature": "Temperatur",
-          "max_input_tokens": "Maximale Eingabe-Tokens",
-          "max_output_tokens": "Maximale Ausgabe-Tokens"
+          "openai_azure_deployment_id": "Azure Deployment ID",
+          "openai_azure_endpoint": "Azure Endpoint",
+          "openai_azure_api_version": "Azure API Version"
         }
       },
       "codestral": {
@@ -142,14 +79,20 @@
       "generic_openai": {      
         "title": "Generisches OpenAI konfigurieren",
         "data": {
-          "generic_openai_api_endpoint": "Vollständige API-URL für generisches OpenAI (sollte auf 'completions' enden)",
-          "generic_openai_api_key": "Generischer OpenAI API-Schlüssel (optional)",
-          "generic_openai_model": "Generisches OpenAI-Modell",
-          "generic_openai_temperature": "Temperatur",
-          "generic_openai_validation_endpoint": "Validierungs-URL (sollte auf 'models' enden)",
-          "generic_openai_enable_validation": "Validierung aktivieren",
-          "max_input_tokens": "Maximale Eingabe-Tokens",
-          "max_output_tokens": "Maximale Ausgabe-Tokens"
+          "generic_openai_api_endpoint": "Generic OpenAI API Full URL (should end with 'completions')",
+          "generic_openai_api_key": "Generic OpenAI API Key (Optional)",
+          "generic_openai_validation_endpoint": "Validation URL (should end with 'models')",
+          "generic_openai_enable_validation": "Enable Validation"
+        }
+      },
+      "common": {
+        "title": "Configure Common Settings",
+        "data": {
+          "api_key": "API Key",
+          "model": "Model",
+          "temperature": "Temperature",
+          "max_input_tokens": "Max Input Tokens",
+          "max_output_tokens": "Max Output Tokens"
         }
       },
       "veniceai": {
@@ -164,58 +107,35 @@
       }
     },
     "error": {
-      "api_error": "API-Validierung fehlgeschlagen: {error_message}",
-      "cannot_connect": "Verbindung fehlgeschlagen. Bitte überprüfen Sie Ihre Einstellungen und Ihr Netzwerk.",
-      "unknown": "Ein unbekannter Fehler ist aufgetreten. Bitte überprüfen Sie die Protokolle für Details."
+      "api_error": "API validation failed: {error_message}",
+      "cannot_connect": "Failed to connect. Please check your settings and network.",
+      "unknown": "An unknown error occurred. Please check logs for details."
     },
     "abort": {
-      "already_configured": "Dieser KI-Anbieter ist bereits konfiguriert. Sie können ihn auf der Integrationsseite bearbeiten."
+      "already_configured": "This AI provider is already configured. You can edit it from the integrations page."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Optionen für KI-Automatisierungsvorschläge",
+        "title": "Optionen für den KI-Automatisierungsvorschlag",
         "data": {
-          "openai_api_key": "OpenAI API-Schlüssel",
-          "openai_model": "OpenAI-Modell",
-          "openai_temperature": "Temperatur (OpenAI)",
-          "anthropic_api_key": "Anthropic API-Schlüssel",
-          "anthropic_model": "Anthropic-Modell",
-          "anthropic_temperature": "Temperatur (Anthropic)",
-          "google_api_key": "Google API-Schlüssel",
-          "google_model": "Google-Modell",
-          "google_temperature": "Temperatur (Google)",
-          "groq_api_key": "Groq API-Schlüssel",
-          "groq_model": "Groq-Modell",
-          "groq_temperature": "Temperatur (Groq)",
+          "api_key": "API-Schlüssel",
+          "model": "Modell",
+          "temperature": "Temperatur",
+          "max_input_tokens": "Maximale Eingabe-Tokens",
+          "max_output_tokens": "Maximale Ausgabe-Tokens",
           "localai_ip": "LocalAI IP-Adresse",
-          "localai_port": "LocalAI Port",
+          "localai_port": "LocalAI-Port",
           "localai_https": "HTTPS für LocalAI verwenden",
-          "localai_model": "LocalAI-Modell",
-          "localai_temperature": "Temperatur (LocalAI)",
           "ollama_ip": "Ollama IP-Adresse",
-          "ollama_port": "Ollama Port",
+          "ollama_port": "Ollama-Port",
           "ollama_https": "HTTPS für Ollama verwenden",
-          "ollama_model": "Ollama-Modell",
-          "ollama_temperature": "Temperatur (Ollama)",
           "ollama_disable_think": "Denkmodus deaktivieren (Ollama)",
           "custom_openai_endpoint": "Benutzerdefinierter OpenAI-Endpunkt",
-          "custom_openai_api_key": "Benutzerdefinierter OpenAI API-Schlüssel",
-          "custom_openai_model": "Benutzerdefiniertes OpenAI-Modell",
-          "custom_openai_temperature": "Temperatur (Benutzerdefiniertes OpenAI)",
-          "mistral_api_key": "Mistral API-Schlüssel",
-          "mistral_model": "Mistral-Modell",
-          "mistral_temperature": "Temperatur (Mistral AI)",
-          "perplexity_api_key": "Perplexity API-Schlüssel",
-          "perplexity_model": "Perplexity-Modell",
-          "perplexity_temperature": "Temperatur (Perplexity AI)",
-          "openrouter_api_key": "OpenRouter API-Schlüssel",
-          "openrouter_model": "OpenRouter-Modell",
-          "openrouter_reasoning_max_tokens": "Maximale Tokens für Schlussfolgerungen (OpenRouter)",
-          "openrouter_temperature": "Temperatur (OpenRouter)",
-          "openai_azure_api_key": "Azure OpenAI API-Schlüssel",
-          "openai_azure_deployment_id": "Azure Bereitstellungs-ID",
+          "custom_openai_api_key": "Benutzerdefinierter OpenAI-API-Schlüssel",
+          "openrouter_reasoning_max_tokens": "OpenRouter Reasoning Max Tokens",
+          "openai_azure_deployment_id": "Azure-Bereitstellungs-ID",
           "openai_azure_endpoint": "Azure-Endpunkt",
           "openai_azure_api_version": "Azure API-Version",
           "openai_azure_temperature": "Temperatur (OpenAI Azure)",
@@ -234,41 +154,41 @@
           "venice_model": "Venice-Modell",
           "venice_temperature": "Temperatur (Venice AI)"
         },
-        "description": "Passen Sie die Einstellungen für Ihre KI-Anbieter an. Es werden nur die für den konfigurierten Anbieter relevanten Felder verwendet. Allgemeine Einstellungen wie Token-Limits werden pro Anbieter festgelegt."
+        "description": "Passen Sie die Einstellungen für Ihre KI-Anbieter an. Es werden die für Ihren konfigurierten Anbieter relevanten Felder verwendet. Allgemeine Einstellungen wie Token-Limits werden pro Anbieter konfiguriert."
       }
     },
     "error": {
-      "invalid_input": "Ein oder mehrere Werte sind ungültig."
+      "invalid_input": "One or more values are invalid."
     }
   },
   "services": {
     "generate_suggestions": {
-      "name": "Vorschläge generieren",
-      "description": "Manuelles Auslösen von KI-Automatisierungsvorschlägen.",
+      "name": "Generate Suggestions",
+      "description": "Manually trigger AI automation suggestions.",
       "fields": {
         "provider_config": {
-          "name": "Anbieterkonfiguration",
-          "description": "Welche Anbieterkonfiguration soll verwendet werden (falls mehrere vorhanden)?"
+          "name": "Provider Configuration",
+          "description": "Which provider configuration to use (if you have multiple)"
         },
         "custom_prompt": {
-          "name": "Benutzerdefinierter Prompt",
-          "description": "Optionaler benutzerdefinierter Prompt, um den Standard-System-Prompt zu überschreiben oder die Vorschläge auf bestimmte Themen auszurichten."
+          "name": "Custom Prompt",
+          "description": "Optional custom prompt to override the default system prompt or guide the suggestions towards specific themes"
         },
         "all_entities": {
-          "name": "Alle Entitäten berücksichtigen",
-          "description": "Wenn wahr, werden alle Entitäten berücksichtigt, anstatt nur neue."
+          "name": "Consider All Entities",
+          "description": "If true, consider all entities instead of just new entities."
         },
         "domains": {
-          "name": "Domänen",
-          "description": "Liste der zu berücksichtigenden Domänen. Wenn leer, werden alle Domänen berücksichtigt."
+          "name": "Domains",
+          "description": "List of domains to consider. If empty, consider all domains."
         },
         "entity_limit": {
-          "name": "Entitäten-Limit",
-          "description": "Maximale Anzahl von Entitäten, die berücksichtigt werden (zufällig ausgewählt)."
+          "name": "Entity Limit",
+          "description": "Maximum number of entities to consider (randomly selected)."
         },
         "automation_read_yaml": {
-          "name": "Datei 'automations.yaml' lesen",
-          "description": "Liest den YAML-Code der in der 'automations.yaml'-Datei gefundenen Automatisierungen und fügt ihn an. Diese Aktion verbraucht viele Eingabe-Tokens. Verwenden Sie sie mit Vorsicht und mit Modellen, die ein großes Kontextfenster haben (z.B. Gemini)."
+          "name": "Read 'automations.yaml' file",
+          "description": "Reads and appends the YAML code of the automations found in the 'automations.yaml' file. This action will use a lot of input tokens, use it with care and with models with a large context window (e.g. Gemini)."
         },
         "automation_limit": {
           "name": "Limit für Automatisierungen",

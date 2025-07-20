@@ -3,151 +3,94 @@
   "config": {
     "step": {
       "user": {
-        "title": "选择 AI 提供商",
+        "title": "Select AI Provider",
         "data": {
-          "provider": "AI 提供商"
+          "provider": "AI Provider"
         }
       },
       "openai": {
-        "title": "配置 OpenAI",
-        "data": {
-          "openai_api_key": "OpenAI API 密钥",
-          "openai_model": "OpenAI 模型",
-          "openai_temperature": "温度",
-          "max_input_tokens": "最大输入令牌",
-          "max_output_tokens": "最大输出令牌"
-        }
+        "title": "Configure OpenAI"
       },
       "anthropic": {
-        "title": "配置 Anthropic",
-        "data": {
-          "anthropic_api_key": "Anthropic API 密钥",
-          "anthropic_model": "Anthropic 模型",
-          "anthropic_temperature": "温度",
-          "max_input_tokens": "最大输入令牌",
-          "max_output_tokens": "最大输出令牌"
-        }
+        "title": "Configure Anthropic"
       },
       "google": {
-        "title": "配置 Google",
-        "data": {
-          "google_api_key": "Google API 密钥",
-          "google_model": "Google 模型",
-          "google_temperature": "温度",
-          "max_input_tokens": "最大输入令牌",
-          "max_output_tokens": "最大输出令牌"
-        }
+        "title": "Configure Google"
       },
       "groq": {
-        "title": "配置 Groq",
-        "data": {
-          "groq_api_key": "Groq API 密钥",
-          "groq_model": "Groq 模型",
-          "groq_temperature": "温度",
-          "max_input_tokens": "最大输入令牌",
-          "max_output_tokens": "最大输出令牌"
-        }
+        "title": "Configure Groq"
       },
       "localai": {
-        "title": "配置 LocalAI",
+        "title": "Configure LocalAI",
         "data": {
-          "localai_ip": "LocalAI IP 地址",
-          "localai_port": "LocalAI 端口",
-          "localai_https": "为 LocalAI 使用 HTTPS",
-          "localai_model": "LocalAI 模型",
-          "localai_temperature": "温度",
-          "max_input_tokens": "最大输入令牌",
-          "max_output_tokens": "最大输出令牌"
+          "localai_ip": "LocalAI IP Address",
+          "localai_port": "LocalAI Port",
+          "localai_https": "Use HTTPS for LocalAI"
         }
       },
       "ollama": {
-        "title": "配置 Ollama",
+        "title": "Configure Ollama",
         "data": {
-          "ollama_ip": "Ollama IP 地址",
-          "ollama_port": "Ollama 端口",
-          "ollama_https": "为 Ollama 使用 HTTPS",
-          "ollama_model": "Ollama 模型",
-          "ollama_temperature": "温度",
-          "ollama_disable_think": "禁用思考模式 (Ollama)",
-          "max_input_tokens": "最大输入令牌",
-          "max_output_tokens": "最大输出令牌"
+          "ollama_ip": "Ollama IP Address",
+          "ollama_port": "Ollama Port",
+          "ollama_https": "Use HTTPS for Ollama",
+          "ollama_disable_think": "Disable Think Mode (Ollama)"
         }
       },
       "custom_openai": {
-        "title": "配置自定义 OpenAI",
+        "title": "Configure Custom OpenAI",
         "data": {
-          "custom_openai_endpoint": "自定义 OpenAI 端点",
-          "custom_openai_api_key": "自定义 OpenAI API 密钥 (可选)",
-          "custom_openai_model": "自定义 OpenAI 模型",
-          "custom_openai_temperature": "温度",
-          "max_input_tokens": "最大输入令牌",
-          "max_output_tokens": "最大输出令牌"
+          "custom_openai_endpoint": "Custom OpenAI Endpoint",
+          "custom_openai_api_key": "Custom OpenAI API Key (Optional)"
         }
       },
       "mistral": {
-        "title": "配置 Mistral AI",
-        "data": {
-          "mistral_api_key": "Mistral API 密钥",
-          "mistral_model": "Mistral 模型",
-          "mistral_temperature": "温度",
-          "max_input_tokens": "最大输入令牌",
-          "max_output_tokens": "最大输出令牌"
-        }
+        "title": "Configure Mistral AI"
       },
       "perplexity": {
-        "title": "配置 Perplexity AI",
-        "data": {
-          "perplexity_api_key": "Perplexity API 密钥",
-          "perplexity_model": "Perplexity 模型",
-          "perplexity_temperature": "温度",
-          "max_input_tokens": "最大输入令牌",
-          "max_output_tokens": "最大输出令牌"
-        }
+        "title": "Configure Perplexity AI"
       },
       "openrouter": {
-        "title": "配置 OpenRouter",
+        "title": "Configure OpenRouter",
         "data": {
-          "openrouter_api_key": "OpenRouter API 密钥",
-          "openrouter_model": "OpenRouter 模型",
-          "openrouter_reasoning_max_tokens": "OpenRouter 推理最大令牌数",
-          "openrouter_temperature": "温度",
-          "max_input_tokens": "最大输入令牌",
-          "max_output_tokens": "最大输出令牌"
+          "openrouter_reasoning_max_tokens": "OpenRouter Reasoning Max Tokens"
         }
       },
       "openai_azure": {
-        "title": "配置 OpenAI Azure",
+        "title": "Configure OpenAI Azure",
         "data": {
-          "openai_azure_api_key": "Azure OpenAI API 密钥",
-          "openai_azure_deployment_id": "Azure 部署 ID",
-          "openai_azure_endpoint": "Azure 端点",
-          "openai_azure_api_version": "Azure API 版本",
-          "openai_azure_temperature": "温度",
-          "max_input_tokens": "最大输入令牌",
-          "max_output_tokens": "最大输出令牌"
+          "openai_azure_deployment_id": "Azure Deployment ID",
+          "openai_azure_endpoint": "Azure Endpoint",
+          "openai_azure_api_version": "Azure API Version"
         }
       },
       "generic_openai": {
-        "title": "配置通用 OpenAI",
+        "title": "Configure Generic OpenAI",
         "data": {
-          "generic_openai_api_endpoint": "通用 OpenAI 完整 API URL (应以 'completions' 结尾)",
-          "generic_openai_api_key": "通用 OpenAI API 密钥（可选）",
-          "generic_openai_model": "通用 OpenAI 模型",
-          "generic_openai_temperature": "温度",
-          "generic_openai_validation_endpoint": "验证 URL (应以 'models' 结尾)",
-          "generic_openai_enable_validation": "启用验证",
-          "max_input_tokens": "最大输入令牌",
-          "max_output_tokens": "最大输出令牌"
+          "generic_openai_api_endpoint": "Generic OpenAI API Full URL (should end with 'completions')",
+          "generic_openai_api_key": "Generic OpenAI API Key (Optional)",
+          "generic_openai_validation_endpoint": "Validation URL (should end with 'models')",
+          "generic_openai_enable_validation": "Enable Validation"
+        }
+      },
+      "common": {
+        "title": "Configure Common Settings",
+        "data": {
+          "api_key": "API Key",
+          "model": "Model",
+          "temperature": "Temperature",
+          "max_input_tokens": "Max Input Tokens",
+          "max_output_tokens": "Max Output Tokens"
         }
       }
     },
     "error": {
-      "api_error": "API 验证失败：{error_message}",
-      "cannot_connect": "连接失败。请检查您的设置和网络。",
-      "unknown": "发生未知错误。请检查日志以获取详细信息。"
+      "api_error": "API validation failed: {error_message}",
+      "cannot_connect": "Failed to connect. Please check your settings and network.",
+      "unknown": "An unknown error occurred. Please check logs for details."
     },
     "abort": {
-      "already_configured": "此 AI 提供商已配置。您可以从集成页面编辑它。"
+      "already_configured": "This AI provider is already configured. You can edit it from the integrations page."
     }
   },
   "options": {
@@ -155,92 +98,64 @@
       "init": {
         "title": "AI 自动化建议器选项",
         "data": {
-          "openai_api_key": "OpenAI API 密钥",
-          "openai_model": "OpenAI 模型",
-          "openai_temperature": "温度 (OpenAI)",
-          "anthropic_api_key": "Anthropic API 密钥",
-          "anthropic_model": "Anthropic 模型",
-          "anthropic_temperature": "温度 (Anthropic)",
-          "google_api_key": "Google API 密钥",
-          "google_model": "Google 模型",
-          "google_temperature": "温度 (Google)",
-          "groq_api_key": "Groq API 密钥",
-          "groq_model": "Groq 模型",
-          "groq_temperature": "温度 (Groq)",
+          "api_key": "API 密钥",
+          "model": "模型",
+          "temperature": "温度",
+          "max_input_tokens": "最大输入令牌",
+          "max_output_tokens": "最大输出令牌",
           "localai_ip": "LocalAI IP 地址",
           "localai_port": "LocalAI 端口",
           "localai_https": "为 LocalAI 使用 HTTPS",
-          "localai_model": "LocalAI 模型",
-          "localai_temperature": "温度 (LocalAI)",
           "ollama_ip": "Ollama IP 地址",
           "ollama_port": "Ollama 端口",
           "ollama_https": "为 Ollama 使用 HTTPS",
-          "ollama_model": "Ollama 模型",
-          "ollama_temperature": "温度 (Ollama)",
           "ollama_disable_think": "禁用思考模式 (Ollama)",
           "custom_openai_endpoint": "自定义 OpenAI 端点",
           "custom_openai_api_key": "自定义 OpenAI API 密钥",
-          "custom_openai_model": "自定义 OpenAI 模型",
-          "custom_openai_temperature": "温度 (自定义 OpenAI)",
-          "mistral_api_key": "Mistral API 密钥",
-          "mistral_model": "Mistral 模型",
-          "mistral_temperature": "温度 (Mistral AI)",
-          "perplexity_api_key": "Perplexity API 密钥",
-          "perplexity_model": "Perplexity 模型",
-          "perplexity_temperature": "温度 (Perplexity AI)",
-          "openrouter_api_key": "OpenRouter API 密钥",
-          "openrouter_model": "OpenRouter 模型",
-          "openrouter_reasoning_max_tokens": "OpenRouter 推理最大令牌数",
-          "openrouter_temperature": "温度 (OpenRouter)",
-          "openai_azure_api_key": "Azure OpenAI API 密钥",
+          "openrouter_reasoning_max_tokens": "OpenRouter 推理最大令牌",
           "openai_azure_deployment_id": "Azure 部署 ID",
           "openai_azure_endpoint": "Azure 端点",
           "openai_azure_api_version": "Azure API 版本",
-          "openai_azure_temperature": "温度 (OpenAI Azure)",
-          "generic_openai_api_endpoint": "通用 OpenAI API 完整 URL (应以 'completions' 结尾)",
+          "generic_openai_api_endpoint": "通用 OpenAI API 完整 URL（应以 'completions' 结尾）",
           "generic_openai_api_key": "通用 OpenAI API 密钥",
-          "generic_openai_model": "通用 OpenAI 模型",
-          "generic_openai_temperature": "温度 (通用 OpenAI)",
-          "generic_openai_validation_endpoint": "验证 URL (通用 OpenAI，应以 'models' 结尾)",
-          "generic_openai_enable_validation": "启用验证 (通用 OpenAI)",
-          "max_input_tokens": "最大输入令牌",
-          "max_output_tokens": "最大输出令牌"
+          "generic_openai_validation_endpoint": "验证 URL（通用 OpenAI，应以 'models' 结尾）",
+          "generic_openai_enable_validation": "启用验证（通用 OpenAI）"
         },
-        "description": "调整您的 AI 提供商设置。将使用与您配置的提供商相关的字段。令牌限制等通用设置是按提供商配置的。"
+        "description": "调整您的 AI 提供商的设置。将使用与您配置的提供商相关的字段。每个提供商都会配置通用设置（如令牌限制）。"
       }
     },
     "error": {
-      "invalid_input": "一个或多个值无效。"
+      "invalid_input": "One or more values are invalid."
     }
   },
   "services": {
     "generate_suggestions": {
-      "name": "生成建议",
-      "description": "手动触发 AI 自动化建议。",
+      "name": "Generate Suggestions",
+      "description": "Manually trigger AI automation suggestions.",
       "fields": {
         "provider_config": {
-          "name": "提供商配置",
-          "description": "选择要使用的提供商配置（如果有多个）"
+          "name": "Provider Configuration",
+          "description": "Which provider configuration to use (if you have multiple)"
         },
         "custom_prompt": {
-          "name": "自定义提示",
-          "description": "可选的自定义提示，用于覆盖默认系统提示或将建议引导至特定主题。"
+          "name": "Custom Prompt",
+          "description": "Optional custom prompt to override the default system prompt or guide the suggestions towards specific themes"
         },
         "all_entities": {
-          "name": "考虑所有实体",
-          "description": "若为 true，则考虑所有实体而不仅仅是新实体。"
+          "name": "Consider All Entities",
+          "description": "If true, consider all entities instead of just new entities."
         },
         "domains": {
-          "name": "领域",
-          "description": "要考虑的领域列表。如果为空，则考虑所有领域。"
+          "name": "Domains",
+          "description": "List of domains to consider. If empty, consider all domains."
         },
         "entity_limit": {
-          "name": "实体限制",
-          "description": "要考虑的实体最大数量（随机选择）。"
+          "name": "Entity Limit",
+          "description": "Maximum number of entities to consider (randomly selected)."
         },
         "automation_read_yaml": {
-          "name": "读取 'automations.yaml' 文件",
-          "description": "读取并附加 'automations.yaml' 文件中找到的自动化的 YAML 代码。此操作将使用大量输入令牌，请谨慎使用，并配合具有较大上下文窗口的模型（例如 Gemini）。"
+          "name": "Read 'automations.yaml' file",
+          "description": "Reads and appends the YAML code of the automations found in the 'automations.yaml' file. This action will use a lot of input tokens, use it with care and with models with a large context window (e.g. Gemini)."
         },
         "automation_limit": {
           "name": "自动化数量上限",

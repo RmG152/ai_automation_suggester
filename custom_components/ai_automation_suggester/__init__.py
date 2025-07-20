@@ -20,17 +20,55 @@ _LOGGER = logging.getLogger(__name__)
 
 async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
     """Migrate old config entry if necessary."""
-    _LOGGER.debug(f"async_migrate_entry {config_entry.version}")
-    # Currently, no migration logic beyond ensuring version matches CONFIG_VERSION
-    if config_entry.version < CONFIG_VERSION:
-        _LOGGER.debug(f"Migrating config entry from version {config_entry.version} to {CONFIG_VERSION}")
+    _LOGGER.debug(f"async_migrate_entry from version {config_entry.version} to {CONFIG_VERSION}")
+
+    if config_entry.version == 1:
         new_data = {**config_entry.data}
-        new_data.pop('scan_frequency', None)
-        new_data.pop('initial_lag_time', None)
-        config_entry.version = CONFIG_VERSION
+
+        # Mapping from old provider-specific keys to new common keys
+        key_mappings = {
+            "openai_api_key": "api_key",
+            "openai_model": "model",
+            "openai_temperature": "temperature",
+            "anthropic_api_key": "api_key",
+            "anthropic_model": "model",
+            "anthropic_temperature": "temperature",
+            "google_api_key": "api_key",
+            "google_model": "model",
+            "google_temperature": "temperature",
+            "groq_api_key": "api_key",
+            "groq_model": "model",
+            "groq_temperature": "temperature",
+            "localai_model": "model",
+            "localai_temperature": "temperature",
+            "ollama_model": "model",
+            "ollama_temperature": "temperature",
+            "custom_openai_model": "model",
+            "custom_openai_temperature": "temperature",
+            "mistral_api_key": "api_key",
+            "mistral_model": "model",
+            "mistral_temperature": "temperature",
+            "perplexity_api_key": "api_key",
+            "perplexity_model": "model",
+            "perplexity_temperature": "temperature",
+            "openrouter_api_key": "api_key",
+            "openrouter_model": "model",
+            "openrouter_temperature": "temperature",
+            "openai_azure_api_key": "api_key",
+            "openai_azure_temperature": "temperature",
+            "generic_openai_model": "model",
+            "generic_openai_temperature": "temperature",
+        }
+
+        # Perform the migration
+        for old_key, new_key in key_mappings.items():
+            if old_key in new_data:
+                new_data[new_key] = new_data.pop(old_key)
+
+        config_entry.version = 2
         hass.config_entries.async_update_entry(config_entry, data=new_data)
-        _LOGGER.debug("Migration successful")
-        return True
+        _LOGGER.debug("Migration to version 2 successful")
+
     return True
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
