@@ -448,9 +448,9 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
     # ---------------------------------------------------------------------
     async def _openai(self, prompt: str) -> str | None:
         try:
-            api_key = self._opt(CONF_OPENAI_API_KEY)
-            model = self._opt(CONF_OPENAI_MODEL, DEFAULT_MODELS["OpenAI"])
-            temperature = self._opt(CONF_OPENAI_TEMPERATURE, DEFAULT_TEMPERATURE)
+            api_key = self._opt(CONF_API_KEY)
+            model = self._opt(CONF_MODEL, DEFAULT_MODELS["OpenAI"])
+            temperature = self._opt(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
             in_budget, out_budget = self._budgets()
             if not api_key:
                 raise ValueError("OpenAI API key not configured")
@@ -512,11 +512,11 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
         """Send prompt to OpenAI Azure endpoint."""
         try:
             endpoint_base = self._opt(CONF_OPENAI_AZURE_ENDPOINT)
-            api_key = self._opt(CONF_OPENAI_AZURE_API_KEY)
+            api_key = self._opt(CONF_API_KEY)
             deployment_id = self._opt(CONF_OPENAI_AZURE_DEPLOYMENT_ID)
             api_version = self._opt(CONF_OPENAI_AZURE_API_VERSION, "2025-01-01-preview")
             in_budget, out_budget = self._budgets()
-            temperature = self._opt(CONF_OPENAI_AZURE_TEMPERATURE, DEFAULT_TEMPERATURE)
+            temperature = self._opt(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
 
             if not endpoint_base or not deployment_id or not api_version or not api_key:
                 raise ValueError("OpenAI Azure endpoint, deployment, api version or API key not configured")
@@ -587,8 +587,8 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
                 raise ValueError("Generic OpenAI endpoint must start with http:// or https://")
 
             api_key = self._opt(CONF_API_KEY)
-            model = self._opt(CONF_GENERIC_OPENAI_MODEL, DEFAULT_MODELS["Generic OpenAI"])
-            temperature = self._opt(CONF_GENERIC_OPENAI_TEMPERATURE, DEFAULT_TEMPERATURE)
+            model = self._opt(CONF_MODEL, DEFAULT_MODELS["Generic OpenAI"])
+            temperature = self._opt(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
             in_budget, out_budget = self._budgets()
 
             if len(prompt) // 4 > in_budget:
@@ -642,10 +642,10 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
     # ---------------- Anthropic ------------------------------------------------
     async def _anthropic(self, prompt: str) -> str | None:
         try:
-            api_key = self._opt(CONF_ANTHROPIC_API_KEY)
-            model = self._opt(CONF_ANTHROPIC_MODEL, DEFAULT_MODELS["Anthropic"])
+            api_key = self._opt(CONF_API_KEY)
+            model = self._opt(CONF_MODEL, DEFAULT_MODELS["Anthropic"])
             in_budget, out_budget = self._budgets()
-            temperature = self._opt(CONF_ANTHROPIC_TEMPERATURE, DEFAULT_TEMPERATURE)
+            temperature = self._opt(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
             if not api_key:
                 raise ValueError("Anthropic API key not configured")
 
@@ -705,10 +705,10 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
     # ---------------- Google ---------------------------------------------------
     async def _google(self, prompt: str) -> str | None:
         try:
-            api_key = self._opt(CONF_GOOGLE_API_KEY)
-            model = self._opt(CONF_GOOGLE_MODEL, DEFAULT_MODELS["Google"])
+            api_key = self._opt(CONF_API_KEY)
+            model = self._opt(CONF_MODEL, DEFAULT_MODELS["Google"])
             in_budget, out_budget = self._budgets()
-            temperature = self._opt(CONF_GOOGLE_TEMPERATURE, DEFAULT_TEMPERATURE)
+            temperature = self._opt(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
             if not api_key:
                 raise ValueError("Google API key not configured")
 
@@ -771,9 +771,9 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
     # ---------------- Groq -----------------------------------------------------
     async def _groq(self, prompt: str) -> str | None:
         try:
-            api_key = self._opt(CONF_GROQ_API_KEY)
-            model = self._opt(CONF_GROQ_MODEL, DEFAULT_MODELS["Groq"])
-            temperature = self._opt(CONF_GROQ_TEMPERATURE, DEFAULT_TEMPERATURE)
+            api_key = self._opt(CONF_API_KEY)
+            model = self._opt(CONF_MODEL, DEFAULT_MODELS["Groq"])
+            temperature = self._opt(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
             in_budget, out_budget = self._budgets()
             if not api_key:
                 raise ValueError("Groq API key not configured")
@@ -836,8 +836,8 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
             ip = self._opt(CONF_LOCALAI_IP_ADDRESS)
             port = self._opt(CONF_LOCALAI_PORT)
             https = self._opt(CONF_LOCALAI_HTTPS, False)
-            model = self._opt(CONF_LOCALAI_MODEL, DEFAULT_MODELS["LocalAI"])
-            temperature = self._opt(CONF_LOCALAI_TEMPERATURE, DEFAULT_TEMPERATURE)
+            model = self._opt(CONF_MODEL, DEFAULT_MODELS["LocalAI"])
+            temperature = self._opt(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
             in_budget, out_budget = self._budgets()
             if not ip or not port:
                 raise ValueError("LocalAI not fully configured")
@@ -897,8 +897,8 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
             ip = self._opt(CONF_OLLAMA_IP_ADDRESS)
             port = self._opt(CONF_OLLAMA_PORT)
             https = self._opt(CONF_OLLAMA_HTTPS, False)
-            model = self._opt(CONF_OLLAMA_MODEL, DEFAULT_MODELS["Ollama"])
-            temperature = self._opt(CONF_OLLAMA_TEMPERATURE, DEFAULT_TEMPERATURE)
+            model = self._opt(CONF_MODEL, DEFAULT_MODELS["Ollama"])
+            temperature = self._opt(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
             disable_think = self._opt(CONF_OLLAMA_DISABLE_THINK, False)
             in_budget, out_budget = self._budgets()
             if not ip or not port:
@@ -966,8 +966,8 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
                 endpoint = endpoint.rstrip("/") + "/v1/chat/completions"
 
             api_key  = self._opt(CONF_API_KEY)
-            model    = self._opt(CONF_CUSTOM_OPENAI_MODEL, DEFAULT_MODELS["Custom OpenAI"])
-            temperature = self._opt(CONF_CUSTOM_OPENAI_TEMPERATURE, DEFAULT_TEMPERATURE)
+            model    = self._opt(CONF_MODEL, DEFAULT_MODELS["Custom OpenAI"])
+            temperature = self._opt(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
             in_budget, out_budget = self._budgets()
 
 
@@ -1022,9 +1022,9 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
     # ---------------- Mistral ----------------------------------------------
     async def _mistral(self, prompt: str) -> str | None:
         try:
-            api_key = self._opt(CONF_MISTRAL_API_KEY)
-            model = self._opt(CONF_MISTRAL_MODEL, DEFAULT_MODELS["Mistral AI"])
-            temperature = self._opt(CONF_MISTRAL_TEMPERATURE, DEFAULT_TEMPERATURE)
+            api_key = self._opt(CONF_API_KEY)
+            model = self._opt(CONF_MODEL, DEFAULT_MODELS["Mistral AI"])
+            temperature = self._opt(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
             in_budget, out_budget = self._budgets()
             if not api_key:
                 raise ValueError("Mistral API key not configured")
@@ -1084,7 +1084,7 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
     async def _codestral(self, prompt: str) -> str | None:
         try:
             api_key = self._opt(CONF_API_KEY)
-            model = self._opt(CONF_CODESTRAL_MODEL, DEFAULT_MODELS["Codestral"])
+            model = self._opt(CONF_MODEL, DEFAULT_MODELS["Codestral"])
             temperature = self._opt(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
             in_budget, out_budget = self._budgets()
             if not api_key:
@@ -1144,9 +1144,9 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
     # ---------------- Perplexity -------------------------------------------
     async def _perplexity(self, prompt: str) -> str | None:
         try:
-            api_key = self._opt(CONF_PERPLEXITY_API_KEY)
-            model = self._opt(CONF_PERPLEXITY_MODEL, DEFAULT_MODELS["Perplexity AI"])
-            temperature = self._opt(CONF_PERPLEXITY_TEMPERATURE, DEFAULT_TEMPERATURE)
+            api_key = self._opt(CONF_API_KEY)
+            model = self._opt(CONF_MODEL, DEFAULT_MODELS["Perplexity AI"])
+            temperature = self._opt(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
             in_budget, out_budget = self._budgets()
             if not api_key:
                 raise ValueError("Perplexity API key not configured")
@@ -1207,8 +1207,8 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
     # ---------------- OpenRouter -------------------------------------------
     async def _openrouter(self, prompt: str) -> str | None:
         try:
-            api_key = self._opt(CONF_OPENROUTER_API_KEY)
-            model = self._opt(CONF_OPENROUTER_MODEL, DEFAULT_MODELS["OpenRouter"])
+            api_key = self._opt(CONF_API_KEY)
+            model = self._opt(CONF_MODEL, DEFAULT_MODELS["OpenRouter"])
             reasoning_max_tokens = self._opt(CONF_OPENROUTER_REASONING_MAX_TOKENS, 0)
             in_budget, out_budget = self._budgets()
 
@@ -1227,7 +1227,7 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
                 "messages": [{"role": "user", "content": prompt}],
                 "max_tokens": out_budget,
                 "temperature": self._opt(
-                    CONF_OPENROUTER_TEMPERATURE, DEFAULT_TEMPERATURE
+                    CONF_TEMPERATURE, DEFAULT_TEMPERATURE
                 ),
             }
 
@@ -1278,7 +1278,7 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
     async def _veniceai(self, prompt: str) -> str | None:
         try:
             api_key = self._opt(CONF_API_KEY)
-            model = self._opt(CONF_VENICEAI_MODEL, DEFAULT_MODELS["VeniceAI"])
+            model = self._opt(CONF_MODEL, DEFAULT_MODELS["VeniceAI"])
             temperature = self._opt(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
             in_budget, out_budget = self._budgets()
             if not api_key:
