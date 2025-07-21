@@ -37,6 +37,8 @@ from .const import (
     CONF_MODEL,
     CONF_OPENAI_AZURE_DEPLOYMENT_ID,
     DEFAULT_MODELS,
+    CONF_TEMPERATURE,
+    DEFAULT_TEMPERATURE,
     # Sensor Keys from const.py
     SENSOR_KEY_SUGGESTIONS,
     SENSOR_KEY_STATUS,
@@ -45,6 +47,7 @@ from .const import (
     SENSOR_KEY_MODEL,
     SENSOR_KEY_LAST_ERROR,
     SENSOR_KEY_TIMEOUT,
+    SENSOR_KEY_TEMPERATURE,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -99,6 +102,15 @@ SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
         entity_registry_enabled_default=False,
         entity_registry_visible_default=False,
     ),
+    SensorEntityDescription(
+        key=SENSOR_KEY_TEMPERATURE,
+        name="Temperature",
+        icon="mdi:thermometer",
+        entity_category=EntityCategory.CONFIG,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+        entity_registry_visible_default=False,
+    ),
 )
 
 async def async_setup_entry(
@@ -136,7 +148,9 @@ async def async_setup_entry(
         elif description.key == SENSOR_KEY_LAST_ERROR:
             entities.append(AILastErrorSensor(coordinator, entry, specific_description))
         elif description.key == SENSOR_KEY_TIMEOUT:
-            entities.append(MaxInputTokensSensor(coordinator, entry, specific_description))
+            entities.append(TimeoutSensor(coordinator, entry, specific_description))
+        elif description.key == SENSOR_KEY_TEMPERATURE:
+            entities.append(TemperatureSensor(coordinator, entry, specific_description))
         else:
             entities.append(AIBaseSensor(coordinator, entry, specific_description))
 
@@ -419,4 +433,27 @@ class TimeoutSensor(AIBaseSensor):
         self._attr_native_value = self._entry.options.get(
             "timeout",
             self._entry.data.get("timeout", DEFAULT_TIMEOUT)  # Default to 30 seconds if not set
+        )
+
+# ─────────────────────────────────────────────────────────────
+# Temperature sensor
+# ─────────────────────────────────────────────────────────────
+class TemperatureSensor(AIBaseSensor):
+    """Shows the configured temperature for AI requests."""
+    _attr_should_poll = False
+
+    def __init__(
+        self,
+        coordinator: DataUpdateCoordinator,
+        entry: ConfigEntry,
+        description: SensorEntityDescription,
+    ) -> None:
+        super().__init__(coordinator, entry, description)
+        self._update_state_and_attributes()  # Initial update
+
+    def _update_state_and_attributes(self) -> None:
+        """Update sensor state with the configured temperature."""
+        self._attr_native_value = self._entry.options.get(
+            CONF_TEMPERATURE,
+            self._entry.data.get(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
         )
