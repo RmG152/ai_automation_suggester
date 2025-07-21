@@ -34,6 +34,7 @@ from .const import (
     CONF_MAX_OUTPUT_TOKENS,
     DEFAULT_MAX_OUTPUT_TOKENS,
     DEFAULT_TIMEOUT,
+    CONF_TIMEOUT,
     CONF_MODEL,
     CONF_OPENAI_AZURE_DEPLOYMENT_ID,
     DEFAULT_MODELS,
@@ -68,7 +69,7 @@ SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
         key=SENSOR_KEY_INPUT_TOKENS,
         name="Max Input Tokens",
         icon="mdi:format-letter-starts-with",
-        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_category=EntityCategory.CONFIG,
         native_unit_of_measurement="tokens",
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -76,7 +77,7 @@ SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
         key=SENSOR_KEY_OUTPUT_TOKENS,
         name="Max Output Tokens",
         icon="mdi:format-letter-ends-with",
-        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_category=EntityCategory.CONFIG,
         native_unit_of_measurement="tokens",
         state_class=SensorStateClass.MEASUREMENT,
     ),
@@ -84,7 +85,7 @@ SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
         key=SENSOR_KEY_MODEL,
         name="AI Model In Use",
         icon="mdi:brain",
-        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_category=EntityCategory.CONFIG,
     ),
     SensorEntityDescription(
         key=SENSOR_KEY_LAST_ERROR,
@@ -93,14 +94,12 @@ SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
     SensorEntityDescription(
-        key=SENSOR_TIMEOUT,
+        key=SENSOR_KEY_TIMEOUT,
         name="Timeout (seconds)",
         icon="mdi:timer-outline",
         entity_category=EntityCategory.CONFIG,
         native_unit_of_measurement="seconds",
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
-        entity_registry_visible_default=False,
     ),
     SensorEntityDescription(
         key=SENSOR_KEY_TEMPERATURE,
@@ -108,8 +107,6 @@ SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
         icon="mdi:thermometer",
         entity_category=EntityCategory.CONFIG,
         state_class=SensorStateClass.MEASUREMENT,
-        entity_registry_enabled_default=False,
-        entity_registry_visible_default=False,
     ),
 )
 
@@ -432,7 +429,7 @@ class TimeoutSensor(AIBaseSensor):
         """Update sensor state with the configured timeout."""
         self._attr_native_value = self._entry.options.get(
             "timeout",
-            self._entry.data.get("timeout", DEFAULT_TIMEOUT)  # Default to 30 seconds if not set
+            self._entry.data.get(CONF_TIMEOUT, DEFAULT_TIMEOUT)  # Default to 30 seconds if not set
         )
 
 # ─────────────────────────────────────────────────────────────

@@ -114,6 +114,9 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
         in_budget = self._opt(
             CONF_MAX_INPUT_TOKENS, self._opt(CONF_MAX_TOKENS, DEFAULT_MAX_TOKENS)
         )
+
+        _LOGGER.debug("Input budget: %d, Output budget: %d", in_budget, out_budget)
+        
         return in_budget, out_budget
 
     # ---------------------------------------------------------------------
