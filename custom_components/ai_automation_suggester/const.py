@@ -97,7 +97,7 @@ DEFAULT_MODELS = {
     "Perplexity AI": "sonar",
     "OpenRouter": "meta-llama/llama-4-maverick:free",
     "Generic OpenAI": "gpt-3.5-turbo",
-    "Codestral": "codestral-medium",
+    "Codestral": "codestral-latest",
     "Venice AI": "venice-uncensored",
     "Open Web UI": "llama2",
 }
