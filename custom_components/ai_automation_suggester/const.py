@@ -24,6 +24,8 @@ DEFAULT_MAX_OUTPUT_TOKENS = DEFAULT_MAX_TOKENS
 
 DEFAULT_TEMPERATURE = 0.7
 
+DEFAULT_TIMEOUT = 30  # seconds
+
 # ─────────────────────────────────────────────────────────────
 # Provider‑selection key
 # ─────────────────────────────────────────────────────────────
@@ -36,6 +38,7 @@ CONF_PROVIDER = "provider"
 CONF_API_KEY = "api_key"
 CONF_MODEL = "model"
 CONF_TEMPERATURE = "temperature"
+CONF_TIMEOUT = "timeout"
 
 # OpenAI Azure
 CONF_OPENAI_AZURE_DEPLOYMENT_ID = "openai_azure_deployment_id"
@@ -145,3 +148,4 @@ SENSOR_KEY_INPUT_TOKENS = "input_tokens"
 SENSOR_KEY_OUTPUT_TOKENS = "output_tokens"
 SENSOR_KEY_MODEL = "model"
 SENSOR_KEY_LAST_ERROR = "last_error"
+SENSOR_KEY_TIMEOUT = "timeout"

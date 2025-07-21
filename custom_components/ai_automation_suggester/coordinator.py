@@ -1382,7 +1382,7 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
                 "Content-Type": "application/json",
             }
 
-            timeout = aiohttp.ClientTimeout(total=900)
+            timeout = aiohttp.ClientTimeout(total=self._opt(CONF_TIMEOUT, DEFAULT_TIMEOUT))
 
             async with self.session.post(
                 ENDPOINT_VENICEAI, headers=headers, json=body, timeout=timeout

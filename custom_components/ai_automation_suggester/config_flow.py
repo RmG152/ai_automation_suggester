@@ -285,6 +285,9 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             vol.Optional(CONF_MAX_OUTPUT_TOKENS, default=DEFAULT_MAX_OUTPUT_TOKENS): vol.All(
                 vol.Coerce(int), vol.Range(min=100)
             ),
+            vol.Optional(CONF_TIMEOUT, default=DEFAULT_TIMEOUT): vol.All(
+                vol.Coerce(int), vol.Range(min=15)
+            ),
         }
 
         # Add provider-specific fields
@@ -373,6 +376,7 @@ class AIAutomationOptionsFlowHandler(config_entries.OptionsFlow):
             vol.Required(CONF_API_KEY, default=self._get_option(CONF_API_KEY)): TextSelector(TextSelectorConfig(type="password")),
             vol.Optional(CONF_TEMPERATURE, default=self._get_option(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)): vol.All(vol.Coerce(float), vol.Range(min=0.0, max=2.0)),
             vol.Optional(CONF_MODEL, default=self._get_option(CONF_MODEL, DEFAULT_MODELS[provider])): str,
+            vol.Optional(CONF_TIMEOUT, default=self._get_option(CONF_TIMEOUT, DEFAULT_TIMEOUT)): vol.All(vol.Coerce(int), vol.Range(min=15)),
         }
 
         # provider‑specific editable fields

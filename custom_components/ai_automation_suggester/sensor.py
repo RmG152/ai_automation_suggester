@@ -33,6 +33,7 @@ from .const import (
     DEFAULT_MAX_INPUT_TOKENS,
     CONF_MAX_OUTPUT_TOKENS,
     DEFAULT_MAX_OUTPUT_TOKENS,
+    DEFAULT_TIMEOUT,
     CONF_MODEL,
     CONF_OPENAI_AZURE_DEPLOYMENT_ID,
     DEFAULT_MODELS,
@@ -43,6 +44,7 @@ from .const import (
     SENSOR_KEY_OUTPUT_TOKENS,
     SENSOR_KEY_MODEL,
     SENSOR_KEY_LAST_ERROR,
+    SENSOR_KEY_TIMEOUT,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -87,6 +89,16 @@ SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
         icon="mdi:alert-circle-outline",
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
+    SensorEntityDescription(
+        key=SENSOR_TIMEOUT,
+        name="Timeout (seconds)",
+        icon="mdi:timer-outline",
+        entity_category=EntityCategory.CONFIG,
+        native_unit_of_measurement="seconds",
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_registry_enabled_default=False,
+        entity_registry_visible_default=False,
+    ),
 )
 
 async def async_setup_entry(
@@ -123,6 +135,8 @@ async def async_setup_entry(
             entities.append(AIModelSensor(coordinator, entry, specific_description))
         elif description.key == SENSOR_KEY_LAST_ERROR:
             entities.append(AILastErrorSensor(coordinator, entry, specific_description))
+        elif description.key == SENSOR_KEY_TIMEOUT:
+            entities.append(MaxInputTokensSensor(coordinator, entry, specific_description))
         else:
             entities.append(AIBaseSensor(coordinator, entry, specific_description))
 
@@ -383,3 +397,26 @@ class AILastErrorSensor(AIBaseSensor):
         self._attr_extra_state_attributes = {
              "last_error_timestamp": data.get("last_update") if last_error else None,
         }
+
+# ─────────────────────────────────────────────────────────────
+# Timeout sensor
+# ─────────────────────────────────────────────────────────────
+class TimeoutSensor(AIBaseSensor):
+    """Shows the configured timeout for AI requests."""
+    _attr_should_poll = False
+
+    def __init__(
+        self,
+        coordinator: DataUpdateCoordinator,
+        entry: ConfigEntry,
+        description: SensorEntityDescription,
+    ) -> None:
+        super().__init__(coordinator, entry, description)
+        self._update_state_and_attributes()  # Initial update
+
+    def _update_state_and_attributes(self) -> None:
+        """Update sensor state with the configured timeout."""
+        self._attr_native_value = self._entry.options.get(
+            "timeout",
+            self._entry.data.get("timeout", DEFAULT_TIMEOUT)  # Default to 30 seconds if not set
+        )
