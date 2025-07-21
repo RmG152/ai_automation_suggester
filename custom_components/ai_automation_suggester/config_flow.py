@@ -234,7 +234,8 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         error_msg = await self.validator.validate_openwebui(
                             user_input.get(CONF_OPENWEBUI_IP_ADDRESS, "localhost"),
                             user_input.get(CONF_OPENWEBUI_PORT, 11434),
-                            user_input.get(CONF_OPENWEBUI_HTTPS, False)
+                            user_input.get(CONF_OPENWEBUI_HTTPS, False),
+                            user_input.get[CONF_API_KEY]
                         )   
                     elif self.provider == "Custom OpenAI":
                         error_msg = await self.validator.validate_custom_openai(
