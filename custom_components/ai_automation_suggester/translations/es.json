@@ -32,7 +32,10 @@
           "custom_openai_endpoint": "Punto final de OpenAI Personalizado",
           "localai_ip": "Dirección IP de LocalAI",
           "localai_port": "Puerto de LocalAI",
-          "localai_https": "Usar HTTPS para LocalAI"
+          "localai_https": "Usar HTTPS para LocalAI",
+          "google_thinking_mode": "Modo de Pensamiento de Google",
+          "google_thinking_budget": "Presupuesto de Pensamiento de Google",
+          "google_search": "Activar Búsqueda de Google"
         }
       }
     },
@@ -72,7 +75,10 @@
           "openai_azure_api_version": "Versión de la API de Azure",
           "generic_openai_api_endpoint": "URL completa de la API de OpenAI genérica (debe terminar en 'completions')",
           "generic_openai_validation_endpoint": "URL de validación (OpenAI Genérico, debe terminar en 'models')",
-          "generic_openai_enable_validation": "Habilitar Validación (OpenAI Genérico)"
+          "generic_openai_enable_validation": "Habilitar Validación (OpenAI Genérico)",
+          "google_thinking_mode": "Modo de Pensamiento de Google",
+          "google_thinking_budget": "Presupuesto de Pensamiento de Google",
+          "google_search": "Activar Búsqueda de Google"
         },
         "description": "Ajusta la configuración de tus proveedores de IA. Se utilizarán los campos relevantes para tu proveedor configurado. Las configuraciones comunes, como los límites de tokens, se configuran por proveedor."
       }

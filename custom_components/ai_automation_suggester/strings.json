@@ -36,7 +36,10 @@
           "custom_openai_endpoint": "Custom OpenAI Endpoint",
           "localai_ip": "LocalAI IP Address",
           "localai_port": "LocalAI Port",
-          "localai_https": "Use HTTPS for LocalAI"
+          "localai_https": "Use HTTPS for LocalAI",
+          "google_thinking_mode": "Google Thinking Mode",
+          "google_thinking_budget": "Google Thinking Budget",
+          "google_search": "Enable Google Search"
         }
       }
     },
@@ -80,7 +83,10 @@
           "openai_azure_api_version": "Azure API Version",
           "generic_openai_api_endpoint": "Generic OpenAI API Full URL (should end with 'completions')",
           "generic_openai_validation_endpoint": "Validation URL (Generic OpenAI, should end with 'models')",
-          "generic_openai_enable_validation": "Enable Validation (Generic OpenAI)"
+          "generic_openai_enable_validation": "Enable Validation (Generic OpenAI)",
+          "google_thinking_mode": "Google Thinking Mode",
+          "google_thinking_budget": "Google Thinking Budget",
+          "google_search": "Enable Google Search"
         },
         "description": "Adjust settings for your AI providers. Fields relevant to your configured provider will be used. Common settings like token limits are configured per provider."
       }

@@ -36,7 +36,10 @@
           "custom_openai_endpoint": "Aangepast OpenAI-eindpunt",
           "localai_ip": "LocalAI IP-adres",
           "localai_port": "LocalAI-poort",
-          "localai_https": "HTTPS gebruiken voor LocalAI"
+          "localai_https": "HTTPS gebruiken voor LocalAI",
+          "google_thinking_mode": "Google Denkmodus",
+          "google_thinking_budget": "Google Denkbudget",
+          "google_search": "Google-zoekfunctie inschakelen"
         }
       }
     },
@@ -76,7 +79,10 @@
           "openai_azure_api_version": "Azure API-versie",
           "generic_openai_api_endpoint": "Volledige URL generieke OpenAI API (moet eindigen op 'completions')",
           "generic_openai_validation_endpoint": "Validatie-URL (Generieke OpenAI, moet eindigen op 'models')",
-          "generic_openai_enable_validation": "Validatie inschakelen (Generieke OpenAI)"
+          "generic_openai_enable_validation": "Validatie inschakelen (Generieke OpenAI)",
+          "google_thinking_mode": "Google Denkmodus",
+          "google_thinking_budget": "Google Denkbudget",
+          "google_search": "Google-zoekfunctie inschakelen"
         },
         "description": "Pas de instellingen voor uw AI-providers aan. Velden die relevant zijn voor uw geconfigureerde provider worden gebruikt. Algemene instellingen zoals tokenlimieten worden per provider geconfigureerd."
       }

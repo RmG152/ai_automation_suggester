@@ -719,6 +719,16 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
             model = self._opt(CONF_MODEL, DEFAULT_MODELS["Google"])
             in_budget, out_budget = self._budgets()
             temperature = self._opt(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
+            thinking_budget = "-1"
+            google_search = self._opt(CONF_GOOGLE_ENABLE_SEARCH, False)
+
+            if self._opt(CONF_GOOGLE_THINKING_MODE, "default") == "custom":
+                thinking_budget = self._opt(CONF_GOOGLE_THINKING_BUDGET, "-1")
+            elif self._opt(CONF_GOOGLE_THINKING_MODE, "default") == "disabled":
+                thinking_budget = "0"
+            else:
+                thinking_budget = "-1" # Default to dynamic thinking budget
+
             if not api_key:
                 raise ValueError("Google API key not configured")
 
@@ -732,8 +742,17 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
                     "maxOutputTokens": out_budget,
                     "topK": 40,
                     "topP": 0.95,
+                    "thinkingConfig": {
+                        "thinkingBudget": thinking_budget,
+                    },
                 },
             }
+
+            if google_search:
+                body["tools"] = {
+                    "google_search": {}
+                }
+
             endpoint = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
             timeout = aiohttp.ClientTimeout(total=900)
 
@@ -774,6 +793,7 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
         except Exception as err:
             self._last_error = f"Google processing error: {str(err)}"
             _LOGGER.error(self._last_error)
+            _LOGGER.error("Response: %s", res)
             # Log stack trace for unexpected errors
             _LOGGER.exception("Unexpected error in Google API call:")
             return None

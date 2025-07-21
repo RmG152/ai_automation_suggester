@@ -36,7 +36,10 @@
           "custom_openai_endpoint": "Пользовательский Endpoint OpenAI",
           "localai_ip": "IP-адрес LocalAI",
           "localai_port": "Порт LocalAI",
-          "localai_https": "Использовать HTTPS для LocalAI"
+          "localai_https": "Использовать HTTPS для LocalAI",
+          "google_thinking_mode": "Режим мышления Google",
+          "google_thinking_budget": "Бюджет мышления Google",
+          "google_search": "Включить поиск Google"
         }
       }
     },
@@ -80,7 +83,10 @@
           "openai_azure_api_version": "Версия API Azure",
           "generic_openai_api_endpoint": "Полный URL общего API OpenAI (должен заканчиваться на 'completions')",
           "generic_openai_validation_endpoint": "URL валидации (Общий OpenAI, должен заканчиваться на 'models')",
-          "generic_openai_enable_validation": "Включить валидацию (Общий OpenAI)"
+          "generic_openai_enable_validation": "Включить валидацию (Общий OpenAI)",
+          "google_thinking_mode": "Режим мышления Google",
+          "google_thinking_budget": "Бюджет мышления Google",
+          "google_search": "Включить поиск Google"
         },
         "description": "Настройте параметры для ваших поставщиков ИИ. Будут использоваться поля, относящиеся к вашему настроенному поставщику. Общие настройки, такие как ограничения токенов, настраиваются для каждого поставщика."
       }

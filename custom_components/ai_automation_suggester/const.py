@@ -59,6 +59,11 @@ CONF_OLLAMA_PORT = "ollama_port"
 CONF_OLLAMA_HTTPS = "ollama_https"
 CONF_OLLAMA_DISABLE_THINK = "ollama_disable_think"
 
+# Google
+CONF_GOOGLE_THINKING_MODE = "google_thinking_mode"
+CONF_GOOGLE_THINKING_BUDGET = "google_thinking_budget"
+CONF_GOOGLE_ENABLE_SEARCH = "google_search"
+
 # Open Web UI
 CONF_OPENWEBUI_IP_ADDRESS = "openwebui_ip"
 CONF_OPENWEBUI_PORT = "openwebui_port"

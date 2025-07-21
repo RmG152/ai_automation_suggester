@@ -36,7 +36,10 @@
           "custom_openai_endpoint": "Benutzerdefinierter OpenAI Endpunkt",
           "localai_ip": "LocalAI IP-Adresse",
           "localai_port": "LocalAI Port",
-          "localai_https": "HTTPS für LocalAI verwenden"
+          "localai_https": "HTTPS für LocalAI verwenden",
+          "google_thinking_mode": "Google Denkmodus",
+          "google_thinking_budget": "Google Denkbudget",
+          "google_search": "Google-Suche aktivieren"
         }
       }
     },
@@ -80,7 +83,10 @@
           "openai_azure_api_version": "Azure API-Version",
           "generic_openai_api_endpoint": "Vollständige URL der generischen OpenAI API (sollte mit 'completions' enden)",
           "generic_openai_validation_endpoint": "Validierungs-URL (Generisches OpenAI, sollte mit 'models' enden)",
-          "generic_openai_enable_validation": "Validierung aktivieren (Generisches OpenAI)"
+          "generic_openai_enable_validation": "Validierung aktivieren (Generisches OpenAI)",
+          "google_thinking_mode": "Google Denkmodus",
+          "google_thinking_budget": "Google Denkbudget",
+          "google_search": "Google-Suche aktivieren"
         },
         "description": "Passen Sie die Einstellungen für Ihre AI-Anbieter an. Relevante Felder für Ihren konfigurierten Anbieter werden verwendet. Allgemeine Einstellungen wie Token-Limits werden pro Anbieter konfiguriert."
       }

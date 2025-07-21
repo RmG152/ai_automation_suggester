@@ -36,7 +36,10 @@
           "custom_openai_endpoint": "自定义 OpenAI 端点",
           "localai_ip": "LocalAI IP 地址",
           "localai_port": "LocalAI 端口",
-          "localai_https": "为 LocalAI 使用 HTTPS"
+          "localai_https": "为 LocalAI 使用 HTTPS",
+          "google_thinking_mode": "Google 思考模式",
+          "google_thinking_budget": "Google 思考预算",
+          "google_search": "启用 Google 搜索"
         }
       }
     },
@@ -80,7 +83,10 @@
           "openai_azure_api_version": "Azure API 版本",
           "generic_openai_api_endpoint": "通用 OpenAI API 完整 URL（应以 'completions' 结尾）",
           "generic_openai_validation_endpoint": "验证 URL（通用 OpenAI，应以 'models' 结尾）",
-          "generic_openai_enable_validation": "启用验证（通用 OpenAI）"
+          "generic_openai_enable_validation": "启用验证（通用 OpenAI）",
+          "google_thinking_mode": "Google 思考模式",
+          "google_thinking_budget": "Google 思考预算",
+          "google_search": "启用 Google 搜索"
         },
         "description": "调整您的 AI 提供商的设置。将使用与您配置的提供商相关的字段。每个提供商都会配置通用设置（如令牌限制）。"
       }

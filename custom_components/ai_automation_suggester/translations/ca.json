@@ -36,7 +36,10 @@
           "custom_openai_endpoint": "Punt final d'OpenAI Personalitzat",
           "localai_ip": "Adreça IP de LocalAI",
           "localai_port": "Port de LocalAI",
-          "localai_https": "Utilitzar HTTPS per a LocalAI"
+          "localai_https": "Utilitzar HTTPS per a LocalAI",
+          "google_thinking_mode": "Mode de pensament de Google",
+          "google_thinking_budget": "Pressupost de pensament de Google",
+          "google_search": "Activar cerca de Google"
         }
       }
     },
@@ -80,7 +83,10 @@
           "openai_azure_api_version": "Versió de l'API d'Azure",
           "generic_openai_api_endpoint": "URL completa de l'API d'OpenAI genèrica (ha d'acabar amb 'completions')",
           "generic_openai_validation_endpoint": "URL de validació (OpenAI Genèric, ha d'acabar amb 'models')",
-          "generic_openai_enable_validation": "Activar validació (OpenAI Genèric)"
+          "generic_openai_enable_validation": "Activar validació (OpenAI Genèric)",
+          "google_thinking_mode": "Mode de pensament de Google",
+          "google_thinking_budget": "Pressupost de pensament de Google",
+          "google_search": "Activar cerca de Google"
         },
         "description": "Ajusta la configuració dels teus proveïdors d'IA. S'utilitzaran els camps rellevants per al proveïdor configurat. Les configuracions comunes, com els límits de tokens, es configuren per proveïdor."
       }
