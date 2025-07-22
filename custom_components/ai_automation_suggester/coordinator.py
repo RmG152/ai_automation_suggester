@@ -604,7 +604,7 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
                 headers["Authorization"] = f"Bearer {api_key}"
 
             # OpenRouter specific headers
-            if "openrouter.com" in endpoint:
+            if "openrouter.ai" in endpoint:
                 headers["HTTP-Referer"] = "https://home-assistant.io"
                 headers["X-Title"] = "Home Assistant AI Automation Suggester"
 
@@ -1084,7 +1084,7 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
                 headers["Authorization"] = f"Bearer {api_key}"
 
             # OpenRouter specific headers
-            if "openrouter.com" in endpoint:
+            if "openrouter.ai" in endpoint:
                 headers["HTTP-Referer"] = "https://home-assistant.io"
                 headers["X-Title"] = "Home Assistant AI Automation Suggester"
 
