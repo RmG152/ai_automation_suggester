@@ -331,7 +331,7 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             schema_dict.update({
                 vol.Optional(CONF_GOOGLE_THINKING_MODE, default="default"): vol.In(["default", "custom", "disabled"]),
                 vol.Optional(CONF_GOOGLE_THINKING_BUDGET, default="-1"): vol.All(vol.Coerce(int), vol.Range(min=-1, max=32768)),
-                vol.Optional(CONF_GOOGLE_ENABLE_SEARCH, default=False): bool,
+                # vol.Optional(CONF_GOOGLE_ENABLE_SEARCH, default=False): bool,
             })
 
 
@@ -415,6 +415,6 @@ class AIAutomationOptionsFlowHandler(config_entries.OptionsFlow):
         elif provider == "Google":
             schema[vol.Optional(CONF_GOOGLE_THINKING_MODE, default=self._get_option(CONF_GOOGLE_THINKING_MODE, "default"))] = vol.In(["default", "custom", "disabled"])
             schema[vol.Optional(CONF_GOOGLE_THINKING_BUDGET, default=self._get_option(CONF_GOOGLE_THINKING_BUDGET, "-1"))] = vol.All(vol.Coerce(int), vol.Range(min=-1, max=32768))
-            schema[vol.Optional(CONF_GOOGLE_ENABLE_SEARCH, default=self._get_option(CONF_GOOGLE_ENABLE_SEARCH, False))] = bool
+            # schema[vol.Optional(CONF_GOOGLE_ENABLE_SEARCH, default=self._get_option(CONF_GOOGLE_ENABLE_SEARCH, False))] = bool
 
         return self.async_show_form(step_id="init", data_schema=vol.Schema(schema))
