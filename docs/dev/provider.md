@@ -106,11 +106,92 @@ BASE_PROVIDER_SCHEMA = vol.Schema({
 ```
 
 ### Schema Extension Patterns
-| Provider Type | Example Implementation | File Reference |
-|---------------|------------------------|----------------|
-| API Key-based | `CONF_API_KEY` | [`config_flow.py:112`](custom_components/ai_automation_suggester/config_flow.py:112) |
-| Self-hosted | `CONF_ENDPOINT`, `CONF_PORT` | [`config_flow.py:152`](custom_components/ai_automation_suggester/config_flow.py:152) |
-| Cloud Service | `CONF_REGION`, `CONF_INSTANCE` | [`config_flow.py:178`](custom_components/ai_automation_suggester/config_flow.py:178) |
+| Provider Type | Configuration Fields | Special Features |
+|---------------|---------------------|------------------|
+| **API Key-based** | `CONF_API_KEY`, `CONF_MODEL`, `CONF_TEMPERATURE` | Standard authentication |
+| **Self-hosted** | `CONF_IP_ADDRESS`, `CONF_PORT`, `CONF_HTTPS` | Local network configuration |
+| **Cloud Service** | `CONF_REGION`, `CONF_INSTANCE`, `CONF_ENDPOINT` | Cloud-specific parameters |
+
+### Provider-Specific Configuration Options
+
+#### OpenAI
+```python
+{
+    vol.Required(CONF_API_KEY): str,
+    vol.Optional(CONF_MODEL, default="gpt-4o-mini"): str,
+    vol.Optional(CONF_TEMPERATURE, default=0.7): float,
+    # Supports GPT-5 model compatibility detection
+}
+```
+
+#### OpenAI Azure
+```python
+{
+    vol.Required(CONF_API_KEY): str,
+    vol.Optional(CONF_OPENAI_AZURE_ENDPOINT): str,
+    vol.Optional(CONF_OPENAI_AZURE_DEPLOYMENT_ID, default="gpt-4o-mini"): str,
+    vol.Optional(CONF_OPENAI_AZURE_API_VERSION, default="2025-01-01-preview"): str,
+}
+```
+
+#### Google
+```python
+{
+    vol.Required(CONF_API_KEY): str,
+    vol.Optional(CONF_MODEL, default="gemini-2.0-flash"): str,
+    vol.Optional(CONF_GOOGLE_THINKING_MODE, default="default"): vol.In(["default", "custom", "disabled"]),
+    vol.Optional(CONF_GOOGLE_THINKING_BUDGET, default=-1): int,
+}
+```
+
+#### LocalAI
+```python
+{
+    vol.Optional(CONF_LOCALAI_IP_ADDRESS, default="localhost"): str,
+    vol.Optional(CONF_LOCALAI_PORT, default=8080): int,
+    vol.Optional(CONF_LOCALAI_HTTPS, default=False): bool,
+}
+```
+
+#### Ollama
+```python
+{
+    vol.Optional(CONF_OLLAMA_IP_ADDRESS, default="localhost"): str,
+    vol.Optional(CONF_OLLAMA_PORT, default=11434): int,
+    vol.Optional(CONF_OLLAMA_HTTPS, default=False): bool,
+    vol.Optional(CONF_OLLAMA_DISABLE_THINK, default=False): bool,
+}
+```
+
+#### Open Web UI
+```python
+{
+    vol.Optional(CONF_OPENWEBUI_IP_ADDRESS, default="localhost"): str,
+    vol.Optional(CONF_OPENWEBUI_PORT, default=11434): int,
+    vol.Optional(CONF_OPENWEBUI_HTTPS, default=False): bool,
+    vol.Optional(CONF_OPENWEBUI_DISABLE_THINK, default=False): bool,
+    vol.Optional(CONF_API_KEY): str,  # Optional authentication
+}
+```
+
+#### OpenRouter
+```python
+{
+    vol.Required(CONF_API_KEY): str,
+    vol.Optional(CONF_MODEL, default="meta-llama/llama-4-maverick:free"): str,
+    vol.Optional(CONF_OPENROUTER_REASONING_MAX_TOKENS, default=0): int,
+}
+```
+
+#### Generic OpenAI
+```python
+{
+    vol.Required(CONF_GENERIC_OPENAI_ENDPOINT): str,
+    vol.Optional(CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT): str,
+    vol.Optional(CONF_GENERIC_OPENAI_ENABLE_VALIDATION, default=False): bool,
+    vol.Optional(CONF_API_KEY): str,  # Optional authentication
+}
+```
 
 ## Implementation Guide
 
@@ -127,25 +208,43 @@ DEFAULT_MODELS["HuggingFace"] = "gpt2"  # Default model selection
 Add validation methods to [`config_flow.py`](custom_components/ai_automation_suggester/config_flow.py):
 ```python
 class ProviderValidator:
-    async def validate_huggingface(self, api_key: str, endpoint: str):
-        """Validate HuggingFace credentials and endpoint accessibility"""
-        headers = {"Authorization": f"Bearer {api_key}"}
+    async def validate_openai(self, api_key: str) -> Optional[str]:
+        """Validate OpenAI API key by testing models endpoint"""
+        headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
         try:
-            # Test endpoint connectivity
-            async with self.session.get(f"{endpoint}/models",
-                                      headers=headers,
-                                      timeout=10) as resp:
-                if resp.status != 200:
-                    return "Invalid credentials or endpoint"
-                
-                # Verify model compatibility
-                models = await resp.json()
-                if DEFAULT_MODELS["HuggingFace"] not in models:
-                    return "Default model not available"
-                    
-        except aiohttp.ClientError as err:
-            return f"Connection error: {str(err)}"
-        return None
+            resp = await self.session.get("https://api.openai.com/v1/models", headers=headers)
+            return None if resp.status == 200 else await resp.text()
+        except Exception as err:
+            return str(err)
+
+    async def validate_google(self, api_key: str, model: str) -> Optional[str]:
+        """Validate Google API key and model availability"""
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
+        payload = {"contents": [{"parts": [{"text": "ping"}]}]}
+        try:
+            resp = await self.session.post(url, json=payload)
+            return None if resp.status == 200 else await resp.text()
+        except Exception as err:
+            return str(err)
+
+    async def validate_ollama(self, ip: str, port: int, https: bool) -> Optional[str]:
+        """Validate Ollama local instance availability"""
+        proto = "https" if https else "http"
+        try:
+            resp = await self.session.get(f"{proto}://{ip}:{port}/api/tags")
+            return None if resp.status == 200 else await resp.text()
+        except Exception as err:
+            return str(err)
+
+    async def validate_openwebui(self, ip: str, port: int, https: bool, api_key: str) -> Optional[str]:
+        """Validate Open Web UI instance with optional authentication"""
+        headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+        proto = "https" if https else "http"
+        try:
+            resp = await self.session.get(f"{proto}://{ip}:{port}/api/tags", headers=headers)
+            return None if resp.status == 200 else await resp.text()
+        except Exception as err:
+            return str(err)
 ```
 
 ### 3. Config Flow Extension
@@ -279,6 +378,28 @@ Update translation files in [`translations/`](custom_components/ai_automation_su
    - Test error recovery scenarios
    - Validate translation coverage
 
+## Supported Providers
+
+The integration currently supports **15 AI providers**:
+
+| Provider | Type | Authentication | Local/Cloud | Special Features |
+|----------|------|----------------|-------------|------------------|
+| **OpenAI** | Cloud API | API Key | Cloud | GPT-5 model compatibility detection |
+| **OpenAI Azure** | Cloud API | API Key | Cloud | Azure-specific deployment configuration |
+| **Anthropic** | Cloud API | API Key | Cloud | Claude models with enhanced error handling |
+| **Google** | Cloud API | API Key | Cloud | Thinking modes, custom budgets, search integration |
+| **Groq** | Cloud API | API Key | Cloud | High-speed inference optimized |
+| **LocalAI** | Self-hosted | None | Local | Local OpenAI-compatible API |
+| **Ollama** | Self-hosted | None | Local | Local models with think control |
+| **Open Web UI** | Self-hosted | Optional | Local | Web interface with think control |
+| **Custom OpenAI** | Self-hosted | Optional | Local | Custom endpoint configuration |
+| **Mistral AI** | Cloud API | API Key | Cloud | Mistral model family support |
+| **Perplexity AI** | Cloud API | API Key | Cloud | Search-enhanced responses |
+| **OpenRouter** | Cloud API | API Key | Cloud | Multi-provider routing, reasoning tokens |
+| **Generic OpenAI** | Self-hosted | Optional | Local | Universal OpenAI-compatible API |
+| **Codestral** | Cloud API | API Key | Cloud | Code-focused model |
+| **Venice AI** | Cloud API | API Key | Cloud | Uncensored model access |
+
 ## Introduction
 The integration supports multiple AI providers through a modular architecture. To add a new provider, you need to:
 1. Add validation logic
@@ -382,6 +503,30 @@ CONF_OPENWEBUI_HTTPS = "openwebui_https"
 DEFAULT_MODELS["Open Web UI"] = "llama2"
 ```
 
+### Current Default Models
+
+The implementation includes these default models for each provider:
+
+```python
+DEFAULT_MODELS = {
+    "OpenAI": "gpt-4o-mini",
+    "OpenAI Azure": "gpt-4o-mini",
+    "Anthropic": "claude-3-7-sonnet-latest",
+    "Google": "gemini-2.0-flash",
+    "Groq": "llama3-8b-8192",
+    "LocalAI": "llama3",
+    "Ollama": "llama2",
+    "Custom OpenAI": "gpt-3.5-turbo",
+    "Mistral AI": "mistral-medium",
+    "Perplexity AI": "sonar",
+    "OpenRouter": "meta-llama/llama-4-maverick:free",
+    "Generic OpenAI": "gpt-3.5-turbo",
+    "Codestral": "codestral-latest",
+    "Venice AI": "venice-uncensored",
+    "Open Web UI": "llama2",
+}
+```
+
 4. **Coordinator's Role in Provider Integration**
 
 The `AIAutomationCoordinator` handles:
@@ -430,6 +575,3 @@ Update `strings.json` with new provider name and field descriptions:
   }
 }
 ```
-
-
-
