@@ -116,8 +116,40 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
         )
 
         _LOGGER.debug("Input budget: %d, Output budget: %d", in_budget, out_budget)
-        
+
         return in_budget, out_budget
+
+    # --------------------------------------------------------------------- #
+    # Helper – model compatibility detector
+    # --------------------------------------------------------------------- #
+    def _get_model_parameters(self, model_name: str) -> dict:
+        """
+        Return appropriate parameters based on model capabilities.
+        GPT-5 variants use max_completion_tokens, older models use max_tokens.
+        """
+        # GPT-5 variants that require max_completion_tokens
+        gpt5_variants = [
+            'gpt-5', 'gpt-5-mini', 'gpt-5-nano',
+            'gpt-5-',  # Catch any gpt-5-* variants
+        ]
+
+        model_lower = model_name.lower()
+
+        # Check if it's a GPT-5 variant
+        is_gpt5 = any(variant in model_lower for variant in gpt5_variants)
+
+        if is_gpt5:
+            _LOGGER.debug("Using max_completion_tokens for GPT-5 model: %s", model_name)
+            return {
+                'max_tokens_param': 'max_completion_tokens',
+                'supports_completion_tokens': True
+            }
+        else:
+            _LOGGER.debug("Using max_tokens for model: %s", model_name)
+            return {
+                'max_tokens_param': 'max_tokens',
+                'supports_completion_tokens': False
+            }
 
     # ---------------------------------------------------------------------
     # HA lifecycle hooks
@@ -462,10 +494,13 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
             if len(prompt) // 4 > in_budget:
                 prompt = prompt[: in_budget * 4]
 
+            # Get model-specific parameters
+            model_params = self._get_model_parameters(model)
+
             body = {
                 "model": model,
                 "messages": [{"role": "user", "content": prompt}],
-                "max_tokens": out_budget,
+                model_params['max_tokens_param']: out_budget,
                 "temperature": temperature,
             }
             headers = {
@@ -534,9 +569,13 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
                 "api-key": api_key,
                 "Content-Type": "application/json",
             }
+
+            # Get model-specific parameters (deployment_id is used as model identifier)
+            model_params = self._get_model_parameters(deployment_id)
+
             body = {
                 "messages": [{"role": "user", "content": prompt}],
-                "max_tokens": out_budget,
+                model_params['max_tokens_param']: out_budget,
                 "temperature": temperature,
             }
 
@@ -608,10 +647,13 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
                 headers["HTTP-Referer"] = "https://home-assistant.io"
                 headers["X-Title"] = "Home Assistant AI Automation Suggester"
 
+            # Get model-specific parameters
+            model_params = self._get_model_parameters(model)
+
             body = {
                 "model": model,
                 "messages": [{"role": "user", "content": prompt}],
-                "max_tokens": out_budget,
+                model_params['max_tokens_param']: out_budget,
                 "temperature": temperature,
             }
             timeout = aiohttp.ClientTimeout(total=900)
@@ -1088,10 +1130,13 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
                 headers["HTTP-Referer"] = "https://home-assistant.io"
                 headers["X-Title"] = "Home Assistant AI Automation Suggester"
 
+            # Get model-specific parameters
+            model_params = self._get_model_parameters(model)
+
             body = {
                 "model": model,
                 "messages": [{"role": "user", "content": prompt}],
-                "max_tokens": out_budget,
+                model_params['max_tokens_param']: out_budget,
                 "temperature": temperature,
             }
             timeout = aiohttp.ClientTimeout(total=900)
@@ -1446,4 +1491,4 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
             _LOGGER.error(self._last_error)
             # Log stack trace for unexpected errors
             _LOGGER.exception("Unexpected error in VeniceAI API call:")
-            return None    
+            return None
