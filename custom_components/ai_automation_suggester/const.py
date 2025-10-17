@@ -108,6 +108,7 @@ DEFAULT_MODELS = {
     "Codestral": "codestral-latest",
     "Venice AI": "venice-uncensored",
     "Open Web UI": "llama2",
+    "ZhipuAI": "glm-4.5-flash",
 }
 
 # ─────────────────────────────────────────────────────────────
@@ -142,6 +143,7 @@ ENDPOINT_PERPLEXITY = "https://api.perplexity.ai/chat/completions"
 ENDPOINT_OPENROUTER = "https://openrouter.ai/api/v1/chat/completions"
 ENDPOINT_CODESTRAL = "https://codestral.mistral.ai/v1/chat/completions"
 ENDPOINT_VENICEAI = "https://api.venice.ai/api/v1/chat/completions"
+ENDPOINT_ZHIPUAI = "https://open.bigmodel.cn/api/paas/v4/chat/completions"
 
 
 # ─────────────────────────────────────────────────────────────

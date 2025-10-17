@@ -380,7 +380,7 @@ Update translation files in [`translations/`](custom_components/ai_automation_su
 
 ## Supported Providers
 
-The integration currently supports **15 AI providers**:
+The integration currently supports **16 AI providers**:
 
 | Provider | Type | Authentication | Local/Cloud | Special Features |
 |----------|------|----------------|-------------|------------------|
@@ -399,6 +399,7 @@ The integration currently supports **15 AI providers**:
 | **Generic OpenAI** | Self-hosted | Optional | Local | Universal OpenAI-compatible API |
 | **Codestral** | Cloud API | API Key | Cloud | Code-focused model |
 | **Venice AI** | Cloud API | API Key | Cloud | Uncensored model access |
+| **ZhipuAI** | Cloud API | API Key | Cloud | Chinese language model support |
 
 ## Introduction
 The integration supports multiple AI providers through a modular architecture. To add a new provider, you need to:
@@ -524,6 +525,7 @@ DEFAULT_MODELS = {
     "Codestral": "codestral-latest",
     "Venice AI": "venice-uncensored",
     "Open Web UI": "llama2",
+    "ZhipuAI": "glm-4-flash",
 }
 ```
 

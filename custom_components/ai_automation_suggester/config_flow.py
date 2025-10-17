@@ -44,7 +44,7 @@ class ProviderValidator:
             "max_tokens": 1,
         }
         try:
-            resp = await self.session.post("https://api.anthropic.com/v1/messages", headers=hdr, json=payload)
+            resp = await self.session.post(ENDPOINT_ANTHROPIC headers=hdr, json=payload)
             return None if resp.status == 200 else await resp.text()
         except Exception as err:
             return str(err)
@@ -132,6 +132,19 @@ class ProviderValidator:
         except Exception as err:
             return str(err)
 
+    async def validate_zhipuai(self, api_key: str, model: str) -> Optional[str]:
+        hdr = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+        payload = {
+            "model": model,
+            "messages": [{"role": "user", "content": "ping"}],
+            "max_tokens": 1,
+        }
+        try:
+            resp = await self.session.post(ENDPOINT_ZHIPUAI, headers=hdr, json=payload)
+            return None if resp.status == 200 else await resp.text()
+        except Exception as err:
+            return str(err)
+
 
 # ─────────────────────────────────────────────────────────────
 # Config‑flow main class
@@ -179,6 +192,7 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                             "Open Web UI",
                             "Perplexity AI",
                             "Venice AI",
+                            "ZhipuAI",
                         ]
                     )
                 }
@@ -258,6 +272,11 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                                 user_input.get(CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT, ""),
                                 user_input[CONF_API_KEY]
                             )
+                    elif self.provider == "ZhipuAI":
+                        error_msg = await self.validator.validate_zhipuai(
+                            user_input[CONF_API_KEY],
+                            user_input.get(CONF_MODEL, DEFAULT_MODELS["ZhipuAI"])
+                        )
 
                     if error_msg:
                         errors["base"] = "auth_error"
