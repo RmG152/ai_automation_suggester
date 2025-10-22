@@ -12,6 +12,7 @@ import re
 import aiohttp
 import anyio
 import yaml
+import json
 
 from homeassistant.components import persistent_notification
 from homeassistant.core import HomeAssistant
@@ -1014,18 +1015,28 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
                     _LOGGER.error(self._last_error)
                     return None
 
-                res = await resp.json()
+                # Handle different content types - Ollama may return errors as text/plain
+                if resp.content_type != 'application/json':
+                    _LOGGER.debug("Ollama response content type: %s", resp.content_type)
+                    # Try to parse JSON from the text body; if parsing fails, treat body as plain text
+                    resp_text = await resp.text()
+                    
+                    try:
+                        resp_text = await resp.text()
+                        res = json.loads(resp_text)
+                    except ValueError:
+                        # Not JSON — return raw text (server may return plain text with the generated content)
+                        return resp_text
+                else:
+                    res = await resp.json()
 
             if not isinstance(res, dict):
                 raise ValueError(f"Unexpected response format: {res}")
-                
-            if "message" not in res:
-                raise ValueError(f"Response missing 'message' array: {res}")
-                
-            if "content" not in res["message"]:
-                raise ValueError(f"Message missing 'content': {res['message']}")
-                
-            return res["message"]["content"]
+
+            if "response" not in res:
+                raise ValueError(f"Response missing 'response' field: {res}")
+
+            return res["response"]
         
         except Exception as err:
             self._last_error = f"Ollama processing error: {str(err)}"
