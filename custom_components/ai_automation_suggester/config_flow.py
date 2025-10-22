@@ -44,7 +44,7 @@ class ProviderValidator:
             "max_tokens": 1,
         }
         try:
-            resp = await self.session.post(ENDPOINT_ANTHROPIC headers=hdr, json=payload)
+            resp = await self.session.post(ENDPOINT_ANTHROPIC, headers=hdr, json=payload)
             return None if resp.status == 200 else await resp.text()
         except Exception as err:
             return str(err)
@@ -291,65 +291,65 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 title = f"AI Automation Suggester ({self.provider})"
                 return self.async_create_entry(title=title, data=self.data)
 
-        # Build dynamic schema based on provider capabilities
+        # Build dynamic schema based on provider capabilities with user input as defaults
         schema_dict = {
-            vol.Optional(CONF_API_KEY): TextSelector(TextSelectorConfig(type="password")),
-            vol.Optional(CONF_MODEL, default=DEFAULT_MODELS.get(self.provider, "")): str,
-            vol.Optional(CONF_TEMPERATURE, default=DEFAULT_TEMPERATURE): vol.All(
+            vol.Optional(CONF_API_KEY, default=user_input.get(CONF_API_KEY) if user_input else None): TextSelector(TextSelectorConfig(type="password")),
+            vol.Optional(CONF_MODEL, default=user_input.get(CONF_MODEL) if user_input else DEFAULT_MODELS.get(self.provider, "")): str,
+            vol.Optional(CONF_TEMPERATURE, default=user_input.get(CONF_TEMPERATURE) if user_input else DEFAULT_TEMPERATURE): vol.All(
                 vol.Coerce(float), vol.Range(min=0.0, max=2.0)
             ),
-            vol.Optional(CONF_MAX_INPUT_TOKENS, default=DEFAULT_MAX_INPUT_TOKENS): vol.All(
+            vol.Optional(CONF_MAX_INPUT_TOKENS, default=user_input.get(CONF_MAX_INPUT_TOKENS) if user_input else DEFAULT_MAX_INPUT_TOKENS): vol.All(
                 vol.Coerce(int), vol.Range(min=100)
             ),
-            vol.Optional(CONF_MAX_OUTPUT_TOKENS, default=DEFAULT_MAX_OUTPUT_TOKENS): vol.All(
+            vol.Optional(CONF_MAX_OUTPUT_TOKENS, default=user_input.get(CONF_MAX_OUTPUT_TOKENS) if user_input else DEFAULT_MAX_OUTPUT_TOKENS): vol.All(
                 vol.Coerce(int), vol.Range(min=100)
             ),
-            vol.Optional(CONF_TIMEOUT, default=DEFAULT_TIMEOUT): vol.All(
+            vol.Optional(CONF_TIMEOUT, default=user_input.get(CONF_TIMEOUT) if user_input else DEFAULT_TIMEOUT): vol.All(
                 vol.Coerce(int), vol.Range(min=15)
             ),
         }
 
-        # Add provider-specific fields
+        # Add provider-specific fields with user input as defaults
         if self.provider == "LocalAI":
             schema_dict.update({
-                vol.Optional(CONF_LOCALAI_HTTPS, default=False): bool,
-                vol.Optional(CONF_LOCALAI_IP_ADDRESS, default="localhost"): str,
-                vol.Optional(CONF_LOCALAI_PORT, default=8080): int,
+                vol.Optional(CONF_LOCALAI_HTTPS, default=user_input.get(CONF_LOCALAI_HTTPS) if user_input else False): bool,
+                vol.Optional(CONF_LOCALAI_IP_ADDRESS, default=user_input.get(CONF_LOCALAI_IP_ADDRESS) if user_input else "localhost"): str,
+                vol.Optional(CONF_LOCALAI_PORT, default=user_input.get(CONF_LOCALAI_PORT) if user_input else 8080): int,
             })
         elif self.provider == "Ollama":
             schema_dict.update({
-                vol.Optional(CONF_OLLAMA_IP_ADDRESS, default="localhost"): str,
-                vol.Optional(CONF_OLLAMA_PORT, default=11434): int,
-                vol.Optional(CONF_OLLAMA_HTTPS, default=False): bool,
-                vol.Optional(CONF_OLLAMA_DISABLE_THINK, default=False): bool,
+                vol.Optional(CONF_OLLAMA_IP_ADDRESS, default=user_input.get(CONF_OLLAMA_IP_ADDRESS) if user_input else "localhost"): str,
+                vol.Optional(CONF_OLLAMA_PORT, default=user_input.get(CONF_OLLAMA_PORT) if user_input else 11434): int,
+                vol.Optional(CONF_OLLAMA_HTTPS, default=user_input.get(CONF_OLLAMA_HTTPS) if user_input else False): bool,
+                vol.Optional(CONF_OLLAMA_DISABLE_THINK, default=user_input.get(CONF_OLLAMA_DISABLE_THINK) if user_input else False): bool,
             })
         elif self.provider == "Open Web UI":
             schema_dict.update({
-                vol.Optional(CONF_OPENWEBUI_IP_ADDRESS, default="localhost"): str,
-                vol.Optional(CONF_OPENWEBUI_PORT, default=11434): int,
-                vol.Optional(CONF_OPENWEBUI_HTTPS, default=False): bool,
-                vol.Optional(CONF_OPENWEBUI_DISABLE_THINK, default=False): bool,
-            })            
+                vol.Optional(CONF_OPENWEBUI_IP_ADDRESS, default=user_input.get(CONF_OPENWEBUI_IP_ADDRESS) if user_input else "localhost"): str,
+                vol.Optional(CONF_OPENWEBUI_PORT, default=user_input.get(CONF_OPENWEBUI_PORT) if user_input else 11434): int,
+                vol.Optional(CONF_OPENWEBUI_HTTPS, default=user_input.get(CONF_OPENWEBUI_HTTPS) if user_input else False): bool,
+                vol.Optional(CONF_OPENWEBUI_DISABLE_THINK, default=user_input.get(CONF_OPENWEBUI_DISABLE_THINK) if user_input else False): bool,
+            })
         elif self.provider == "Custom OpenAI":
-            schema_dict[vol.Optional(CONF_CUSTOM_OPENAI_ENDPOINT)] = str
+            schema_dict[vol.Optional(CONF_CUSTOM_OPENAI_ENDPOINT, default=user_input.get(CONF_CUSTOM_OPENAI_ENDPOINT) if user_input else "")] = str
         elif self.provider == "OpenRouter":
-            schema_dict[vol.Optional(CONF_OPENROUTER_REASONING_MAX_TOKENS, default=0)] = vol.All(vol.Coerce(int), vol.Range(min=0))
+            schema_dict[vol.Optional(CONF_OPENROUTER_REASONING_MAX_TOKENS, default=user_input.get(CONF_OPENROUTER_REASONING_MAX_TOKENS) if user_input else 0)] = vol.All(vol.Coerce(int), vol.Range(min=0))
         elif self.provider == "OpenAI Azure":
             schema_dict.update({
-                vol.Optional(CONF_OPENAI_AZURE_ENDPOINT): str,
-                vol.Optional(CONF_OPENAI_AZURE_DEPLOYMENT_ID, default=DEFAULT_MODELS["OpenAI Azure"]): str,
-                vol.Optional(CONF_OPENAI_AZURE_API_VERSION, default="2025-01-01-preview"): str,
+                vol.Optional(CONF_OPENAI_AZURE_ENDPOINT, default=user_input.get(CONF_OPENAI_AZURE_ENDPOINT) if user_input else ""): str,
+                vol.Optional(CONF_OPENAI_AZURE_DEPLOYMENT_ID, default=user_input.get(CONF_OPENAI_AZURE_DEPLOYMENT_ID) if user_input else DEFAULT_MODELS["OpenAI Azure"]): str,
+                vol.Optional(CONF_OPENAI_AZURE_API_VERSION, default=user_input.get(CONF_OPENAI_AZURE_API_VERSION) if user_input else "2025-01-01-preview"): str,
             })
         elif self.provider == "Generic OpenAI":
             schema_dict.update({
-                vol.Optional(CONF_GENERIC_OPENAI_ENDPOINT): str,
-                vol.Optional(CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT, default=""): str,
-                vol.Optional(CONF_GENERIC_OPENAI_ENABLE_VALIDATION, default=False): bool,
+                vol.Optional(CONF_GENERIC_OPENAI_ENDPOINT, default=user_input.get(CONF_GENERIC_OPENAI_ENDPOINT) if user_input else ""): str,
+                vol.Optional(CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT, default=user_input.get(CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT) if user_input else ""): str,
+                vol.Optional(CONF_GENERIC_OPENAI_ENABLE_VALIDATION, default=user_input.get(CONF_GENERIC_OPENAI_ENABLE_VALIDATION) if user_input else False): bool,
             })
         elif self.provider == "Google":
             schema_dict.update({
-                vol.Optional(CONF_GOOGLE_THINKING_MODE, default="default"): vol.In(["default", "custom", "disabled"]),
-                vol.Optional(CONF_GOOGLE_THINKING_BUDGET, default="-1"): vol.All(vol.Coerce(int), vol.Range(min=-1, max=32768)),
+                vol.Optional(CONF_GOOGLE_THINKING_MODE, default=user_input.get(CONF_GOOGLE_THINKING_MODE) if user_input else "default"): vol.In(["default", "custom", "disabled"]),
+                vol.Optional(CONF_GOOGLE_THINKING_BUDGET, default=user_input.get(CONF_GOOGLE_THINKING_BUDGET) if user_input else "-1"): vol.All(vol.Coerce(int), vol.Range(min=-1, max=32768)),
                 # vol.Optional(CONF_GOOGLE_ENABLE_SEARCH, default=False): bool,
             })
 
@@ -398,7 +398,7 @@ class AIAutomationOptionsFlowHandler(config_entries.OptionsFlow):
                 CONF_MAX_OUTPUT_TOKENS,
                 default=self._get_option(CONF_MAX_OUTPUT_TOKENS, DEFAULT_MAX_OUTPUT_TOKENS)
             ): vol.All(vol.Coerce(int), vol.Range(min=100)),
-            vol.Required(CONF_API_KEY, default=self._get_option(CONF_API_KEY)): TextSelector(TextSelectorConfig(type="password")),
+            vol.Optional(CONF_API_KEY, default=self._get_option(CONF_API_KEY)): TextSelector(TextSelectorConfig(type="password")),
             vol.Optional(CONF_TEMPERATURE, default=self._get_option(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)): vol.All(vol.Coerce(float), vol.Range(min=0.0, max=2.0)),
             vol.Optional(CONF_MODEL, default=self._get_option(CONF_MODEL, DEFAULT_MODELS[provider])): str,
             vol.Optional(CONF_TIMEOUT, default=self._get_option(CONF_TIMEOUT, DEFAULT_TIMEOUT)): vol.All(vol.Coerce(int), vol.Range(min=15)),
