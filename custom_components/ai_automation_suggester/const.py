@@ -136,7 +136,7 @@ ENDPOINT_ANTHROPIC = "https://api.anthropic.com/v1/messages"
 ENDPOINT_GOOGLE = "https://generativelanguage.googleapis.com/v1beta2/models/{model}:generateText?key={api_key}"
 ENDPOINT_GROQ = "https://api.groq.com/openai/v1/chat/completions"
 ENDPOINT_LOCALAI = "{protocol}://{ip_address}:{port}/v1/chat/completions"
-ENDPOINT_OLLAMA = "{protocol}://{ip_address}:{port}/api/chat"
+ENDPOINT_OLLAMA = "{protocol}://{ip_address}:{port}/api/generate"
 ENDPOINT_OPENWEBUI = "{protocol}://{ip_address}:{port}/api/chat"
 ENDPOINT_MISTRAL = "https://api.mistral.ai/v1/chat/completions"
 ENDPOINT_PERPLEXITY = "https://api.perplexity.ai/chat/completions"
@@ -144,6 +144,7 @@ ENDPOINT_OPENROUTER = "https://openrouter.ai/api/v1/chat/completions"
 ENDPOINT_CODESTRAL = "https://codestral.mistral.ai/v1/chat/completions"
 ENDPOINT_VENICEAI = "https://api.venice.ai/api/v1/chat/completions"
 ENDPOINT_ZHIPUAI = "https://open.bigmodel.cn/api/paas/v4/chat/completions"
+ENDPOINT_ANTHROPIC = "https://api.anthropic.com/v1/messages"
 
 
 # ─────────────────────────────────────────────────────────────

@@ -995,7 +995,8 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
 
             body = {
                 "model": model,
-                "messages": messages,
+                "format": "json",
+                "prompt": prompt,
                 "stream": False,
                 "options": {
                     "temperature": temperature,
