@@ -148,6 +148,15 @@ class ProviderValidator:
         except Exception as err:
             return str(err)
 
+    async def validate_zhipuai(self, api_key: str, model: str) -> Optional[str]:
+        hdr = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+        payload = {"model": model, "messages": [{"role": "user", "content": "ping"}], "max_tokens": 1}
+        try:
+            resp = await self.session.post(ENDPOINT_ZHIPUAI, headers=hdr, json=payload, timeout=self.timeout)
+            return None if resp.status == 200 else await resp.text()
+        except Exception as err:
+            return str(err)
+
 
 # ─────────────────────────────────────────────────────────────
 # Config‑flow main class
@@ -181,6 +190,7 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 "OpenRouter": self.async_step_openrouter,
                 "OpenAI Azure": self.async_step_openai_azure,
                 "Generic OpenAI": self.async_step_generic_openai,
+                "ZhipuAI": self.async_step_zhipuai,
             }[self.provider]()
 
         return self.async_show_form(
@@ -201,6 +211,7 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                             "OpenAI",
                             "OpenRouter",
                             "Perplexity AI",
+                            "ZhipuAI",
                         ]
                     )
                 }
@@ -538,6 +549,30 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             user_input,
         )
 
+    async def async_step_zhipuai(self, user_input=None):
+        async def _v(ui):
+            return await self.validator.validate_zhipuai(
+                ui[CONF_ZHIPUAI_API_KEY], ui.get(CONF_ZHIPUAI_MODEL, DEFAULT_MODELS["ZhipuAI"])
+            )
+
+        schema = {
+            vol.Required(CONF_ZHIPUAI_API_KEY): TextSelector(TextSelectorConfig(type="password")),
+            vol.Optional(CONF_ZHIPUAI_MODEL, default=DEFAULT_MODELS["ZhipuAI"]): str,
+            vol.Optional(CONF_ZHIPUAI_TEMPERATURE, default=DEFAULT_TEMPERATURE): vol.All(
+                vol.Coerce(float), vol.Range(min=0.0, max=2.0)
+            ),
+        }
+        self._add_token_fields(schema)
+        return await self._provider_form(
+            "zhipuai",
+            vol.Schema(schema),
+            _v,
+            "AI Automation Suggester (ZhipuAI)",
+            {},
+            {},
+            user_input,
+        )
+
     # ───────── Options flow (edit after setup) ─────────
     @staticmethod
     @callback
@@ -654,5 +689,9 @@ class AIAutomationOptionsFlowHandler(config_entries.OptionsFlow):
             schema[vol.Optional(CONF_GENERIC_OPENAI_TEMPERATURE, default=self._get_option(CONF_GENERIC_OPENAI_TEMPERATURE, DEFAULT_TEMPERATURE))] = vol.All(vol.Coerce(float), vol.Range(min=0.0, max=2.0))
             schema[vol.Optional(CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT, default=self._get_option(CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT, ""))] = str
             schema[vol.Optional(CONF_GENERIC_OPENAI_ENABLE_VALIDATION, default=self._get_option(CONF_GENERIC_OPENAI_ENABLE_VALIDATION, False))] = bool
+        elif provider == "ZhipuAI":
+            schema[vol.Optional(CONF_ZHIPUAI_API_KEY, default=self._get_option(CONF_ZHIPUAI_API_KEY))] = TextSelector(TextSelectorConfig(type="password"))
+            schema[vol.Optional(CONF_ZHIPUAI_MODEL, default=self._get_option(CONF_ZHIPUAI_MODEL, DEFAULT_MODELS["ZhipuAI"]))] = str
+            schema[vol.Optional(CONF_ZHIPUAI_TEMPERATURE, default=self._get_option(CONF_ZHIPUAI_TEMPERATURE, DEFAULT_TEMPERATURE))] = vol.All(vol.Coerce(float), vol.Range(min=0.0, max=2.0))
 
         return self.async_show_form(step_id="init", data_schema=vol.Schema(schema))
