@@ -159,6 +159,7 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
             "OpenRouter": CONF_OPENROUTER_MODEL,
             "OpenAI Azure": CONF_OPENAI_AZURE_DEPLOYMENT_ID,
             "Generic OpenAI": CONF_GENERIC_OPENAI_MODEL,
+            "ZhipuAI": CONF_ZHIPUAI_MODEL,
         }
         model_key = model_key_map.get(provider)
         return self._opt(model_key, DEFAULT_MODELS.get(provider, "unknown")) if model_key else "unknown"
@@ -487,6 +488,7 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
             "OpenRouter": self._openrouter,
             "OpenAI Azure": self._openai_azure,
             "Generic OpenAI": self._generic_openai,
+            "ZhipuAI": self._zhipuai,
         }
         handler = dispatch.get(provider)
         if handler is None:
@@ -881,3 +883,65 @@ class AIAutomationCoordinator(DataUpdateCoordinator):
             provider_label="OpenRouter",
         )
         return self._extract_chat_content(response, "OpenRouter") if response else None
+
+    async def _zhipuai(self, prompt: str) -> str | None:
+        """Send prompt to ZhipuAI endpoint."""
+        try:
+            api_key = self._opt(CONF_ZHIPUAI_API_KEY)
+            model = self._opt(CONF_ZHIPUAI_MODEL, DEFAULT_MODELS["ZhipuAI"])
+            temperature = float(self._opt(CONF_ZHIPUAI_TEMPERATURE, DEFAULT_TEMPERATURE))
+            in_budget, out_budget = self._budgets()
+
+            if not api_key:
+                raise ValueError("ZhipuAI API key not configured")
+
+            if len(prompt) // 4 > in_budget:
+                prompt = prompt[: in_budget * 4]
+
+            headers = {
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            }
+            body = {
+                "model": model,
+                "messages": [{"role": "user", "content": prompt}],
+                "max_tokens": out_budget,
+                "temperature": temperature,
+            }
+
+            timeout = aiohttp.ClientTimeout(total=900)
+
+            async with self.session.post(
+                ENDPOINT_ZHIPUAI, headers=headers, json=body, timeout=timeout
+            ) as resp:
+                if resp.status != 200:
+                    self._last_error = (
+                        f"ZhipuAI error {resp.status}: {await resp.text()}"
+                    )
+                    _LOGGER.error(self._last_error)
+                    return None
+
+                res = await resp.json()
+
+            if not isinstance(res, dict):
+                raise ValueError(f"Unexpected response format: {res}")
+
+            if "choices" not in res:
+                raise ValueError(f"Response missing 'choices' array: {res}")
+
+            if not res["choices"] or not isinstance(res["choices"], list):
+                raise ValueError(f"Empty or invalid 'choices' array: {res}")
+
+            if "message" not in res["choices"][0]:
+                raise ValueError(f"First choice missing 'message': {res['choices'][0]}")
+
+            if "content" not in res["choices"][0]["message"]:
+                raise ValueError(f"Message missing 'content': {res['choices'][0]['message']}")
+
+            return res["choices"][0]["message"]["content"]
+
+        except Exception as err:
+            self._last_error = f"ZhipuAI processing error: {str(err)}"
+            _LOGGER.error(self._last_error)
+            _LOGGER.exception("Unexpected error in ZhipuAI API call:")
+            return None
