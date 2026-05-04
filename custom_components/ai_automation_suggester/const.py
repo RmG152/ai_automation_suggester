@@ -124,6 +124,11 @@ CONF_GENERIC_OPENAI_TEMPERATURE = "generic_openai_temperature"
 CONF_GENERIC_OPENAI_VALIDATION_ENDPOINT = "generic_openai_validation_endpoint"
 CONF_GENERIC_OPENAI_ENABLE_VALIDATION = "generic_openai_enable_validation"
 
+# ZhipuAI
+CONF_ZHIPUAI_API_KEY = "zhipuai_api_key"
+CONF_ZHIPUAI_MODEL = "zhipuai_model"
+CONF_ZHIPUAI_TEMPERATURE = "zhipuai_temperature"
+
 # ─────────────────────────────────────────────────────────────
 # Model defaults per provider
 # ─────────────────────────────────────────────────────────────
@@ -140,6 +145,7 @@ DEFAULT_MODELS = {
     "Perplexity AI": "sonar",
     "OpenRouter": "openai/gpt-5.4-mini",
     "Generic OpenAI": "gpt-4o-mini",
+    "ZhipuAI": "glm-4-flash",
 }
 
 # ─────────────────────────────────────────────────────────────
@@ -172,6 +178,7 @@ ENDPOINT_OLLAMA = "{protocol}://{ip_address}:{port}/api/chat"
 ENDPOINT_MISTRAL = "https://api.mistral.ai/v1/chat/completions"
 ENDPOINT_PERPLEXITY = "https://api.perplexity.ai/chat/completions"
 ENDPOINT_OPENROUTER = "https://openrouter.ai/api/v1/chat/completions"
+ENDPOINT_ZHIPUAI = "https://open.bigmodel.cn/api/paas/v4/chat/completions"
 
 
 # ─────────────────────────────────────────────────────────────
