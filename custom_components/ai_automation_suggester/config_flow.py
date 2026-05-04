@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 from typing import Any, Dict, Optional
 
+import aiohttp
 import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.core import callback
@@ -12,6 +13,13 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.selector import TextSelector, TextSelectorConfig
 
 from .const import *
+from .endpoint_utils import (
+    bearer_auth_headers,
+    ensure_http_url,
+    ollama_api_candidates,
+    ollama_base_url,
+    openai_model_endpoint_candidates,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -21,13 +29,14 @@ _LOGGER = logging.getLogger(__name__)
 class ProviderValidator:
     """Ping each provider with a dummy request to validate credentials."""
 
-    def __init__(self, hass):
+    def __init__(self, hass, request_timeout: int | None = None):
         self.session = async_get_clientsession(hass)
+        self.timeout = aiohttp.ClientTimeout(total=max(10, int(request_timeout or DEFAULT_REQUEST_TIMEOUT)))
 
     async def validate_openai(self, api_key: str) -> Optional[str]:
         hdr = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
         try:
-            resp = await self.session.get("https://api.openai.com/v1/models", headers=hdr)
+            resp = await self.session.get("https://api.openai.com/v1/models", headers=hdr, timeout=self.timeout)
             return None if resp.status == 200 else await resp.text()
         except Exception as err:  # noqa: BLE001
             return str(err)
@@ -38,22 +47,18 @@ class ProviderValidator:
             "anthropic-version": VERSION_ANTHROPIC,
             "content-type": "application/json",
         }
-        payload = {
-            "model": model,
-            "messages": [{"role": "user", "content": [{"type": "text", "text": "ping"}]}],
-            "max_tokens": 1,
-        }
         try:
-            resp = await self.session.post("https://api.anthropic.com/v1/messages", headers=hdr, json=payload)
+            resp = await self.session.get("https://api.anthropic.com/v1/models", headers=hdr, timeout=self.timeout)
             return None if resp.status == 200 else await resp.text()
         except Exception as err:
             return str(err)
 
     async def validate_google(self, api_key: str, model: str) -> Optional[str]:
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
-        payload = {"contents": [{"parts": [{"text": "ping"}]}], "generationConfig": {"maxOutputTokens": 1}}
         try:
-            resp = await self.session.post(url, json=payload)
+            resp = await self.session.get(
+                f"https://generativelanguage.googleapis.com/v1beta/models/{model}?key={api_key}",
+                timeout=self.timeout,
+            )
             return None if resp.status == 200 else await resp.text()
         except Exception as err:
             return str(err)
@@ -61,7 +66,7 @@ class ProviderValidator:
     async def validate_groq(self, api_key: str) -> Optional[str]:
         hdr = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
         try:
-            resp = await self.session.get("https://api.groq.com/openai/v1/models", headers=hdr)
+            resp = await self.session.get("https://api.groq.com/openai/v1/models", headers=hdr, timeout=self.timeout)
             return None if resp.status == 200 else await resp.text()
         except Exception as err:
             return str(err)
@@ -69,16 +74,31 @@ class ProviderValidator:
     async def validate_localai(self, ip: str, port: int, https: bool) -> Optional[str]:
         proto = "https" if https else "http"
         try:
-            resp = await self.session.get(f"{proto}://{ip}:{port}/v1/models")
+            resp = await self.session.get(f"{proto}://{ip}:{port}/v1/models", timeout=self.timeout)
             return None if resp.status == 200 else await resp.text()
         except Exception as err:
             return str(err)
 
-    async def validate_ollama(self, ip: str, port: int, https: bool) -> Optional[str]:
-        proto = "https" if https else "http"
+    async def validate_ollama(
+        self,
+        ip: str | None,
+        port: int | None,
+        https: bool,
+        base_url: str | None = None,
+        api_key: str | None = None,
+    ) -> Optional[str]:
+        base = ollama_base_url(base_url=base_url, ip_address=ip, port=port, https=https)
+        if not base:
+            return "Ollama host/port or base URL is required"
+        last_error = None
+        headers = bearer_auth_headers(api_key)
         try:
-            resp = await self.session.get(f"{proto}://{ip}:{port}/api/tags")
-            return None if resp.status == 200 else await resp.text()
+            for endpoint in ollama_api_candidates(base, "api/tags"):
+                resp = await self.session.get(endpoint, headers=headers, timeout=self.timeout)
+                if resp.status == 200:
+                    return None
+                last_error = f"{endpoint}: {resp.status} {await resp.text()}"
+            return last_error
         except Exception as err:
             return str(err)
 
@@ -86,9 +106,14 @@ class ProviderValidator:
         hdr = {"Content-Type": "application/json"}
         if api_key:
             hdr["Authorization"] = f"Bearer {api_key}"
+        last_error = None
         try:
-            resp = await self.session.get(f"{endpoint}/v1/models", headers=hdr)
-            return None if resp.status == 200 else await resp.text()
+            for model_endpoint in openai_model_endpoint_candidates(endpoint):
+                resp = await self.session.get(model_endpoint, headers=hdr, timeout=self.timeout)
+                if resp.status == 200:
+                    return None
+                last_error = f"{model_endpoint}: {resp.status} {await resp.text()}"
+            return last_error or "No valid model endpoint could be built"
         except Exception as err:
             return str(err)
 
@@ -96,7 +121,7 @@ class ProviderValidator:
         hdr = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
         payload = {"model": model, "messages": [{"role": "user", "content": "ping"}], "max_tokens": 1}
         try:
-            resp = await self.session.post(ENDPOINT_PERPLEXITY, headers=hdr, json=payload)
+            resp = await self.session.post(ENDPOINT_PERPLEXITY, headers=hdr, json=payload, timeout=self.timeout)
             return None if resp.status == 200 else await resp.text()
         except Exception as err:
             return str(err)
@@ -107,7 +132,7 @@ class ProviderValidator:
             hdr["Authorization"] = f"Bearer {api_key}"
         try:
             resp = await self.session.get(
-                "https://openrouter.ai/api/v1/models", headers=hdr
+                "https://openrouter.ai/api/v1/models", headers=hdr, timeout=self.timeout
             )
             return None if resp.status == 200 else await resp.text()
         except Exception as err:
@@ -118,7 +143,7 @@ class ProviderValidator:
         if api_key:
             hdr["Authorization"] = f"Bearer {api_key}"
         try:
-            resp = await self.session.get(f"{endpoint}", headers=hdr)
+            resp = await self.session.get(ensure_http_url(endpoint), headers=hdr, timeout=self.timeout)
             return None if resp.status == 200 else await resp.text()
         except Exception as err:
             return str(err)
@@ -130,7 +155,7 @@ class ProviderValidator:
 class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle integration setup via the UI."""
 
-    VERSION = 1
+    VERSION = CONFIG_VERSION
 
     def __init__(self) -> None:
         self.provider: str | None = None
@@ -143,24 +168,20 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input:
             self.provider = user_input[CONF_PROVIDER]
             self.data.update(user_input)
-
-            if any(ent.data.get(CONF_PROVIDER) == self.provider for ent in self._async_current_entries()):
-                errors["base"] = "already_configured"
-            else:
-                return await {
-                    "OpenAI": self.async_step_openai,
-                    "Anthropic": self.async_step_anthropic,
-                    "Google": self.async_step_google,
-                    "Groq": self.async_step_groq,
-                    "LocalAI": self.async_step_localai,
-                    "Ollama": self.async_step_ollama,
-                    "Custom OpenAI": self.async_step_custom_openai,
-                    "Mistral AI": self.async_step_mistral,
-                    "Perplexity AI": self.async_step_perplexity,
-                    "OpenRouter": self.async_step_openrouter,
-                    "OpenAI Azure": self.async_step_openai_azure,
-                    "Generic OpenAI": self.async_step_generic_openai,
-                }[self.provider]()
+            return await {
+                "OpenAI": self.async_step_openai,
+                "Anthropic": self.async_step_anthropic,
+                "Google": self.async_step_google,
+                "Groq": self.async_step_groq,
+                "LocalAI": self.async_step_localai,
+                "Ollama": self.async_step_ollama,
+                "Custom OpenAI": self.async_step_custom_openai,
+                "Mistral AI": self.async_step_mistral,
+                "Perplexity AI": self.async_step_perplexity,
+                "OpenRouter": self.async_step_openrouter,
+                "OpenAI Azure": self.async_step_openai_azure,
+                "Generic OpenAI": self.async_step_generic_openai,
+            }[self.provider]()
 
         return self.async_show_form(
             step_id="user",
@@ -199,7 +220,7 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         user_input: Dict[str, Any] | None,
     ):
         if user_input:
-            self.validator = ProviderValidator(self.hass)
+            self.validator = ProviderValidator(self.hass, user_input.get(CONF_REQUEST_TIMEOUT))
             err = await validate_fn(user_input)
             if err is None:
                 self.data.update({
@@ -215,12 +236,22 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     # ───────── provider‑specific steps (OpenAI shown; others similar) ─────────
     def _add_token_fields(self, base: Dict[Any, Any]) -> Dict[Any, Any]:
-        """Append the two token sliders to the schema."""
+        """Append common tuning fields to the schema."""
         base[vol.Optional(CONF_MAX_INPUT_TOKENS, default=DEFAULT_MAX_INPUT_TOKENS)] = vol.All(
             vol.Coerce(int), vol.Range(min=100)
         )
         base[vol.Optional(CONF_MAX_OUTPUT_TOKENS, default=DEFAULT_MAX_OUTPUT_TOKENS)] = vol.All(
             vol.Coerce(int), vol.Range(min=100)
+        )
+        base[vol.Optional(CONF_CUSTOM_SYSTEM_PROMPT, default="")] = str
+        base[vol.Optional(CONF_EXCLUDED_DOMAINS, default="")] = str
+        base[vol.Optional(CONF_EXCLUDED_ENTITIES, default="")] = str
+        base[vol.Optional(CONF_EXCLUDED_AREAS, default="")] = str
+        base[vol.Optional(CONF_HISTORY_RETENTION, default=DEFAULT_HISTORY_RETENTION)] = vol.All(
+            vol.Coerce(int), vol.Range(min=1, max=250)
+        )
+        base[vol.Optional(CONF_REQUEST_TIMEOUT, default=DEFAULT_REQUEST_TIMEOUT)] = vol.All(
+            vol.Coerce(int), vol.Range(min=10, max=1800)
         )
         return base
 
@@ -229,6 +260,7 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             vol.Required(CONF_OPENAI_API_KEY): TextSelector(TextSelectorConfig(type="password")),
             vol.Optional(CONF_OPENAI_MODEL, default=DEFAULT_MODELS["OpenAI"]): str,
             vol.Optional(CONF_OPENAI_TEMPERATURE, default=DEFAULT_TEMPERATURE): vol.All(vol.Coerce(float), vol.Range(min=0.0, max=2.0)),
+            vol.Optional(CONF_OPENAI_REASONING_EFFORT, default=DEFAULT_OPENAI_REASONING_EFFORT): vol.In(["minimal", "low", "medium", "high"]),
         }
         self._add_token_fields(schema)
         return await self._provider_form(
@@ -330,12 +362,20 @@ class AIAutomationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_ollama(self, user_input=None):
         async def _v(ui):
-            return await self.validator.validate_ollama(ui[CONF_OLLAMA_IP_ADDRESS], ui[CONF_OLLAMA_PORT], ui[CONF_OLLAMA_HTTPS])
+            return await self.validator.validate_ollama(
+                ui.get(CONF_OLLAMA_IP_ADDRESS),
+                ui.get(CONF_OLLAMA_PORT),
+                ui.get(CONF_OLLAMA_HTTPS, False),
+                ui.get(CONF_OLLAMA_BASE_URL),
+                ui.get(CONF_OLLAMA_API_KEY),
+            )
 
         schema = {
-            vol.Required(CONF_OLLAMA_IP_ADDRESS): str,
-            vol.Required(CONF_OLLAMA_PORT, default=11434): int,
-            vol.Required(CONF_OLLAMA_HTTPS, default=False): bool,
+            vol.Optional(CONF_OLLAMA_BASE_URL, default=""): str,
+            vol.Optional(CONF_OLLAMA_API_KEY, default=""): TextSelector(TextSelectorConfig(type="password")),
+            vol.Optional(CONF_OLLAMA_IP_ADDRESS, default="localhost"): str,
+            vol.Optional(CONF_OLLAMA_PORT, default=11434): int,
+            vol.Optional(CONF_OLLAMA_HTTPS, default=False): bool,
             vol.Optional(CONF_OLLAMA_MODEL, default=DEFAULT_MODELS["Ollama"]): str,
             vol.Optional(CONF_OLLAMA_TEMPERATURE, default=DEFAULT_TEMPERATURE): vol.All(
                 vol.Coerce(float), vol.Range(min=0.0, max=2.0)
@@ -542,6 +582,12 @@ class AIAutomationOptionsFlowHandler(config_entries.OptionsFlow):
             ): vol.All(vol.Coerce(int), vol.Range(min=100)),
             vol.Optional(CONF_MAX_OUTPUT_TOKENS, default=self._get_option(CONF_MAX_OUTPUT_TOKENS, DEFAULT_MAX_OUTPUT_TOKENS)
             ): vol.All(vol.Coerce(int), vol.Range(min=100)),
+            vol.Optional(CONF_CUSTOM_SYSTEM_PROMPT, default=self._get_option(CONF_CUSTOM_SYSTEM_PROMPT, "")): str,
+            vol.Optional(CONF_EXCLUDED_DOMAINS, default=self._get_option(CONF_EXCLUDED_DOMAINS, "")): str,
+            vol.Optional(CONF_EXCLUDED_ENTITIES, default=self._get_option(CONF_EXCLUDED_ENTITIES, "")): str,
+            vol.Optional(CONF_EXCLUDED_AREAS, default=self._get_option(CONF_EXCLUDED_AREAS, "")): str,
+            vol.Optional(CONF_HISTORY_RETENTION, default=self._get_option(CONF_HISTORY_RETENTION, DEFAULT_HISTORY_RETENTION)): vol.All(vol.Coerce(int), vol.Range(min=1, max=250)),
+            vol.Optional(CONF_REQUEST_TIMEOUT, default=self._get_option(CONF_REQUEST_TIMEOUT, DEFAULT_REQUEST_TIMEOUT)): vol.All(vol.Coerce(int), vol.Range(min=10, max=1800)),
         }
 
         # provider‑specific editable fields
@@ -549,6 +595,7 @@ class AIAutomationOptionsFlowHandler(config_entries.OptionsFlow):
             schema[vol.Optional(CONF_OPENAI_API_KEY, default=self._get_option(CONF_OPENAI_API_KEY))] = TextSelector(TextSelectorConfig(type="password"))
             schema[vol.Optional(CONF_OPENAI_MODEL, default=self._get_option(CONF_OPENAI_MODEL, DEFAULT_MODELS["OpenAI"]))] = str
             schema[vol.Optional(CONF_OPENAI_TEMPERATURE, default=self._get_option(CONF_OPENAI_TEMPERATURE, DEFAULT_TEMPERATURE))] = vol.All(vol.Coerce(float), vol.Range(min=0.0, max=2.0))
+            schema[vol.Optional(CONF_OPENAI_REASONING_EFFORT, default=self._get_option(CONF_OPENAI_REASONING_EFFORT, DEFAULT_OPENAI_REASONING_EFFORT))] = vol.In(["minimal", "low", "medium", "high"])
         elif provider == "Anthropic":
             schema[vol.Optional(CONF_ANTHROPIC_API_KEY, default=self._get_option(CONF_ANTHROPIC_API_KEY))] = TextSelector(TextSelectorConfig(type="password"))
             schema[vol.Optional(CONF_ANTHROPIC_MODEL, default=self._get_option(CONF_ANTHROPIC_MODEL, DEFAULT_MODELS["Anthropic"]))] = str
@@ -568,6 +615,8 @@ class AIAutomationOptionsFlowHandler(config_entries.OptionsFlow):
             schema[vol.Optional(CONF_LOCALAI_IP_ADDRESS, default=self._get_option(CONF_LOCALAI_IP_ADDRESS, "localhost"))] = str
             schema[vol.Optional(CONF_LOCALAI_PORT, default=self._get_option(CONF_LOCALAI_PORT, 8080))] = int
         elif provider == "Ollama":
+            schema[vol.Optional(CONF_OLLAMA_BASE_URL, default=self._get_option(CONF_OLLAMA_BASE_URL, ""))] = str
+            schema[vol.Optional(CONF_OLLAMA_API_KEY, default=self._get_option(CONF_OLLAMA_API_KEY, ""))] = TextSelector(TextSelectorConfig(type="password"))
             schema[vol.Optional(CONF_OLLAMA_IP_ADDRESS, default=self._get_option(CONF_OLLAMA_IP_ADDRESS, "localhost"))] = str
             schema[vol.Optional(CONF_OLLAMA_PORT, default=self._get_option(CONF_OLLAMA_PORT, 11434))] = int
             schema[vol.Optional(CONF_OLLAMA_HTTPS, default=self._get_option(CONF_OLLAMA_HTTPS, False))] = bool
